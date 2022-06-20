@@ -1,0 +1,35 @@
+#+TITLE:  My (Doom) Emacs Configuration
+#+DATE:    June 19, 2022
+#+SINCE:   <replace with next tagged release version>
+#+STARTUP: inlineimages nofold
+
+* Table of Contents :TOC_3:noexport:
+- [[#description][Description]]
+  - [[#maintainers][Maintainers]]
+- [[#prerequisites][Prerequisites]]
+- [[#features][Features]]
+- [[#configuration][Configuration]]
+- [[#troubleshooting][Troubleshooting]]
+
+* Description
+# A summary of what this module does.
+
++ For now this is just a basic repository of my Doom Emacs configuration.
++ Recently switched from Prelude; getting used to Evil still.
++ No plans yet. Just trying to keep it organized.
+
+** Maintainers
++ @mateoinc (Author)
+
+* Prerequisites
+None beyond the Doom prerequisites.
+
+* Features
+# An in-depth list of features, how to use them, and their dependencies.
+None Yet.
+* Configuration
+# How to configure this module, including common problems and how to address them.
+No external configuration required.
+* Troubleshooting
+# Common issues and their solution, or places to look for help.
+None yet.
