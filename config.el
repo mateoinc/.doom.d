@@ -74,3 +74,9 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+
+;; Elfeed configuration.
+(map! :map doom-leader-open-map
+      :desc "Elfeed (RSS)"      "e" 'elfeed
+      )
