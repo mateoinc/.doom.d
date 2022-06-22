@@ -10,6 +10,7 @@
 - [[#features][Features]]
 - [[#configuration][Configuration]]
 - [[#troubleshooting][Troubleshooting]]
+- [[#credits][Credits]]
 
 * Description
 # A summary of what this module does.
@@ -33,3 +34,6 @@ No external configuration required.
 * Troubleshooting
 # Common issues and their solution, or places to look for help.
 None yet.
+
+* Credits
+- [[https://xkcd.com/378/][Butterfly]] logo by [[https://github.com/abrahamparayil][Avron]]. Found thorugh [[https://github.com/jasonm23/doom-banners][doom-banners]].
