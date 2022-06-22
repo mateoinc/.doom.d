@@ -34,6 +34,8 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-snazzy)
 
+;; Change the logo
+(setq fancy-splash-image (concat doom-private-dir "M-x_butterfly.png"))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
