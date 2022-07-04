@@ -88,3 +88,7 @@
                :icon (all-the-icons-octicon "rss" :face 'doom-dashboard-menu-title)
                :face (:inherit (doom-dashboard-menu-title bold))
                :action elfeed))
+
+;; org-tree-slide configuration
+(define-key org-mode-map (kbd "<f8>") 'org-tree-slide-mode)
+(define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
