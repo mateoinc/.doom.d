@@ -88,7 +88,15 @@
                :icon (all-the-icons-octicon "rss" :face 'doom-dashboard-menu-title)
                :face (:inherit (doom-dashboard-menu-title bold))
                :action elfeed))
-
+;; Emacs spotify
+(map! :leader
+      (:prefix-map ("S" . "Spotify")
+      :desc "START"    "s" 'spotify-start
+      :desc "Play"     "j" 'spotify-play
+      :desc "Pause"    "k" 'spotify-pause
+      :desc "Next"     "l" 'spotify-next
+      :desc "Previous" "h" 'spotify-prev
+      ))
 ;; org-tree-slide configuration
-(define-key org-mode-map (kbd "<f8>") 'org-tree-slide-mode)
+(define-key org-mode-map (kbd "<f8>") 'tree-org-mode-slide)
 (define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
