@@ -50,3 +50,6 @@
 ;(unpin! t)
 
 (package! org-tree-slide)
+(package! spotify :recipe
+  (:host github
+   :repo "SnootierMoon/emacs-spotify"))
