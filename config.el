@@ -98,5 +98,11 @@
       :desc "Previous" "h" 'spotify-prev
       ))
 ;; org-tree-slide configuration
-(define-key org-mode-map (kbd "<f8>") 'tree-org-mode-slide)
-(define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
+;;(define-key org-mode-map (kbd "<f8>") 'tree-org-mode-slide)
+;;(define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
+(map! :map org-mode-map
+      :after org
+      :n "<f8>" #'org-tree-slide-mode
+      :n "<f9>" #'org-tree-slide-move-next-tree
+      :n "<f7>" #'org-tree-slide-move-previous-tree
+      :n "s-<f8>" #'org-tree-slide-skip-done-toggle)
