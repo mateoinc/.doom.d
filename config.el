@@ -106,3 +106,10 @@
       :n "<f9>" #'org-tree-slide-move-next-tree
       :n "<f7>" #'org-tree-slide-move-previous-tree
       :n "s-<f8>" #'org-tree-slide-skip-done-toggle)
+
+;; Fonts
+;;
+(setq doom-font (font-spec :family "FiraCode" :size 14)
+      doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 15)
+      doom-unicode-font (font-spec :family "Symbola")
+      doom-big-font (font-spec :family "FiraCode" :size 24))
