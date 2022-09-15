@@ -56,3 +56,10 @@
 (package! spotify :recipe
   (:host github
    :repo "SnootierMoon/emacs-spotify"))
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+;; VERSION MANAGEMENT ;;
+;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;(unpin! dirvish)
+;;(unpin! lsp-mode)
