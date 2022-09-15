@@ -49,7 +49,10 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 
-(package! org-tree-slide)
+;;(package! org-tree-slide)
+
+
+(package! org-ref)
 (package! spotify :recipe
   (:host github
    :repo "SnootierMoon/emacs-spotify"))
