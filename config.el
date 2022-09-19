@@ -109,7 +109,9 @@
 
 ;; Fonts
 ;;
-(setq doom-font (font-spec :family "FiraCode" :size 14)
+(setq doom-font (font-spec :family "Fira Code" :size 14)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 15)
-      doom-unicode-font (font-spec :family "Symbola")
-      doom-big-font (font-spec :family "FiraCode" :size 24))
+      doom-unicode-font (font-spec :family "Fira Code")
+      doom-big-font (font-spec :family "Fira Code" :size 24))
+;; Treemacs colors
+(setq doom-themes-treemacs-theme "doom-colors")
