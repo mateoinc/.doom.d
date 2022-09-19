@@ -115,3 +115,42 @@
       doom-big-font (font-spec :family "Fira Code" :size 24))
 ;; Treemacs colors
 (setq doom-themes-treemacs-theme "doom-colors")
+
+
+;;;; Ligatures
+;; Julia
+(after! julia-mode
+  (set-ligatures! 'julia-mode
+    ;; Functional
+    :lambda        "->"
+    :def           "function"
+    :composition   "struct"
+    :map           "Dict"
+    ;; Types
+    :null          "Nothing"
+    :true          "True"
+    :false         "False"
+    :int           "Int"
+    :float         "Float64"
+    :str           "String"
+    :bool          "Bool"
+                                        ;    :list          "list keyword"
+    ;; Flow
+    :not           "!"
+    :in            "in"
+    :not-in        "!in"
+    :and           "and"
+    :or            "or"
+    :for           "for"
+    :some          "some keyword"
+    :return        "return"
+    ;; :yield         "yeild"
+    ;; Other
+    :union         "union"
+    :intersect     "intersect"
+    ;; :diff          "diff keyword"
+    ;; :tuple         "Tuple Keyword "
+    :pipe          "|>" ;; FIXME: find a non-private char
+    ;; :dot           "Dot operator"
+    )
+  )
