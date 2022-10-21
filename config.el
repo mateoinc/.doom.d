@@ -91,21 +91,34 @@
 ;; Emacs spotify
 (map! :leader
       (:prefix-map ("S" . "Spotify")
-      :desc "START"    "s" 'spotify-start
-      :desc "Play"     "j" 'spotify-play
-      :desc "Pause"    "k" 'spotify-pause
-      :desc "Next"     "l" 'spotify-next
-      :desc "Previous" "h" 'spotify-prev
-      ))
-;; org-tree-slide configuration
-;;(define-key org-mode-map (kbd "<f8>") 'tree-org-mode-slide)
-;;(define-key org-mode-map (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
-;; (map! :map org-mode-map
-;;       :after org
-;;       :n "<f8>" #'org-tree-slide-mode
-;;       :n "<f9>" #'org-tree-slide-move-next-tree
-;;       :n "<f7>" #'org-tree-slide-move-previous-tree
-;;       :n "s-<f8>" #'org-tree-slide-skip-done-toggle)
+       :desc "START"    "s" 'spotify-start
+       :desc "Play"     "j" 'spotify-play
+       :desc "Pause"    "k" 'spotify-pause
+       :desc "Next"     "l" 'spotify-next
+       :desc "Previous" "h" 'spotify-prev
+       ))
+;; Pueue
+(map! :map doom-leader-open-map
+      :desc "Pueue"     "q" 'pueue
+      )
+(map! :map doom-leader-code-map
+      :desc "Add to Pueue"     "q" 'pueue-add
+      )
+;; org-roam-ui
+(use-package! websocket
+    :after org-roam)
+
+(use-package! org-roam-ui
+    :after org-roam ;; or :after org
+;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+;;         a hookable mode anymore, you're advised to pick something yourself
+;;         if you don't care about startup time, use
+    :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
 
 ;; Fonts
 ;;
@@ -153,4 +166,12 @@
     :pipe          "|>" ;; FIXME: find a non-private char
     ;; :dot           "Dot operator"
     )
+  )
+
+(after! org-modern
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-ellipsis "…"
+  ;; Activate global org modern mode
+  (global-org-modern-mode)
   )
