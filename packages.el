@@ -50,13 +50,22 @@
 ;(unpin! t)
 
 ;;(package! org-tree-slide)
-
-
 (package! org-ref)
-(package! spotify :recipe
-  (:host github
-   :repo "SnootierMoon/emacs-spotify"))
+(package! org-modern)
 
+(unpin! org-roam)
+(package! org-roam-ui)
+
+(package! ob-async
+  :recipe (:host github
+           :repo "astahlman/ob-async"))
+(package! spotify
+  :recipe (:host github
+           :repo "SnootierMoon/emacs-spotify"))
+
+(package! pueue
+  :recipe (:host github
+           :repo "xFA25E/pueue"))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
