@@ -66,6 +66,10 @@
 (package! pueue
   :recipe (:host github
            :repo "xFA25E/pueue"))
+
+(package! exwm)
+(package! exwm-config)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
