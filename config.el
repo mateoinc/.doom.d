@@ -175,3 +175,11 @@
   ;; Activate global org modern mode
   (global-org-modern-mode)
   )
+
+(use-package! exwm
+  :config
+  ;; Shrink fringes to one pixel
+  (fringe-mode 1)
+  ;; 4 Workspaces
+  (setq exwm-workspace-number 4)
+  )
