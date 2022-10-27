@@ -104,6 +104,10 @@
 (map! :map doom-leader-code-map
       :desc "Add to Pueue"     "q" 'pueue-add
       )
+;; Ranger
+(map! :map doom-leader-map
+      :desc "Ranger"     ">" 'ranger
+      )
 ;; org-roam-ui
 (use-package! websocket
     :after org-roam)
