@@ -69,6 +69,13 @@
 
 (package! exwm)
 
+(package! evil-motion-trainer
+  :recipe (:host github
+           :repo "martinbaillie/evil-motion-trainer"))
+
+(package! beacon)
+
+(package! nyan-mode)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
