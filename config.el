@@ -187,3 +187,31 @@
   ;; 4 Workspaces
   (setq exwm-workspace-number 4)
   )
+
+(use-package! evil-motion-trainer
+        :after evil
+        :config
+        (global-evil-motion-trainer-mode 1)
+        (setq evil-motion-trainer-threshold 6)
+        (setq evil-motion-trainer-super-annoying-mode t)
+        (emt-add-suggestion 'evil-next-line 'evil-avy-goto-char-timer)
+        ;; See also: (emt-add-suggestions)
+)
+
+(use-package! beacon
+  :config (beacon-mode 1))
+
+(use-package! nyan-mode
+  :after doom-modeline
+  :config
+  (setq nyan-bar-length 15
+        nyan-wavy-trail t)
+  (nyan-mode)
+  (nyan-start-animation))
+
+(map! :map doom-leader-notes-map
+      :desc "Ledger" "e" (cmd! (find-file (doom-dir org-directory "ledger.dat"))))
+
+(map! (:after evil-org
+        :map evil-org-mode-map
+        :n "gl" #'org-down-element))
