@@ -68,6 +68,12 @@
            :repo "xFA25E/pueue"))
 
 (package! exwm)
+(package! exwm-edit
+  :recipe (:host github
+           :repo "agzam/exwm-edit"))
+(package! desktop-environment
+  :recipe (:host github
+           :repo "DamienCassou/desktop-environment"))
 
 (package! evil-motion-trainer
   :recipe (:host github
