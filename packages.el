@@ -75,10 +75,6 @@
   :recipe (:host github
            :repo "DamienCassou/desktop-environment"))
 
-(package! evil-motion-trainer
-  :recipe (:host github
-           :repo "martinbaillie/evil-motion-trainer"))
-
 (package! beacon)
 
 (package! nyan-mode)
