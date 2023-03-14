@@ -34,7 +34,8 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'catppuccin)
 (setq catppuccin-flavor 'frappe) ;; 'frappe or 'latte, 'macchiato, or 'mocha
-(catppuccin-reload)
+(setq doom-theme 'catppuccin)
+;; (catppuccin-reload)
 ;; modeline
 (display-battery-mode)
 (display-time-mode)
