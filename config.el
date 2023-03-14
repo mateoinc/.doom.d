@@ -34,6 +34,8 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-dracula)
 (display-battery-mode)
+(display-time-mode)
+(timeclock-mode-line-display)
 
 ;; Change the logo
 (setq fancy-splash-image (concat doom-user-dir "M-x_butterfly.png"))
