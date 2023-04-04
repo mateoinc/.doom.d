@@ -114,6 +114,17 @@
 (map! :map doom-leader-map
       :desc "Ranger"     ">" 'ranger
       )
+;; org-roam
+(setq org-roam-capture-templates
+        '(("d" "default" plain "%?"
+        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                        "#+title: ${title}\n")
+        :unnarrowed t)
+        ("v" "video" plain "%?"
+        :target (file+head "videos/${title}.org"
+                        "#+title: ${title}\n#+filetags: :video:\n")
+
+        :unnarrowed t)))
 ;; org-roam-ui
 (use-package! websocket
     :after org-roam)
