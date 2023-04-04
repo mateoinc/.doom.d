@@ -209,7 +209,7 @@
   (nyan-start-animation))
 
 (map! :map doom-leader-notes-map
-      :desc "Ledger" "e" (cmd! (find-file (doom-dir org-directory "ledger.dat"))))
+      :desc "Ledger" "e" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
 
 (map! (:after evil-org
         :map evil-org-mode-map
