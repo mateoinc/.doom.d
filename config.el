@@ -119,10 +119,17 @@
         :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                         "#+title: ${title}\n")
         :unnarrowed t)
+        ("m" "main" plain "%?"
+        :target (file+head "main/${title}.org"
+                        "#+title: ${title}\n")
+        :unnarrowed t)
+        ("r" "reference" plain "%?"
+        :target (file+head "reference/${title}.org"
+                        "#+title: ${title}\n")
+        :unnarrowed t)
         ("v" "video" plain "%?"
         :target (file+head "videos/${title}.org"
                         "#+title: ${title}\n#+filetags: :video:\n")
-
         :unnarrowed t)))
 ;; org-roam-ui
 (use-package! websocket
