@@ -131,6 +131,7 @@
         :target (file+head "videos/${title}.org"
                         "#+title: ${title}\n#+filetags: :video:\n")
         :unnarrowed t)))
+(require 'org-roam-protocol)
 ;; org-roam-ui
 (use-package! websocket
     :after org-roam)
