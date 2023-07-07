@@ -50,6 +50,10 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/org/")
 
+;; org-cite configuration
+(require 'oc-bibtex)
+(setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+(setq citar-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -194,15 +198,6 @@
     ;; :dot           "Dot operator"
     )
   )
-
-(after! org-modern
- org-hide-emphasis-markers t
- org-pretty-entities t
- org-ellipsis "…"
-  ;; Activate global org modern mode
-  (global-org-modern-mode)
-  )
-
 
 (use-package! beacon
   :config (beacon-mode 1))
