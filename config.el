@@ -52,8 +52,23 @@
 
 ;; org-cite configuration
 (require 'oc-bibtex)
-(setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
-(setq citar-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+(after! citar
+        ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+        (setq! citar-bibliography '(
+                                    "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                                    "/home/mbarria/Dropbox/org/Bib/grahene.bib"
+                                    "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                                    "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                                    "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                                    ))
+        (setq org-cite-global-bibliography citar-bibliography)
+        (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
+        (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+        (setq! citar-library-file-extensions  (list "pdf"))
+)
+(after! reftex
+  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  )
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
