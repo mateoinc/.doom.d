@@ -136,22 +136,24 @@
       )
 ;; org-roam
 (setq org-roam-capture-templates
-        '(("d" "default" plain "%?"
-        :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                        "#+title: ${title}\n")
-        :unnarrowed t)
-        ("m" "main" plain "%?"
-        :target (file+head "main/${title}.org"
-                        "#+title: ${title}\n")
-        :unnarrowed t)
-        ("r" "reference" plain "%?"
-        :target (file+head "reference/${title}.org"
-                        "#+title: ${title}\n")
-        :unnarrowed t)
-        ("v" "video" plain "%?"
-        :target (file+head "videos/${title}.org"
-                        "#+title: ${title}\n#+filetags: :video:\n")
-        :unnarrowed t)))
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                        "${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+        ("r" "reference" plain
+           "%?"
+           :if-new (file+head "reference/${title}.org"
+                        "${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+        ("v" "video" plain
+           "%?"
+           :if-new (file+head "videos/${title}.org"
+                        "${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)))
 (require 'org-roam-protocol)
 ;; org-roam-ui
 (use-package! websocket
