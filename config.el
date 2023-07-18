@@ -365,3 +365,8 @@
 
 (add-hook!  'exwm-manage-finish-hook 'evil-emacs-state)
 (push ?\M-\  exwm-input-prefix-keys)
+
+(after! latex
+  (add-to-list 'TeX-view-program-list '("Sioyek" ("sioyek %o" (mode-io-correlate " --forward-search-file %b --forward-search-line %n --inverse-search \"emacsclient --no-wait +%2:%3 %1\""))))
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Sioyek"))
+)
