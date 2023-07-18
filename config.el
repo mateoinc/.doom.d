@@ -172,7 +172,7 @@
           org-roam-ui-open-on-start nil))
 
 ;; Fonts
-(setq doom-font (font-spec :family "Fira Code" :size 14)
+(setq doom-font (font-spec :family "CommitMono" :size 14)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 15)
       doom-unicode-font (font-spec :family "Fira Code")
       doom-big-font (font-spec :family "Fira Code" :size 24))
