@@ -78,6 +78,7 @@
 (package! beacon)
 
 (package! nyan-mode)
+(package! catppuccin-theme)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
