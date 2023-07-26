@@ -218,8 +218,8 @@
     )
   )
 
-(use-package! beacon
-  :config (beacon-mode 1))
+;; (use-package! beacon
+;;   :config (beacon-mode 1))
 
 (use-package! nyan-mode
   :after doom-modeline
@@ -247,7 +247,7 @@
 
 ;; Fix problems with Ido (if you use it).
 (require 'exwm-config)
-(exwm-config-ido)
+;; (exwm-config-ido)
 
 ;; Set the initial number of workspaces (they can also be created later).
 (setq exwm-workspace-number 4)
@@ -372,3 +372,25 @@
 )
 ;; Global hightlight todos
 (global-hl-todo-mode)
+
+;; mu4e
+;; Each path is relative to the path of the maildir you passed to mu
+(set-email-account! "gmail"
+  '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
+    (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
+    (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
+    (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
+    (smtpmail-smtp-user     . "mateobarria@gmail.com")
+    (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
+    (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
+  t)
+
+(setq org-msg-signature "\nMateo Barria-Urenda\n\n(Sent with Mu4e+Org-msg)")
+
+(setq +mu4e-gmail-accounts '(("mateobarria@gmail.com" . "/mateobarria")))
+;; don't need to run cleanup after indexing for gmail
+(setq mu4e-index-cleanup nil
+      ;; because gmail uses labels as folders we can use lazy check since
+      ;; messages don't really "move"
+      mu4e-index-lazy-check t)
+(setq mu4e-update-interval 60)

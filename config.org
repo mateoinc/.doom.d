@@ -1,0 +1,310 @@
+:PROPERTIES:
+:ID:       14656706-44e8-4d66-b966-f948a7b85dac
+:END:
+#+title: My (Doom) Emacs Config
+#+author: Mateo Barria-Urenda
+
+* Modules
+
+** Preface
+
+Doom modules are loaded in ~init.el~.
+
+We can get information on any of them from Doom using ~doom/help-modules~ (~SPC h d m~), or at point with ~+lookup/documentation~ (~K~).
+
+Any changes to this won-t take effect until ~doom sync~ is run.
+
+We start by calling doom
+
+#+begin_src emacs :tangle init.el
+;;; init.el -*- lexical-binding: t; -*-
+(doom!
+#+end_src
+
+** :input
+
+Doom has input modules to accomodate other languages and keyboards; I don't use any of them.
+
+** :completion
+
+For completion at point I use [[https://company-mode.github.io/][company-mode]], and for completion of commands (searching commands, files, directories, etc) I use [[https://github.com/minad/vertico][vertico]].
+
+#+begin_src emacs :tangle init.el
+       :completion
+       (company +childframe)           ; the ultimate code completion backend
+       (vertico +icons +childframe)    ; the search engine of the future
+
+#+end_src
+
+I do not make any further changes to configuration for these modules, but it is important to keep in mind which you have enabled, as they affect many other modules.
+Doom also provides modules for [[https://emacs-helm.github.io/helm/][Helm]], [[https://www.gnu.org/software/emacs/manual/html_mono/ido.html][Ido (Interactive Do)]], and [[https://github.com/abo-abo/swiper][Ivy]].
+
+** :ui
+
+We use several of the doom ui modules. These all work great to make Emacs fell more modern.
+
+#+begin_src emacs :tangle init.el
+       :ui
+       doom              ; what makes DOOM look the way it does
+       doom-dashboard    ; a nifty splash screen for Emacs
+       modeline          ; snazzy, Atom-inspired modeline, plus API
+       workspaces        ; tab emulation, persistence & separate workspaces
+#+end_src
+
+Doom by itself has great window navigation (under the ~SPC w~ leader),but the ~window-select~ module makes it even better.
+
+#+begin_src emacs :tangle init.el
+       (window-select +numbers)     ; visually switch windows
+#+end_src
+
+It also provides some other small tweaks to ui that I really like.
+#+begin_src emacs :tangle init.el
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       indent-guides     ; highlighted indent columns
+       ophints           ; highlight the region an operation acts on
+       vc-gutter         ; vcs diff in the fringe
+       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       tabs              ; a tab bar for Emacs
+       nav-flash         ; blink cursor line after big motions
+#+end_src
+
+Doom also has a module for ligatures, though it requires the use of a compatible font. (TODO: Link to furthr config)
+
+#+begin_src emacs :tangle init.el
+       (ligatures +extra)         ; ligatures and symbols to make your code pretty again
+#+end_src
+
+And it provides a module for [[https://github.com/Alexander-Miller/treemacs][treemacs.]]  With configuration for language server protocol compatibility. (Alternatively, there's a module for [[https://github.com/jaypei/emacs-neotree][neotree]])
+#+begin_src emacs :tangle init.el
+       (treemacs +lsp)          ; a project drawer, like neotree but cooler
+
+#+end_src
+
+It should be noted that Doom also provides modules for [[https://jblevins.org/projects/deft/][deft]], emoji support, better unicode support, a quit-message prompt, a minimap, and a zen mode.
+
+** :editor
+Of course, we use evil-mode in Doom.
+#+begin_src emacs :tangle init.el
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+#+end_src
+
+There's modules that help with editing in any language, programming or otherwise.
+#+begin_src emacs :tangle init.el
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       (format +onsave)  ; automated prettiness
+       multiple-cursors  ; editing in many places at once
+       rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       word-wrap         ; soft wrapping with language-aware indent
+#+end_src
+For the fold module, note that some useful default bindings are:
+
+| binding | action                    |
+|---------+---------------------------|
+| ~z a~   | Open/close fold           |
+| ~z p~   | Close fold                |
+| ~z o~   | Open fold                 |
+| ~z j~   | Previous fold             |
+| ~z k~   | Next fold                 |
+| ~z m~   | Change fold level of area |
+| ~z M~   | Close all folds           |
+| ~z R~   | Open all folds            |
+
+And there's some modules for programming (Lisp in particular), that I haven't played around with yet, but I'll keep in my config as "somday" comments.
+#+begin_src emacs :tangle init.el
+       ;;lispy             ; vim for lisp, for people who don't like vim
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+
+#+end_src
+** :emacs
+Doom provides some modules that enhance the vanila emacs experience. I'm all for them.
+#+begin_src emacs :tangle init.el
+       :emacs
+       (dired +icons +dirvish)             ; making dired pretty [functional]
+       electric          ; smarter, keyword-based electric-indent
+       (ibuffer +icons)         ; interactive buffer management
+       undo              ; persistent, smarter undo for your inevitable mistakes
+       vc                ; version-control and Emacs, sitting in a tree
+
+#+end_src
+
+** :term
+Doom provides modules for four terminals, [[eshell][eshell]] (built-in elisp shell),  a simple repl shell (the ~shell~ module), term (with multi-term), and vterm (the best option).
+#+begin_src emacs :tangle init.el
+       :term
+       vterm             ; the best terminal emulation in Emacs
+
+#+end_src
+** :checkers
+The doom spell/syntax checkers all work really well. Writegood mode (installed by ~:checkers grammar~) can be a bit annoying when writing formally, but it does no harm to have it activated.
+#+begin_src emacs :tangle init.el
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       (spell +flyspell) ; tasing you for misspelling mispelling
+       grammar           ; tasing grammar mistake every you make
+
+#+end_src
+** :tools
+Doom has a bunch of modules under ~:tools~ that are really useful.
+Biblio allows for better bibliography management.
+#+begin_src emacs :tangle init.el
+       :tools
+       biblio                ; Writes a PhD for you (citation needed)
+       editorconfig          ; let someone else argue about tabs vs spaces
+       ein                   ; tame Jupyter notebooks with emacs
+       (eval +overlay)       ; run code, run (also, repls)
+       (lookup +dictionary)  ; navigate your code and its documentation
+       lsp                   ; M-x vscode
+       magit                 ; a git porcelain for Emacs
+       make                  ; run make tasks from Emacs
+       (pass +pass)          ; password manager for nerds
+       pdf                   ; pdf enhancements
+       rgb                   ; creating color strings
+       tmux                  ; an API for interacting with tmux
+       tree-sitter
+       upload                ; map local to remote projects via ssh/ftp
+
+#+end_src
+
+(Note: Eval can be called with ~gr~ on a region)
+
+Doom also provides modules for [[https://www.ansible.com/][Ansible]], debugging, [[https://direnv.net/][direnv]], [[https://www.docker.com/][Docker]], [[https://github.com/rejeep/prodigy.el][prodigy]], [[https://www.terraform.io/][Terraform]]
+** :os
+Here we just activate ~tty~ module for better terminal experience. There's also a module to improve the MacOS experience; but I don't use Apple products.
+#+begin_src emacs :tangle init.el
+       :os
+       tty               ; improve the terminal Emacs experience
+
+#+end_src
+** :lang
+Doom has modules to help set it up as an IDE for a variety of programming languages.
+Here are the ones I have enabled; the ~+lsp~ and ~+tree-sitter~ options are common and just enable integration with the respective modules.
+#+begin_src emacs :tangle init.el
+       :lang
+       (cc +lsp +tree-stitter)         ; C > C++ == 1
+       emacs-lisp        ; drown in parentheses
+       (julia +lsp +tree-sitter)             ; a better, faster MATLAB
+       (latex +latexmk +cdlatex +lsp +fold)             ; writing papers in Emacs has never been so fun
+       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
+       (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
+       (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
+       data              ; config/data formats
+#+end_src
+
+There's also support for simple text formats (not exactly programming languages, but quite powerfull in their own right).
+#+begin_src emacs :tangle init.el
+       ledger            ; be audit you can be
+       markdown          ; writing docs for people to ignore
+#+end_src
+Org-mode in particular deserves some attention, as it has many more options.
+#+begin_src emacs :tangle init.el
+       (org                ; organize your plain life in plain text
+            +pretty        ; prettier defaults
+            +dragndrop     ; drag images to org files
+            +gnnuplot      ; Render images from gnuplot / plot org-tables
+            +org-noter     ; Take notes of documents
+            +hugo          ; Use Hugo to export websites
+            +present       ; Use org-mode for presentations
+            +roam2         ; A Zettelkasten for Emacs
+            +pomodoro)     ; Use org-mode timers for productivity
+#+end_src
+
+
+Finally, a (commented) list of languages I don't use, as it might be useful in the future.
+#+begin_src emacs :tangle init.el
+       ;;agda              ; types of types of types of types...
+       ;;beancount         ; mind the GAAP
+       ;;clojure           ; java with a lisp
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;coq               ; proofs-as-programs
+       ;;crystal           ; ruby at the speed of c
+       ;;csharp            ; unity, .NET, and mono shenanigans
+       ;;(dart +flutter)   ; paint ui and not much else
+       ;;dhall
+       ;;elixir            ; erlang done right
+       ;;elm               ; care for a cup of TEA?
+       ;;erlang            ; an elegant language for a more civilized age
+       ;;ess               ; emacs speaks statistics
+       ;;factor
+       ;;faust             ; dsp, but you get to keep your soul
+       ;;fortran           ; in FORTRAN, GOD is REAL (unless declared INTEGER)
+       ;;fsharp            ; ML stands for Microsoft's Language
+       ;;fstar             ; (dependent) types and (monadic) effects and Z3
+       ;;gdscript          ; the language you waited for
+       ;;(go +lsp)         ; the hipster dialect
+       ;;(graphql +lsp)    ; Give queries a REST
+       ;;(haskell +lsp)    ; a language that's lazier than I am
+       ;;hy                ; readability of scheme w/ speed of python
+       ;;idris             ; a language you can depend on
+       ;;json              ; At least it ain't XML
+       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+       ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
+       ;;kotlin            ; a better, slicker Java(Script)
+       ;;lean              ; for folks with too much to prove
+       ;;lua               ; one-based indices? one-based indices
+       ;;nim               ; python + lisp at the speed of c
+       ;;ocaml             ; an objective camel
+       ;;php               ; perl's insecure younger brother
+       ;;plantuml          ; diagrams for confusing people more
+       ;;purescript        ; javascript, but functional
+       ;;qt                ; the 'cutest' gui framework ever
+       ;;racket            ; a DSL for DSLs
+       ;;raku              ; the artist formerly known as perl6
+       ;;rest              ; Emacs as a REST client
+       ;;rst               ; ReST in peace
+       ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;scala             ; java, but good
+       ;;(scheme +guile)   ; a fully conniving family of lisps
+       ;;sml
+       ;;solidity          ; do you need a blockchain? No.
+       ;;swift             ; who asked for emoji variables?
+       ;;terra             ; Earth and Moon in alignment for performance.
+       ;;web               ; the tubes
+       ;;yaml              ; JSON, but readable
+       ;;zig               ; C, but simpler
+
+#+end_src
+** TODO :email
+#+begin_src emacs :tangle init.el
+       :email
+       (mu4e +org +gmail)
+#+end_src
+** :app
+Doom has a few apps.
+
+Calendar requires an OAuth client ID. TODO: Configure gmail; see also the :email modules.
+Everywhere configures [[https://github.com/tecosaur/emacs-everywhere][Emacs Everywhere.]]
+And rss adds an rss feed, of course.
+
+#+begin_src emacs :tangle init.el
+       :app
+       calendar
+       everywhere        ; *leave* Emacs!? You must be joking
+       (rss +org)        ; emacs as an RSS reader
+#+end_src
+There's also a module for music plaing (emms) and one for IRC.
+** :config
+Some meta modules that affect the config itself. Obviously this is a literate config, so it benefits from ~literate~ (Though I still tangle manually, since I tangle to [[file:init.el]]). ~default~ adds a lot of really nice keybinds (inspired by [[https://www.spacemacs.org/][Spacemacs]])
+#+begin_src emacs :tangle init.el
+       :config
+       literate
+       (default +bindings +smartparens)
+#+end_src
+** End
+
+We finish by closing the doom! list.
+
+#+begin_src emacs :tangle init.el
+)
+#+end_src
+
+Could've done so in the last module, but didn't want to keep track of that if it happens to change.
+
+* Changes to Default Config
+
+* Packages
