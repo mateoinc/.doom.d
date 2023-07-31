@@ -218,8 +218,8 @@
     )
   )
 
-;; (use-package! beacon
-;;   :config (beacon-mode 1))
+(use-package! beacon
+  :config (beacon-mode 1))
 
 (use-package! nyan-mode
   :after doom-modeline
