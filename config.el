@@ -131,9 +131,9 @@
       :desc "Add to Pueue"     "q" 'pueue-add
       )
 ;; Ranger
-(map! :map doom-leader-map
-      :desc "Ranger"     ">" 'ranger
-      )
+;; (map! :map doom-leader-map
+;;       :desc "Ranger"     ">" 'ranger
+;;       )
 ;; org-roam
 (setq org-roam-capture-templates
         '(("m" "main" plain
