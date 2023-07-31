@@ -51,7 +51,7 @@
 
 ;;(package! org-tree-slide)
 (package! org-ref)
-(package! org-modern)
+;; (package! org-modern)
 
 (unpin! org-roam)
 (package! org-roam-ui)
