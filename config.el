@@ -175,6 +175,7 @@
 (setq doom-font (font-spec :family "CommitMono" :size 14)
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 15)
       doom-unicode-font (font-spec :family "CommitMono")
+      doom-serif-font (font-spec :family "CommitMono")
       doom-big-font (font-spec :family "CommitMono" :size 24))
 ;; Treemacs colors
 (setq doom-themes-treemacs-theme "doom-colors")
