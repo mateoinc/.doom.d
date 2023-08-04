@@ -75,7 +75,7 @@
   :recipe (:host github
            :repo "DamienCassou/desktop-environment"))
 
-;; (package! beacon)
+(package! beacon)
 
 (package! nyan-mode)
 (package! catppuccin-theme)
