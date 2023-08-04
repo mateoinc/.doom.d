@@ -496,9 +496,13 @@ I use absolute line numbers by default, as I jump to lines using ~numpad+G~.
 
 Line numbers can be turned off or switched to relative numbers (for easier navigation with ~number+jk~) by setting ~display-line-numbers~ to ~nil~ or ~relative~, respectively.
 
-** Doom
 *** TODO Splash Image
+Nothing too fancy here, a nice reference to [[https://xkcd.com/378/][XKCD]].
+[[img:M-x_butterfly.png]]
 
+#+begin_src elisp :tangle config.el
+(setq fancy-splash-image (concat doom-user-dir "M-x_butterfly.png"))
+#+end_src
 ** TODO Org-mode
 *** TODO Org Config
 *** TODO Org-roam
