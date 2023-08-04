@@ -49,6 +49,7 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/org/")
+(setq +org-capture-todo-file (doom-path org-directory "!nbox.org"))
 
 ;; org-cite configuration
 (require 'oc-bibtex)
