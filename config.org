@@ -13,6 +13,7 @@ However, these don't correspond one-to-one. [[Config]] consists mostly of change
 
 ** Prerequisites
 This list might be incomplete. Remember to always run ~doom doctor~ after syncing and/or upgrading Doom Emacs.
+
 | Prereq     | Description         | Required by             |
 |------------+---------------------+-------------------------|
 | [[https://commitmono.com/][CommitMono]] | A really nice font. | My config for doom-font |
@@ -453,21 +454,29 @@ I use the [[https://commitmono.com/][CommitMono]] font.
       doom-serif-font (font-spec :family "CommitMono") ; for 'fixed-pitch-serif' face
       doom-big-font (font-spec :family "CommitMono" :size 24)) ; for big font mode ('SPC t b')
 #+end_src
-*** TODO Theme
+*** Theme
 I *really* like the [[https://github.com/catppuccin/catppuccin][catppuccin]] theme.
 
 #+begin_src elisp :tangle packages.el
 (package! catppuccin-theme)
 #+end_src
 
-I use the frappe "flavour" of catppuccin.
+I use the frappe "flavor" of catppuccin.
 
 #+begin_src elisp :tangle config.el
 (setq catppuccin-flavor 'frappe) ;; 'frappe or 'latte, 'macchiato, or 'mocha
 (setq doom-theme 'catppuccin)
 #+end_src
-**** TODO Treemacs Colors
-**** TODO hl-todo-mode
+**** Treemacs Colors
+Set treemacs to use doom colors.
+#+begin_src elisp :tangle config.el
+(setq doom-themes-treemacs-theme "doom-colors")
+#+end_src
+**** hl-todo-mode
+I like to highlight TODOs regardless of mode, so I can see comments that say TODO.
+#+begin_src elisp :tangle config.el
+(global-hl-todo-mode)
+#+end_src
 
 *** Modeline config
 Doom's modeline exposes some configuration.
@@ -478,7 +487,14 @@ I change some defaults mostly because sometimes I use [[EXWM]] as my window mana
 (display-time-mode)
 (timeclock-mode-line-display)
 #+end_src
-*** TODO Line Numbers
+*** Line Numbers
+I use absolute line numbers by default, as I jump to lines using ~numpad+G~.
+
+#+begin_src elisp :tangle config.el
+(setq display-line-numbers-type t)
+#+end_src
+
+Line numbers can be turned off or switched to relative numbers (for easier navigation with ~number+jk~) by setting ~display-line-numbers~ to ~nil~ or ~relative~, respectively.
 
 ** Doom
 *** TODO Splash Image
