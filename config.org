@@ -11,6 +11,12 @@ This is my Doom Emacs configuration.
 I've separatated this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
 However, these don't correspond one-to-one. [[Config]] consists mostly of changes to stuff included in Doom Emacs (such as configuration of the enabled modules), while [[Packages]] corresponds to installation and configuration of packages not included in Doom modules.
 
+** Why Emacs?
+
+There's a lot of reasons to use Emacs, but most of the ones that matter to me can be grouped as "Unifying my work flow"
+- Whether I'm working with Python, LaTeX, or simple text files; I can always use the same keybinds to move around and make changes.
+- Whenever I change computers (like between my work computer and my personal computers), I can just use sync my config with git (currently to github).
+- Continuing the previous point, if I want access to all my agenda files, I just need to install Dropbox.
 ** Prerequisites
 This list might be incomplete. Remember to always run ~doom doctor~ after syncing and/or upgrading Doom Emacs.
 
