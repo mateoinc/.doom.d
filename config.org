@@ -518,7 +518,16 @@ Nothing too fancy here, a nice reference to [[https://xkcd.com/378/][XKCD]].
 ** TODO Spotify
 ** TODO Pueue
 ** TODO Elfeed
-** TODO Beacon
+** Beacon
+A small but powerfull change: a big beacon of light whenever you switch windows/buffers.
+#+begin_src elisp :tangle packages.el
+(package! beacon)
+#+end_src
+Of course, I ant it to be always active.
+#+begin_src elisp :tangle config.el
+(use-package! beacon
+  :config (beacon-mode 1))
+#+end_src
 ** TODO Nyan-mode
 ** TODO EXWM
 *** TODO randr
