@@ -20,9 +20,10 @@ There's a lot of reasons to use Emacs, but most of the ones that matter to me ca
 ** Prerequisites
 This list might be incomplete. Remember to always run ~doom doctor~ after syncing and/or upgrading Doom Emacs.
 
-| Prereq     | Description         | Required by             |
-|------------+---------------------+-------------------------|
-| [[https://commitmono.com/][CommitMono]] | A really nice font. | My config for doom-font |
+| Prereq     | Description                 | Required by                                |
+|------------+-----------------------------+--------------------------------------------|
+| [[https://commitmono.com/][CommitMono]] | A really nice font.         | My config for doom-font                    |
+| [[https://github.com/Nukesor/pueue][pueue]]      | A simple queue for commands | pueue package, to interface with the queue |
 ** Initializing/changing config files
 We tangle some comments to each config file.
 
