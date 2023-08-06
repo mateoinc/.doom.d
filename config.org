@@ -515,8 +515,44 @@ Nothing too fancy here, a nice reference to [[https://xkcd.com/378/][XKCD]].
 ** TODO mu4e
 * Packages
 
-** TODO Spotify
-** TODO Pueue
+** Spotify
+
+Possibly peak "I don't want to leave Emacs" for me is controlling Spotify.
+These's multiple packages that do this, but I use SnootierMoon's [[https://github.com/SnootierMoon/emacs-spotify][emacs-spotify]].
+#+begin_src elisp :tangle packages.el
+(package! spotify
+  :recipe (:host github
+           :repo "SnootierMoon/emacs-spotify"))
+#+end_src
+Which I bind to it's own prefix map after the Doom leader.
+#+begin_src elisp :tangle config.el
+(map! :leader
+      (:prefix-map ("S" . "Spotify")
+       :desc "START"    "s" 'spotify-start
+       :desc "Play"     "j" 'spotify-play
+       :desc "Pause"    "k" 'spotify-pause
+       :desc "Next"     "l" 'spotify-next
+       :desc "Previous" "h" 'spotify-prev
+       ))
+#+end_src
+** Pueue
+[[https://github.com/Nukesor/pueue][Pueue]] is a super useful tool for running data analysis and other long processes.
+I find it very useful to open and add to the queue from Emacs, particularly when working with python/julia scripts.
+#+begin_src elisp :tangle packages.el
+(package! pueue
+  :recipe (:host github
+           :repo "xFA25E/pueue"))
+#+end_src
+I add a binding to the open map too see how everything is doing, and another to the code map to easily add scripts I'm looking at to the queue.
+#+begin_src elisp :tangle config.el
+;; Pueue
+(map! :map doom-leader-open-map
+      :desc "Pueue"     "q" 'pueue
+      )
+(map! :map doom-leader-code-map
+      :desc "Add to Pueue"     "q" 'pueue-add
+      )
+#+end_src
 ** TODO Elfeed
 ** Beacon
 A small but powerfull change: a big beacon of light whenever you switch windows/buffers.
