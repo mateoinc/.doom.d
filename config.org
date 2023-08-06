@@ -599,6 +599,20 @@ Of course, I ant it to be always active.
 (use-package! beacon
   :config (beacon-mode 1))
 #+end_src
-** TODO Nyan-mode
+** Nyan-mode
+Add a bit of life to the modeline.
+#+begin_src elisp :tangle packages.el
+(package! nyan-mode)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! nyan-mode
+  :after doom-modeline
+  :config
+  (setq nyan-bar-length 15
+        nyan-wavy-trail t)
+  (nyan-mode)
+  (nyan-start-animation))
+#+end_src
 ** TODO EXWM
 *** TODO randr
