@@ -431,6 +431,35 @@ Could've done so in the last module, but didn't want to keep track of that if it
 
 * Config
 
+** On package reconfiguration...
+
+Since Doom configures a bunch of stuff, it's important to use ~after!~ to configure packages.
+
+#+begin_example elisp
+(after! PACKAGE
+    (setq x y))
+#+end_example
+
+The expection to this is paths to files/directories, doom variables (prepended with either ~doom~ or ~+~), and of course, variables that are explicitly required to be set up before loading their package.
+
+Other useful macros (copy-pasted from the default config.el that comes with doom)
+
+#+begin_example
+ - `load!' for loading external *.el files relative to this one
+ - `use-package!' for configuring packages
+ - `after!' for running code after a package has loaded
+ - `add-load-path!' for adding directories to the `load-path', relative to
+   this file. Emacs searches the `load-path' when you load packages with
+   `require' or `use-package'.
+ - `map!' for binding new keys
+
+ To get information about any of these functions/macros, move the cursor over
+ the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+ This will open documentation for it, including demos of how they are used.
+ Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
+ etc).
+#+end_example
+
 ** Basic configuration
 
 *** Personal information
