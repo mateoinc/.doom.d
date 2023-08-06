@@ -277,7 +277,7 @@ The doom spell/syntax checkers all work really well. Writegood mode (installed b
        grammar           ; tasing grammar mistake every you make
 
 #+end_src
-** :tools
+** TODO :tools
 Doom has a bunch of modules under ~:tools~ that are really useful.
 Biblio allows for better bibliography management.
 #+begin_src elisp :tangle init.el
