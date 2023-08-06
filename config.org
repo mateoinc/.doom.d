@@ -532,12 +532,11 @@ I use absolute line numbers by default, as I jump to lines using ~numpad+G~.
 
 Line numbers can be turned off or switched to relative numbers (for easier navigation with ~number+jk~) by setting ~display-line-numbers~ to ~nil~ or ~relative~, respectively.
 
-*** TODO Splash Image
-Nothing too fancy here, a nice reference to [[https://xkcd.com/378/][XKCD]].
-[[img:M-x_butterfly.png]]
+*** Splash Image
+For now I'm using the cover of Zutomayo's [[https://en.wikipedia.org/wiki/Tadashii_Itsuwari_Kara_no_Kish%C5%8D][Tadashii Itsuwari Kara no Kishō]] album, with the blue set to transparent.
 
 #+begin_src elisp :tangle config.el
-(setq fancy-splash-image (concat doom-user-dir "M-x_butterfly.png"))
+(setq fancy-splash-image (concat doom-user-dir "ZTMY.png"))
 #+end_src
 ** TODO Org-mode
 *** TODO Org Config
