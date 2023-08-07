@@ -550,6 +550,36 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
 *** TODO Org-roam
 *** TODO Org-cite
 
+Doom's biblio module already binds some functions, but I found that opening files and inserting citations (which works both in org-mode and TeX mode) were some glaring omissions. Here I also set up my bibliography files that I want to be able to access anywhere.
+The "reference" folder is mostly set up as a fallback. I try to keep my notes in a single Bibliography.org file.
+
+#+begin_src elisp :tangle config.el
+(require 'oc-bibtex)
+(after! citar
+        (setq! citar-bibliography '(
+                                        "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                                        "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                                        "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                                        "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                                        "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                                        ))
+        (setq org-cite-global-bibliography citar-bibliography)
+        (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
+        (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+        (setq! citar-library-file-extensions  (list "pdf"))
+        (map! :map doom-leader-notes-map
+                :desc "Insert Citation" "p" 'citar-insert-citation
+                :desc "Open File" "P" 'citar-open-files)
+)
+#+end_src
+
+I also keep a longer Bibliography file which I want to access in my LaTeX projects, so I make sure reftex knows about it.
+
+#+begin_src elisp :tangle config.el
+(after! reftex
+  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  )
+#+end_src
 ** TODO Ligatures
 *** TODO Julia
 
