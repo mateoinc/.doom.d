@@ -548,7 +548,11 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
 #+end_src
 
 *** TODO Org-roam
-*** TODO Org-cite
+*** TODO Bibliograhy
+I try to keep an organised bibliography using Org Babel.
+And I want access in Emacs to the .bib entries tangled from it.
+Citar lets me acces my bibiography from anywhere.
+It also lets me access notes (~citar-open-notes~), pdfs (~citar-open-files~), and the bibtex entry themselves (~citar-open-entry~).
 
 Doom's biblio module already binds some functions, but I found that opening files and inserting citations (which works both in org-mode and TeX mode) were some glaring omissions. Here I also set up my bibliography files that I want to be able to access anywhere.
 The "reference" folder is mostly set up as a fallback. I try to keep my notes in a single Bibliography.org file.
