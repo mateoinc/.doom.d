@@ -50,7 +50,7 @@
 ;(unpin! t)
 
 ;;(package! org-tree-slide)
-(package! org-ref)
+;; (package! org-ref)
 ;; (package! org-modern)
 
 (unpin! org-roam)
