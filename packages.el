@@ -79,6 +79,7 @@
 
 (package! nyan-mode)
 (package! catppuccin-theme)
+(package! ox-hugo)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;

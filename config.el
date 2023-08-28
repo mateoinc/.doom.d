@@ -50,6 +50,7 @@
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/org/")
 (setq +org-capture-todo-file (doom-path org-directory "!nbox.org"))
+(setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 
 ;; org-cite configuration
 (require 'oc-bibtex)
@@ -140,21 +141,38 @@
         '(("m" "main" plain
            "%?"
            :if-new (file+head "main/${slug}.org"
-                        "${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+                        "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
            :immediate-finish t
            :unnarrowed t)
         ("r" "reference" plain
            "%?"
            :if-new (file+head "reference/${title}.org"
-                        "${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+                        "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
            :immediate-finish t
            :unnarrowed t)
         ("v" "video" plain
            "%?"
            :if-new (file+head "videos/${title}.org"
-                        "${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+                        "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
            :immediate-finish t
            :unnarrowed t)))
+;; Add property "type" to notes
+(cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
+;; Add this property to displays
+(setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+;; auto tag new notes as drafts
+(defun jethro/tag-new-node-as-draft ()
+  (org-roam-tag-add '("draft")))
+(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+;; interaction
 (require 'org-roam-protocol)
 ;; org-roam-ui
 (use-package! websocket
@@ -396,3 +414,7 @@
       ;; messages don't really "move"
       mu4e-index-lazy-check t)
 (setq mu4e-update-interval 60)
+;; Hugo
+(use-package! ox-hugo
+  :ensure t   ;Auto-install the package from Melpa
+  :after ox)
