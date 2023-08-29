@@ -36,7 +36,7 @@
 (setq doom-theme 'catppuccin)
 ;; (catppuccin-reload)
 ;; modeline
-(display-battery-mode)
+;;(display-battery-mode)
 (display-time-mode)
 (timeclock-mode-line-display)
 
