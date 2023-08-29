@@ -71,7 +71,7 @@
                 :desc "Insert Citation" "p" 'citar-insert-citation)
 )
 (after! reftex
-  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
   )
 (defun get-bibtex-from-doi (doi)
  "Get a BibTeX entry from the DOI"
