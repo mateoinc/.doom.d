@@ -73,6 +73,30 @@
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
   )
+(defun get-bibtex-from-doi (doi)
+ "Get a BibTeX entry from the DOI"
+ (interactive "MDOI: ")
+ (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
+   (with-current-buffer
+     (url-retrieve-synchronously
+       (format "http://dx.doi.org/%s"
+       	(replace-regexp-in-string "http://dx.doi.org/" "" doi)))
+     (switch-to-buffer (current-buffer))
+     (goto-char (point-max))
+     (setq bibtex-entry
+     	  (buffer-substring
+          	(string-match "@" (buffer-string))
+              (point)))
+     (kill-buffer (current-buffer))))
+ (insert (decode-coding-string bibtex-entry 'utf-8))
+ (bibtex-fill-entry))
+
+;; Scihub
+(use-package! scihub
+ :init
+ (setq scihub-download-directory "/home/mbarria/Dropbox/org/roam/pdfs/"
+       scihub-open-after-download t
+       scihub-fetch-domain 'scihub-fetch-domains-lovescihub))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
