@@ -80,6 +80,7 @@
 (package! nyan-mode)
 (package! catppuccin-theme)
 (package! ox-hugo)
+(package! scihub :recipe (:host github :repo "emacs-pe/scihub.el"))
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
