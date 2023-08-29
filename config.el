@@ -443,3 +443,6 @@
 (use-package! ox-hugo
   :ensure t   ;Auto-install the package from Melpa
   :after ox)
+
+;; Snipe config
+(setq evil-snipe-scope 'visible)
