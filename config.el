@@ -62,6 +62,7 @@
                                         "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
                                         "/home/mbarria/Dropbox/org/Bib/md_software.bib"
                                         "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                                        "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
                                         ))
         (setq org-cite-global-bibliography citar-bibliography)
         (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
