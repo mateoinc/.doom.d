@@ -36,7 +36,7 @@
 (setq doom-theme 'catppuccin)
 ;; (catppuccin-reload)
 ;; modeline
-;;(display-battery-mode)
+(display-battery-mode)
 (display-time-mode)
 (timeclock-mode-line-display)
 
@@ -55,49 +55,50 @@
 ;; org-cite configuration
 (require 'oc-bibtex)
 (after! citar
-        ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
-        (setq! citar-bibliography '(
-                                        "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
-                                        ))
-        (setq org-cite-global-bibliography citar-bibliography)
-        (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
-        (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
-        (setq! citar-library-file-extensions  (list "pdf"))
-        (map! :map doom-leader-notes-map
-                :desc "Insert Citation" "p" 'citar-insert-citation)
-)
+  ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  (setq! citar-bibliography '(
+                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
+                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              ))
+  (setq org-cite-global-bibliography citar-bibliography)
+  (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
+  (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+  (setq! citar-library-file-extensions  (list "pdf"))
+  (map! :map doom-leader-notes-map
+        :desc "Insert Citation" "p" 'citar-insert-citation)
+  )
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
   )
 (defun get-bibtex-from-doi (doi)
- "Get a BibTeX entry from the DOI"
- (interactive "MDOI: ")
- (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
-   (with-current-buffer
-     (url-retrieve-synchronously
-       (format "http://dx.doi.org/%s"
-       	(replace-regexp-in-string "http://dx.doi.org/" "" doi)))
-     (switch-to-buffer (current-buffer))
-     (goto-char (point-max))
-     (setq bibtex-entry
-     	  (buffer-substring
-          	(string-match "@" (buffer-string))
-              (point)))
-     (kill-buffer (current-buffer))))
- (insert (decode-coding-string bibtex-entry 'utf-8))
- (bibtex-fill-entry))
+  "Get a BibTeX entry from the DOI"
+  (interactive "MDOI: ")
+  (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
+    (with-current-buffer
+        (url-retrieve-synchronously
+         (format "http://dx.doi.org/%s"
+       	         (replace-regexp-in-string "http://dx.doi.org/" "" doi)))
+      (switch-to-buffer (current-buffer))
+      (goto-char (point-max))
+      (setq bibtex-entry
+     	    (buffer-substring
+             (string-match "@" (buffer-string))
+             (point)))
+      (kill-buffer (current-buffer))))
+  (insert (decode-coding-string bibtex-entry 'utf-8))
+  (bibtex-fill-entry))
 
 ;; Scihub
 (use-package! scihub
- :init
- (setq scihub-download-directory "/home/mbarria/Dropbox/org/roam/pdfs/"
-       scihub-open-after-download t
-       scihub-fetch-domain 'scihub-fetch-domains-lovescihub))
+  :init
+  (setq scihub-download-directory "/home/mbarria/Dropbox/org/roam/pdfs/"
+        scihub-open-after-download t
+        scihub-fetch-domain 'scihub-fetch-domains-lovescihub))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -163,24 +164,24 @@
 ;;       )
 ;; org-roam
 (setq org-roam-capture-templates
-        '(("m" "main" plain
-           "%?"
-           :if-new (file+head "main/${slug}.org"
-                        "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)
+      '(("m" "main" plain
+         "%?"
+         :if-new (file+head "main/${slug}.org"
+                            "${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
         ("r" "reference" plain
-           "%?"
-           :if-new (file+head "reference/${title}.org"
-                        "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)
+         "%?"
+         :if-new (file+head "reference/${title}.org"
+                            "${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
         ("v" "video" plain
-           "%?"
-           :if-new (file+head "videos/${title}.org"
-                        "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)))
+         "%?"
+         :if-new (file+head "videos/${title}.org"
+                            "${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)))
 ;; Add property "type" to notes
 (cl-defmethod org-roam-node-type ((node org-roam-node))
   "Return the TYPE of NODE."
@@ -201,19 +202,19 @@
 (require 'org-roam-protocol)
 ;; org-roam-ui
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-    :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start nil))
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start nil))
 
 ;; Fonts
 (setq doom-font (font-spec :family "CommitMono" :size 14)
@@ -278,8 +279,8 @@
       :desc "Ledger" "L" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
 
 (map! (:after evil-org
-        :map evil-org-mode-map
-        :n "gl" #'org-down-element))
+       :map evil-org-mode-map
+       :n "gl" #'org-down-element))
 
 (use-package! desktop-environment
   :after exwm
@@ -303,7 +304,7 @@
 ;; some advice on this topic:
 ;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
 ;; + For applications with multiple windows (e.g. GIMP), the class names of
-;    all windows are probably the same.  Using window titles for them makes
+                                        ;    all windows are probably the same.  Using window titles for them makes
 ;;   more sense.
 ;; In the following example, we use class names for all windows except for
 ;; Java applications and GIMP.
@@ -377,7 +378,7 @@
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line.
-;(setq exwm-workspace-minibuffer-position 'bottom)
+                                        ;(setq exwm-workspace-minibuffer-position 'bottom)
 
 ;; Do not forget to enable EXWM. It will start by itself when things are
 ;; ready.  You can put it _anywhere_ in your configuration.
@@ -403,9 +404,9 @@
 ;;          "--output" default-output "--off")
 ;;         (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
 (add-hook 'exwm-randr-screen-change-hook
-        (lambda ()
-        (start-process-shell-command
-        "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
+          (lambda ()
+            (start-process-shell-command
+             "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
 (exwm-randr-enable)
 
 (add-hook!  'exwm-manage-finish-hook 'evil-emacs-state)
@@ -414,21 +415,21 @@
 (after! latex
   (add-to-list 'TeX-view-program-list '("Sioyek" ("sioyek %o" (mode-io-correlate " --forward-search-file %b --forward-search-line %n --inverse-search \"emacsclient --no-wait +%2:%3 %1\""))))
   (add-to-list 'TeX-view-program-selection '(output-pdf "Sioyek"))
-)
+  )
 ;; Global hightlight todos
 (global-hl-todo-mode)
 
 ;; mu4e
 ;; Each path is relative to the path of the maildir you passed to mu
 (set-email-account! "gmail"
-  '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
-    (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
-    (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
-    (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
-    (smtpmail-smtp-user     . "mateobarria@gmail.com")
-    (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
-    (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
-  t)
+                    '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
+                      (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
+                      (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
+                      (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
+                      (smtpmail-smtp-user     . "mateobarria@gmail.com")
+                      (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
+                    t)
 
 (setq org-msg-signature "\nMateo Barria-Urenda\n\n(Sent with Mu4e+Org-msg)")
 
