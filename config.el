@@ -303,7 +303,7 @@
 ;; some advice on this topic:
 ;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
 ;; + For applications with multiple windows (e.g. GIMP), the class names of
-;    all windows are probably the same.  Using window titles for them makes
+                                        ;    all windows are probably the same.  Using window titles for them makes
 ;;   more sense.
 ;; In the following example, we use class names for all windows except for
 ;; Java applications and GIMP.
