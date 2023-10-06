@@ -55,50 +55,54 @@
 ;; org-cite configuration
 (require 'oc-bibtex)
 (after! citar
-        ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
-        (setq! citar-bibliography '(
-                                        "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
-                                        ))
-        (setq org-cite-global-bibliography citar-bibliography)
-        (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
-        (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
-        (setq! citar-library-file-extensions  (list "pdf"))
-        (map! :map doom-leader-notes-map
-                :desc "Insert Citation" "p" 'citar-insert-citation)
-)
+  ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  (setq! citar-bibliography '(
+                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
+                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/biochem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
+                              "/home/mbarria/Dropbox/org/Bib/biology.bib"
+                              "/home/mbarria/Dropbox/org/Bib/free_energy.bib"
+                              ))
+  (setq org-cite-global-bibliography citar-bibliography)
+  (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
+  (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+  (setq! citar-library-file-extensions  (list "pdf"))
+  (map! :map doom-leader-notes-map
+        :desc "Insert Citation" "p" 'citar-insert-citation)
+  )
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
   )
 (defun get-bibtex-from-doi (doi)
- "Get a BibTeX entry from the DOI"
- (interactive "MDOI: ")
- (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
-   (with-current-buffer
-     (url-retrieve-synchronously
-       (format "http://dx.doi.org/%s"
-       	(replace-regexp-in-string "http://dx.doi.org/" "" doi)))
-     (switch-to-buffer (current-buffer))
-     (goto-char (point-max))
-     (setq bibtex-entry
-     	  (buffer-substring
-          	(string-match "@" (buffer-string))
-              (point)))
-     (kill-buffer (current-buffer))))
- (insert (decode-coding-string bibtex-entry 'utf-8))
- (bibtex-fill-entry))
+  "Get a BibTeX entry from the DOI"
+  (interactive "MDOI: ")
+  (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
+    (with-current-buffer
+        (url-retrieve-synchronously
+         (format "http://dx.doi.org/%s"
+       	         (replace-regexp-in-string "http://dx.doi.org/" "" doi)))
+      (switch-to-buffer (current-buffer))
+      (goto-char (point-max))
+      (setq bibtex-entry
+     	    (buffer-substring
+             (string-match "@" (buffer-string))
+             (point)))
+      (kill-buffer (current-buffer))))
+  (insert (decode-coding-string bibtex-entry 'utf-8))
+  (bibtex-fill-entry))
 
 ;; Scihub
 (use-package! scihub
- :init
- (setq scihub-download-directory "/home/mbarria/Dropbox/org/roam/pdfs/"
-       scihub-open-after-download t
-       scihub-fetch-domain 'scihub-fetch-domains-lovescihub))
+  :init
+  (setq scihub-download-directory "/home/mbarria/Dropbox/org/roam/pdfs/"
+        scihub-open-after-download t
+        scihub-fetch-domain 'scihub-fetch-domains-lovescihub))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
