@@ -414,7 +414,10 @@
 (after! latex
   (add-to-list 'TeX-view-program-list '("Sioyek" ("sioyek %o" (mode-io-correlate " --forward-search-file %b --forward-search-line %n --inverse-search \"emacsclient --no-wait +%2:%3 %1\""))))
   (add-to-list 'TeX-view-program-selection '(output-pdf "Sioyek"))
-)
+  )
+(after! tex-fold
+  (add-to-list 'TeX-fold-macro-spec-list '("[c]" ("cite" "bibitem" "citep" "citet")))
+  )
 ;; Global hightlight todos
 (global-hl-todo-mode)
 
