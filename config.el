@@ -201,19 +201,19 @@
 (require 'org-roam-protocol)
 ;; org-roam-ui
 (use-package! websocket
-    :after org-roam)
+  :after org-roam)
 
 (use-package! org-roam-ui
-    :after org-roam ;; or :after org
-;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-;;         a hookable mode anymore, you're advised to pick something yourself
-;;         if you don't care about startup time, use
-    :hook (after-init . org-roam-ui-mode)
-    :config
-    (setq org-roam-ui-sync-theme t
-          org-roam-ui-follow t
-          org-roam-ui-update-on-save t
-          org-roam-ui-open-on-start nil))
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start nil))
 
 ;; Fonts
 (setq doom-font (font-spec :family "CommitMono" :size 14)
@@ -278,8 +278,8 @@
       :desc "Ledger" "L" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
 
 (map! (:after evil-org
-        :map evil-org-mode-map
-        :n "gl" #'org-down-element))
+       :map evil-org-mode-map
+       :n "gl" #'org-down-element))
 
 (use-package! desktop-environment
   :after exwm
@@ -377,7 +377,7 @@
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line.
-;(setq exwm-workspace-minibuffer-position 'bottom)
+;;(setq exwm-workspace-minibuffer-position 'bottom)
 
 ;; Do not forget to enable EXWM. It will start by itself when things are
 ;; ready.  You can put it _anywhere_ in your configuration.
@@ -403,9 +403,9 @@
 ;;          "--output" default-output "--off")
 ;;         (setq exwm-randr-workspace-monitor-plist (list 0 (match-string 1)))))))
 (add-hook 'exwm-randr-screen-change-hook
-        (lambda ()
-        (start-process-shell-command
-        "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
+          (lambda ()
+            (start-process-shell-command
+             "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
 (exwm-randr-enable)
 
 (add-hook!  'exwm-manage-finish-hook 'evil-emacs-state)
@@ -421,14 +421,14 @@
 ;; mu4e
 ;; Each path is relative to the path of the maildir you passed to mu
 (set-email-account! "gmail"
-  '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
-    (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
-    (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
-    (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
-    (smtpmail-smtp-user     . "mateobarria@gmail.com")
-    (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
-    (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
-  t)
+                    '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
+                      (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
+                      (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
+                      (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
+                      (smtpmail-smtp-user     . "mateobarria@gmail.com")
+                      (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
+                    t)
 
 (setq org-msg-signature "\nMateo Barria-Urenda\n\n(Sent with Mu4e+Org-msg)")
 
