@@ -163,24 +163,24 @@
 ;;       )
 ;; org-roam
 (setq org-roam-capture-templates
-        '(("m" "main" plain
-           "%?"
-           :if-new (file+head "main/${slug}.org"
-                        "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)
+      '(("m" "main" plain
+         "%?"
+         :if-new (file+head "main/${slug}.org"
+                            "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
         ("r" "reference" plain
-           "%?"
-           :if-new (file+head "reference/${title}.org"
-                        "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)
+         "%?"
+         :if-new (file+head "reference/${title}.org"
+                            "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
         ("v" "video" plain
-           "%?"
-           :if-new (file+head "videos/${title}.org"
-                        "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
-           :immediate-finish t
-           :unnarrowed t)))
+         "%?"
+         :if-new (file+head "videos/${title}.org"
+                            "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)))
 ;; Add property "type" to notes
 (cl-defmethod org-roam-node-type ((node org-roam-node))
   "Return the TYPE of NODE."
