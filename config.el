@@ -41,7 +41,7 @@
 (timeclock-mode-line-display)
 
 ;; Change the logo
-(setq fancy-splash-image (concat doom-user-dir "ZTMY.png"))
+(setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
