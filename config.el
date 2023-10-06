@@ -141,11 +141,6 @@
       :desc "Elfeed (RSS)"      "e" 'elfeed
       )
 
-(add-to-list '+doom-dashboard-menu-sections
-             '("Open RSS Feed"
-               :icon (all-the-icons-octicon "rss" :face 'doom-dashboard-menu-title)
-               :face (:inherit (doom-dashboard-menu-title bold))
-               :action elfeed))
 ;; Emacs spotify
 (map! :leader
       (:prefix-map ("S" . "Spotify")
