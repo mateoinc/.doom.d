@@ -41,7 +41,7 @@
 (timeclock-mode-line-display)
 
 ;; Change the logo
-(setq fancy-splash-image (concat doom-user-dir "ZTMY.png"))
+(setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -57,6 +57,7 @@
 (after! citar
   ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
   (setq! citar-bibliography '(
+                              <<<<<<< HEAD
                               "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
                               "/home/mbarria/Dropbox/org/Bib/graphene.bib"
                               "/home/mbarria/Dropbox/org/Bib/md_software.bib"
@@ -64,6 +65,19 @@
                               "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
                               "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
                               "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              =======
+                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
+                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/biochem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
+                              "/home/mbarria/Dropbox/org/Bib/biology.bib"
+                              "/home/mbarria/Dropbox/org/Bib/free_energy.bib"
+                              >>>>>>> d552c9439755ccd3adf0330ff4ee05f739ac7d01
                               ))
   (setq org-cite-global-bibliography citar-bibliography)
   (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
@@ -137,11 +151,6 @@
       :desc "Elfeed (RSS)"      "e" 'elfeed
       )
 
-(add-to-list '+doom-dashboard-menu-sections
-             '("Open RSS Feed"
-               :icon (all-the-icons-octicon "rss" :face 'doom-dashboard-menu-title)
-               :face (:inherit (doom-dashboard-menu-title bold))
-               :action elfeed))
 ;; Emacs spotify
 (map! :leader
       (:prefix-map ("S" . "Spotify")
@@ -378,7 +387,7 @@
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line.
-                                        ;(setq exwm-workspace-minibuffer-position 'bottom)
+;;(setq exwm-workspace-minibuffer-position 'bottom)
 
 ;; Do not forget to enable EXWM. It will start by itself when things are
 ;; ready.  You can put it _anywhere_ in your configuration.
@@ -415,6 +424,9 @@
 (after! latex
   (add-to-list 'TeX-view-program-list '("Sioyek" ("sioyek %o" (mode-io-correlate " --forward-search-file %b --forward-search-line %n --inverse-search \"emacsclient --no-wait +%2:%3 %1\""))))
   (add-to-list 'TeX-view-program-selection '(output-pdf "Sioyek"))
+  )
+(after! tex-fold
+  (add-to-list 'TeX-fold-macro-spec-list '("[c]" ("cite" "bibitem" "citep" "citet")))
   )
 ;; Global hightlight todos
 (global-hl-todo-mode)
