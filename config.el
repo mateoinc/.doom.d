@@ -84,7 +84,8 @@
   (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
   (map! :map doom-leader-notes-map
-        :desc "Insert Citation" "p" 'citar-insert-citation)
+        :desc "Insert Citation" "p" 'citar-insert-citation
+        :desc "Open Reference" "P" 'citar-open)
   )
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
@@ -291,6 +292,7 @@
        :map evil-org-mode-map
        :n "gl" #'org-down-element))
 
+
 (use-package! desktop-environment
   :after exwm
   :config
@@ -460,12 +462,3 @@
 ;; Snipe config
 (setq evil-snipe-scope 'visible)
 
-(after! keycast
-  (define-minor-mode keycast-mode
-    "Show current command and its key binding in the mode line."
-    :global t
-    (if keycast-mode
-        (add-hook 'pre-command-hook 'keycast--update t)
-      (remove-hook 'pre-command-hook 'keycast--update))))
-(add-to-list 'global-mode-string '("" keycast-mode-line))
-(keycast-mode) ;; or run keycast-mode by demand
