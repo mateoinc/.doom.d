@@ -81,7 +81,6 @@
 (package! catppuccin-theme)
 (package! ox-hugo)
 (package! scihub :recipe (:host github :repo "emacs-pe/scihub.el"))
-(package! keycast)
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; VERSION MANAGEMENT ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
