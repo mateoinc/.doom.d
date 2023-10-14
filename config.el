@@ -57,27 +57,17 @@
 (after! citar
   ;; (setq org-cite-global-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
   (setq! citar-bibliography '(
-                              <<<<<<< HEAD
-                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
-                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
-                              =======
-                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
-                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
                               "/home/mbarria/Dropbox/org/Bib/biochem.bib"
-                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
                               "/home/mbarria/Dropbox/org/Bib/biology.bib"
+                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
                               "/home/mbarria/Dropbox/org/Bib/free_energy.bib"
-                              >>>>>>> d552c9439755ccd3adf0330ff4ee05f739ac7d01
+                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
                               ))
   (setq org-cite-global-bibliography citar-bibliography)
   (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
