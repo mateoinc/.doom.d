@@ -8,7 +8,7 @@
 * About
 This is my Doom Emacs configuration.
 
-I've separatated this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
+I've separated this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
 However, these don't correspond one-to-one. [[Config]] consists mostly of changes to stuff included in Doom Emacs (such as configuration of the enabled modules), while [[Packages]] corresponds to installation and configuration of packages not included in Doom modules.
 
 ** Why Emacs?
