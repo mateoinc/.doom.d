@@ -17,6 +17,8 @@ There's a lot of reasons to use Emacs, but most of the ones that matter to me ca
 - Whether I'm working with Python, LaTeX, or simple text files; I can always use the same keybinds to move around and make changes.
 - Whenever I change computers (like between my work computer and my personal computers), I can just use sync my config with git (currently to github).
 - Continuing the previous point, if I want access to all my agenda files, I just need to install Dropbox.
+
+This file is an [[https://orgmode.org/][Org Mode]] file, an Emacs mode that has markdown-like features for working with simple text, but also allows for [[https://en.wikipedia.org/wiki/Literate_programming][Literate programming]] with [[https://orgmode.org/worg/org-contrib/babel/][Babel]]. Whenever the term *tangle* comes up, it refers to ~org-babel~'s feature to export blocks of text from an ~org-mode~ file to other files. This was leveraged here to mantain one file for documentation (this one) while keeping actual code in different files (as explained in the [[About]] section).
 ** Prerequisites
 This list might be incomplete. Remember to always run ~doom doctor~ after syncing and/or upgrading Doom Emacs.
 
