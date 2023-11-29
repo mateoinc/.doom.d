@@ -42,7 +42,7 @@
        ;;parinfer          ; turn lisp into python, sort of
 
        :emacs
-       (dired +icons +dirvish)             ; making dired pretty [functional]
+       (dired +icons)             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
