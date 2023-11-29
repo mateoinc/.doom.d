@@ -8,7 +8,7 @@
 * About
 This is my Doom Emacs configuration.
 
-I've separated this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
+I've separat        ed this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
 However, these don't correspond one-to-one. [[Config]] consists mostly of changes to stuff included in Doom Emacs (such as configuration of the enabled modules), while [[Packages]] corresponds to installation and configuration of packages not included in Doom modules.
 
 ** Why Emacs?
@@ -26,6 +26,8 @@ This list might be incomplete. Remember to always run ~doom doctor~ after syncin
 |------------+-----------------------------+--------------------------------------------|
 | [[https://commitmono.com/][CommitMono]] | A really nice font.         | My config for doom-font                    |
 | [[https://github.com/Nukesor/pueue][pueue]]      | A simple queue for commands | pueue package, to interface with the queue |
+| Spotify    | Music Streaming             | emacs-spotify, for obvious reasons         |
+| [[https://www.djcbsoftware.nl/code/mu/][mu]]         | Email client                | mu4e                                       |
 ** Initializing/changing config files
 We tangle some comments to each config file.
 
@@ -155,6 +157,7 @@ We start by calling doom
 ** :input
 
 Doom has input modules to accomodate other languages and keyboards; I don't use any of them.
+For the record, these currently include ~bidi~ (right-to-left), ~chinese~, ~japanese~, and ~layout~ (for accomodating different layouts).  
 
 ** :completion
 
@@ -196,11 +199,10 @@ It also provides some other small tweaks to ui that I really like.
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
        (popup +defaults)   ; tame sudden yet inevitable temporary windows
-       tabs              ; a tab bar for Emacs
        nav-flash         ; blink cursor line after big motions
 #+end_src
 
-Doom also has a module for ligatures, though it requires the use of a compatible font. (TODO: Link to furthr config)
+Doom also has a module for ligatures, though it requires the use of a compatible font. (TODO: Link to config)
 
 #+begin_src elisp :tangle init.el
        (ligatures +extra)         ; ligatures and symbols to make your code pretty again
@@ -212,7 +214,7 @@ And it provides a module for [[https://github.com/Alexander-Miller/treemacs][tre
 
 #+end_src
 
-It should be noted that Doom also provides modules for [[https://jblevins.org/projects/deft/][deft]], emoji support, better unicode support, a quit-message prompt, a minimap, and a zen mode.
+It should be noted that Doom also provides modules for [[https://jblevins.org/projects/deft/][deft]], emoji support, better unicode support, a quit-message prompt, a minimap, tabs, and a zen mode.
 
 ** :editor
 Of course, we use evil-mode in Doom.
@@ -244,7 +246,7 @@ For the fold module, note that some useful default bindings are:
 | ~z M~   | Close all folds           |
 | ~z R~   | Open all folds            |
 
-And there's some modules for programming (Lisp in particular), that I haven't played around with yet, but I'll keep in my config as "somday" comments.
+And there's some modules for programming (Lisp in particular), that I haven't played around with yet, but I'll keep in my config as "someday" comments.
 #+begin_src elisp :tangle init.el
        ;;lispy             ; vim for lisp, for people who don't like vim
        ;;objed             ; text object editing for the innocent
@@ -264,7 +266,7 @@ Doom provides some modules that enhance the vanila emacs experience. I'm all for
 #+end_src
 
 ** :term
-Doom provides modules for four terminals, [[eshell][eshell]] (built-in elisp shell),  a simple repl shell (the ~shell~ module), term (with multi-term), and vterm (the best option).
+Doom provides modules for four terminals, [[eshell][eshell]] (built-in elisp shell),  a simple repl shell (the ~shell~ module), term (with multi-term), and [[https://github.com/akermu/emacs-libvterm][vterm]] (the best option).
 #+begin_src elisp :tangle init.el
        :term
        vterm             ; the best terminal emulation in Emacs
@@ -323,11 +325,11 @@ Here are the ones I have enabled; the ~+lsp~ and ~+tree-sitter~ options are comm
        (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
        (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
-       data              ; config/data formats
 #+end_src
 
 There's also support for simple text formats (not exactly programming languages, but quite powerfull in their own right).
 #+begin_src elisp :tangle init.el
+       data              ; config/data formats
        ledger            ; be audit you can be
        markdown          ; writing docs for people to ignore
 #+end_src
@@ -488,7 +490,6 @@ I use the [[https://commitmono.com/][CommitMono]] font.
 ;; Fonts
 (setq doom-font (font-spec :family "CommitMono" :size 14) ; Primary font
       doom-variable-pitch-font (font-spec :family "DejaVu Sans" :size 15) ; non-monospace where applicable
-      doom-unicode-font (font-spec :family "CommitMono") ; for unicode glyphs
       doom-serif-font (font-spec :family "CommitMono") ; for 'fixed-pitch-serif' face
       doom-big-font (font-spec :family "CommitMono" :size 24)) ; for big font mode ('SPC t b')
 #+end_src
@@ -535,22 +536,103 @@ I use absolute line numbers by default, as I jump to lines using ~numpad+G~.
 Line numbers can be turned off or switched to relative numbers (for easier navigation with ~number+jk~) by setting ~display-line-numbers~ to ~nil~ or ~relative~, respectively.
 
 *** Splash Image
-For now I'm using the cover of Zutomayo's [[https://en.wikipedia.org/wiki/Tadashii_Itsuwari_Kara_no_Kish%C5%8D][Tadashii Itsuwari Kara no Kishō]] album, with the blue set to transparent.
+Previously I used the cover of Zutomayo's [[https://en.wikipedia.org/wiki/Tadashii_Itsuwari_Kara_no_Kish%C5%8D][Tadashii Itsuwari Kara no Kishō]] album, with the blue set to transparent.
+Now I'm using a drawing by [[https://www.instagram.com/gharliera/][gharliera/gharly]], with modified colors.
+I've seen two ways of setting the splash image and I'm not sure of the difference so for now here's both.
 
 #+begin_src elisp :tangle config.el
-(setq fancy-splash-image (concat doom-user-dir "ZTMY.png"))
+(setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
+(setq +doom-dashboard-banner-dir doom-user-dir )
+(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
 #+end_src
-** TODO Org-mode
-*** TODO Org Config
+*** Snipe
+I like setting evil-snipe to visible.
+#+begin_src elisp :tangle config.el
+(setq evil-snipe-scope 'visible)
+#+end_src
+** Org-mode
+*** Org Config
 I keep my org files in my Dropbox folder, which I always keep or link to in my home directory.
 In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on top of sorts by name)
 #+begin_src elisp :tangle config.el
 (setq org-directory "~/Dropbox/org/")
 (setq +org-capture-todo-file (doom-path org-directory "!nbox.org"))
+(setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 #+end_src
 
-*** TODO Org-roam
-*** TODO Bibliograhy
+
+*** Org-roam
+I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes.
+#+begin_src elisp :tangle packages.el
+(unpin! org-roam)
+(package! org-roam-ui)
+#+end_src
+
+My capture templates are for my personal notes (main), notes on specific sources (reference) and on videos (video). 
+#+begin_src elisp :tangle config.el
+(setq org-roam-capture-templates
+      '(("m" "main" plain
+         "%?"
+         :if-new (file+head "main/${slug}.org"
+                            "${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
+        ("r" "reference" plain
+         "%?"
+         :if-new (file+head "reference/${title}.org"
+                            "${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)
+        ("v" "video" plain
+         "%?"
+         :if-new (file+head "videos/${title}.org"
+                            "${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+         :immediate-finish t
+         :unnarrowed t)))
+#+end_src
+
+I stole [[https://jethrokuan.github.io/org-roam-guide/][jethrokuan's]] code for prettier note searching. 
+#+begin_src elisp :tangle config.el
+;; Add property "type" to notes
+(cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
+;; Add this property to displays
+(setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+;; auto tag new notes as drafts
+(defun jethro/tag-new-node-as-draft ()
+  (org-roam-tag-add '("draft")))
+(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+#+end_src
+
+I use ~org-roam-protocol~ which requires some [[https://www.orgroam.com/manual.html#org_002droam_002dprotocol][setup.]]
+#+begin_src elisp :tangle config.el
+(require 'org-roam-protocol)
+#+end_src
+And org-roam-ui with the folloing config:
+#+begin_src elisp :tangle config.el
+(use-package! websocket
+  :after org-roam)
+
+(use-package! org-roam-ui
+  :after org-roam ;; or :after org
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start nil))
+#+end_src
+*** Bibliograhy
 I try to keep an organised bibliography using Org Babel.
 And I want access in Emacs to the .bib entries tangled from it.
 Citar lets me acces my bibiography from anywhere.
@@ -562,35 +644,154 @@ The "reference" folder is mostly set up as a fallback. I try to keep my notes in
 #+begin_src elisp :tangle config.el
 (require 'oc-bibtex)
 (after! citar
-        (setq! citar-bibliography '(
-                                        "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                                        "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                                        ))
-        (setq org-cite-global-bibliography citar-bibliography)
-        (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
-        (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
-        (setq! citar-library-file-extensions  (list "pdf"))
-        (map! :map doom-leader-notes-map
-                :desc "Insert Citation" "p" 'citar-insert-citation
-                :desc "Open File" "P" 'citar-open-files)
-)
+  (setq! citar-bibliography '(
+                              "/home/mbarria/Dropbox/org/Bib/biochem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/biology.bib"
+                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
+                              "/home/mbarria/Dropbox/org/Bib/free_energy.bib"
+                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
+                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
+                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
+                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
+                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
+                            ))
+  (setq org-cite-global-bibliography citar-bibliography)
+  (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
+  (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+  (setq! citar-library-file-extensions  (list "pdf"))
+  (map! :map doom-leader-notes-map
+        :desc "Insert Citation" "p" 'citar-insert-citation
+        :desc "Open Reference" "P" 'citar-open)
+  )
 #+end_src
 
 I also keep a longer Bibliography file which I want to access in my LaTeX projects, so I make sure reftex knows about it.
 
 #+begin_src elisp :tangle config.el
 (after! reftex
-  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bibliography.bib"))
+  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
   )
 #+end_src
-** TODO Ligatures
-*** TODO Julia
 
-** TODO Ledger
-** TODO mu4e
+This is kinda redundant though, since I've switched to just running ~citar-export-local-bib-file~ in my latex projects. 
+
+To manage my bibliography files I run this function (which I don't remember where I copied it from) to get a bibtex entry from a DOI.
+#+begin_src elisp :tangle config.el
+(defun get-bibtex-from-doi (doi)
+  "Get a BibTeX entry from the DOI"
+  (interactive "MDOI: ")
+  (let ((url-mime-accept-string "text/bibliography;style=bibtex"))
+    (with-current-buffer
+        (url-retrieve-synchronously
+         (format "http://dx.doi.org/%s"
+       	         (replace-regexp-in-string "http://dx.doi.org/" "" doi)))
+      (switch-to-buffer (current-buffer))
+      (goto-char (point-max))
+      (setq bibtex-entry
+     	    (buffer-substring
+             (string-match "@" (buffer-string))
+             (point)))
+      (kill-buffer (current-buffer))))
+  (insert (decode-coding-string bibtex-entry 'utf-8))
+  (bibtex-fill-entry))
+#+end_src
+*** Async babel
+ob-sync allows for running babel code blocks asynchronously.
+#+begin_src elisp :tangle packages.el
+(package! ob-async
+  :recipe (:host github
+           :repo "astahlman/ob-async"))
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! ob-async)
+#+end_src
+
+To use, just include ~:async~ in the header-args.
+** Ligatures
+*** Julia
+Last I checked, the ligatures module doesn't include julia.
+So I set those up.
+#+begin_src elisp :tangle config.el
+;; Julia
+(after! julia-mode
+  (set-ligatures! 'julia-mode
+    ;; Functional
+    :lambda        "->"
+    :def           "function"
+    :composition   "struct"
+    :map           "Dict"
+    ;; Types
+    :null          "Nothing"
+    :true          "True"
+    :false         "False"
+    :int           "Int"
+    :float         "Float64"
+    :str           "String"
+    :bool          "Bool"
+    ;; Flow
+    :not           "!"
+    :in            "in"
+    :not-in        "!in"
+    :and           "and"
+    :or            "or"
+    :for           "for"
+    :some          "some keyword"
+    :return        "return"
+    ;; Other
+    :union         "union"
+    :intersect     "intersect"
+    :pipe          "|>" 
+    )
+  )
+#+end_src
+
+** Ledger
+The ledger module configures pretty much everything I need. I just add a binding to access my ledger.
+#+begin_src elisp :tangle config.el
+(map! :map doom-leader-notes-map
+      :desc "Ledger" "L" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
+#+end_src
+
+** \LaTeX
+I like how tex-fold looks, but I find it weird that it only recognizes the base ~\\cite~ command.
+
+#+begin_src elisp :tangle config.el
+(after! tex-fold
+  (add-to-list 'TeX-fold-macro-spec-list '("[c]" ("cite" "bibitem" "citep" "citet" "autocite" "fullcite")))
+  )
+#+end_src
+
+
+** mu4e
+mu4e requires some external config. The docs for the Doom module are really helpful and without them I couldn't have set it up for myself.
+
+My config is nothing special. 
+
+#+begin_src elisp :tangle config.el
+;; Each path is relative to the path of the maildir you passed to mu
+(set-email-account! "gmail"
+                    '((mu4e-sent-folder       . "/gmail/[Gmail]/Enviados")
+                      (mu4e-drafts-folder     . "/gmail/[Gmail]/Borradores")
+                      (mu4e-trash-folder      . "/gmail/[Gmail]/Papelera")
+                      (mu4e-refile-folder     . "/gmail/[Gmail]/Todos")
+                      (smtpmail-smtp-user     . "mateobarria@gmail.com")
+                      (user-mail-address      . "mateobarria@gmail.com")    ;; only needed for mu < 1.4
+                      (mu4e-compose-signature . "---\nSaludos,\n\nMateo Barría\n\n(Sent with Mu4e)"))
+                    t)
+
+(setq org-msg-signature "\nMateo Barria-Urenda\n\n(Sent with Mu4e+Org-msg)")
+
+(setq +mu4e-gmail-accounts '(("mateobarria@gmail.com" . "/mateobarria")))
+;; don't need to run cleanup after indexing for gmail
+(setq mu4e-index-cleanup nil
+      ;; because gmail uses labels as folders we can use lazy check since
+      ;; messages don't really "move"
+      mu4e-index-lazy-check t)
+(setq mu4e-update-interval 60)
+#+end_src
 * Packages
 
 ** Spotify
@@ -631,7 +832,6 @@ I add a binding to the open map too see how everything is doing, and another to 
       :desc "Add to Pueue"     "q" 'pueue-add
       )
 #+end_src
-** TODO Elfeed
 ** Beacon
 A small but powerfull change: a big beacon of light whenever you switch windows/buffers.
 #+begin_src elisp :tangle packages.el
@@ -657,5 +857,155 @@ Add a bit of life to the modeline.
   (nyan-mode)
   (nyan-start-animation))
 #+end_src
-** TODO EXWM
-*** TODO randr
+** EXWM
+Emacs is not my main window manager currently, but I like to play around with [[https://github.com/ch11ng/exwm][EXWM]] every so often.
+
+#+begin_src elisp :tangle packages.el
+(package! exwm)
+#+end_src
+
+Most of my config is from EXWM's config. Comments included
+
+#+begin_src elisp :tangle config.el
+;; All buffers created in EXWM mode are named "*EXWM*". You may want to
+;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
+;; are run when a new X window class name or title is available.  Here's
+;; some advice on this topic:
+;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
+;; + For applications with multiple windows (e.g. GIMP), the class names of
+;;    all windows are probably the same.  Using window titles for them makes
+;;   more sense.
+;; In the following example, we use class names for all windows except for
+;; Java applications and GIMP.
+(require 'exwm)
+(require 'exwm-config)
+(setq exwm-workspace-number 4)
+(add-hook 'exwm-update-class-hook
+          (lambda ()
+            (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                        (string= "gimp" exwm-instance-name))
+              (exwm-workspace-rename-buffer exwm-class-name))))
+(add-hook 'exwm-update-title-hook
+          (lambda ()
+            (when (or (not exwm-instance-name)
+                      (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                      (string= "gimp" exwm-instance-name))
+              (exwm-workspace-rename-buffer exwm-title))))
+#+end_src
+
+My bindings are pretty close to the examples too.
+
+#+begin_src elisp :tangle config.el
+;; Global keybindings can be defined with `exwm-input-global-keys'.
+;; Here are a few examples:
+(setq exwm-input-global-keys
+      `(
+        ;; Bind "s-r" to exit char-mode and fullscreen mode.
+        ([?\s-r] . exwm-reset)
+        ;; Bind "s-w" to switch workspace interactively.
+        ([?\s-w] . exwm-workspace-switch)
+        ;; Bind "s-0" to "s-9" to switch to a workspace by its index.
+        ,@(mapcar (lambda (i)
+                    `(,(kbd (format "s-%d" i)) .
+                      (lambda ()
+                        (interactive)
+                        (exwm-workspace-switch-create ,i))))
+                  (number-sequence 0 9))
+        ;; Bind "s-&" to launch applications ('M-&' also works if the output
+        ;; buffer does not bother you).
+        ([?\s-t] . (lambda (command)
+		     (interactive (list (read-shell-command "$ ")))
+		     (start-process-shell-command command nil command)))
+        ;; Bind "s-<f2>" to "slock", a simple X display locker.
+        ([s-f2] . (lambda ()
+		    (interactive)
+		    (start-process "" nil "/usr/bin/slock")))))
+
+;; To add a key binding only available in line-mode, simply define it in
+;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
+(define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+
+;; The following example demonstrates how to use simulation keys to mimic
+;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
+;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
+;; and DEST is what EXWM actually sends to application.  Note that both SRC
+;; and DEST should be key sequences (vector or string).
+(setq exwm-input-simulation-keys
+      '(
+        ;; movement
+        ([?\C-b] . [left])
+        ([?\M-b] . [C-left])
+        ([?\C-f] . [right])
+        ([?\M-f] . [C-right])
+        ([?\C-p] . [up])
+        ([?\C-n] . [down])
+        ([?\C-a] . [home])
+        ([?\C-e] . [end])
+        ([?\M-v] . [prior])
+        ([?\C-v] . [next])
+        ([?\C-d] . [delete])
+        ([?\C-k] . [S-end delete])
+        ;; cut/paste.
+        ([?\C-w] . [?\C-x])
+        ([?\M-w] . [?\C-c])
+        ([?\C-y] . [?\C-v])
+        ;; search
+        ([?\C-s] . [?\C-f])))
+#+end_src
+
+Normally you'd enable exwm but on my nix system's where I use it I have my Nix config set to handle that, so it doesn't raise issues in computers where I haven't done the rest of the canfiguring. 
+
+Finally some config to work with evil and the doom leader.
+
+#+begin_src elisp :tangle config.el
+(add-hook!  'exwm-manage-finish-hook 'evil-emacs-state)
+(push ?\M-\  exwm-input-prefix-keys)
+#+end_src
+
+
+*** desktop-environment
+[[https://github.com/DamienCassou/desktop-environment][desktop-environment]] makes it easy to use media control keys, specially in EXWM.
+
+#+begin_src elisp :tangle packages.el
+(package! desktop-environment
+  :recipe (:host github
+           :repo "DamienCassou/desktop-environment"))
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! desktop-environment
+  :after exwm
+  :config
+  (setq desktop-environment-screenshot-command "flameshot gui")
+  (desktop-environment-mode))
+#+end_src
+ 
+*** randr
+
+To use multiple screens with EXWM you need to do some config.
+
+#+begin_src elisp :tangle config.el
+(require 'exwm-randr)
+(setq exwm-randr-workspace-monitor-plist '(0 "HDMI-1"))
+(add-hook 'exwm-randr-screen-change-hook
+          (lambda ()
+            (start-process-shell-command
+             "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
+(exwm-randr-enable)
+#+end_src
+
+
+** Discord rich presence
+Not really useful but a fun thing to enable. [[https://github.com/Mstrodl/elcord][elcord]] sets up discord integration.
+
+#+begin_src elisp :tangle packages.el
+(package! elcord)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! elcord
+  :config
+  (setq elcord-editor-icon "emacs_material_icon")
+  (elcord-mode)
+  )
+#+end_src
