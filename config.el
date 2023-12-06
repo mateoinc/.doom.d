@@ -36,19 +36,19 @@
       '(("m" "main" plain
          "%?"
          :if-new (file+head "main/${slug}.org"
-                            "${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title:${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)
         ("r" "reference" plain
          "%?"
          :if-new (file+head "reference/${title}.org"
-                            "${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title:${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)
         ("v" "video" plain
          "%?"
          :if-new (file+head "videos/${title}.org"
-                            "${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title:${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)))
 
@@ -167,7 +167,7 @@
   )
 
 (map! :map doom-leader-notes-map
-      :desc "Ledger" "L" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
+      :desc "Ledger" "e" (cmd! (find-file (doom-path org-directory "ledger.org"))))
 
 (after! tex-fold
   (add-to-list 'TeX-fold-macro-spec-list '("[c]" ("cite" "bibitem" "citep" "citet" "autocite" "fullcite")))

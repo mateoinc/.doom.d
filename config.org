@@ -343,6 +343,7 @@ Org-mode in particular deserves some attention, as it has many more options.
             +hugo          ; Use Hugo to export websites
             +present       ; Use org-mode for presentations
             +roam2         ; A Zettelkasten for Emacs
+            +journal       ; for keeping a work diary
             +pomodoro)     ; Use org-mode timers for productivity
 #+end_src
 
@@ -482,7 +483,6 @@ Some personal information is accesed by GPG configuration, emails clients, snipp
 (setq user-full-name "Mateo Barria-Urenda"
       user-mail-address "mateobarria@gmail.com")
 #+end_src
-
 *** Fonts
 I use the [[https://commitmono.com/][CommitMono]] font.
 
@@ -752,7 +752,7 @@ So I set those up.
 The ledger module configures pretty much everything I need. I just add a binding to access my ledger.
 #+begin_src elisp :tangle config.el
 (map! :map doom-leader-notes-map
-      :desc "Ledger" "L" (cmd! (find-file (doom-path org-directory "ledger.dat"))))
+      :desc "Ledger" "e" (cmd! (find-file (doom-path org-directory "ledger.org"))))
 #+end_src
 
 ** \LaTeX
