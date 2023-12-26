@@ -53,21 +53,21 @@
          :unnarrowed t)))
 
 ;; Add property "type" to notes
-(cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
-;; Add this property to displays
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;; auto tag new notes as drafts
-(defun jethro/tag-new-node-as-draft ()
-  (org-roam-tag-add '("draft")))
-(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+;; (cl-defmethod org-roam-node-type ((node org-roam-node))
+;;   "Return the TYPE of NODE."
+;;   (condition-case nil
+;;       (file-name-nondirectory
+;;        (directory-file-name
+;;         (file-name-directory
+;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
+;;     (error "")))
+;; ;; Add this property to displays
+;; (setq org-roam-node-display-template
+;;       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+;; ;; auto tag new notes as drafts
+;; (defun jethro/tag-new-node-as-draft ()
+;;   (org-roam-tag-add '("draft")))
+;; (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
 
 (require 'org-roam-protocol)
 
