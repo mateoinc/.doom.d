@@ -1007,6 +1007,6 @@ Not really useful but a fun thing to enable. [[https://github.com/Mstrodl/elcord
 (use-package! elcord
   :config
   (setq elcord-editor-icon "emacs_material_icon")
-  (elcord-mode)
+  ;; (elcord-mode)
   )
 #+end_src
