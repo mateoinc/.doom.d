@@ -1041,3 +1041,39 @@ Not really useful but a fun thing to enable. [[https://github.com/Mstrodl/elcord
   ;; (elcord-mode)
   )
 #+end_src
+
+** Dashboard customization
+
+#+begin_src elisp :tangle packages.el
+(package! page-break-lines)
+(package! dashboard)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! dashboard
+  :init
+  (setq dashboard-icon-type 'nerd-icons)
+  (setq dashboard-display-icons-p t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-startup-banner fancy-splash-image)
+  ;; (setq dashboard-center-content t)
+  (setq dashboard-set-navigator t)
+  (setq dashboard-items '(
+                          (agenda . 5)
+                          (recents . 5)
+                          (projects . 5)
+                          (bookmarks . 5)
+                          ))
+  (setq dashboard-set-init-info t)
+  :config
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice #'doom-fallback-buffer
+      doom-fallback-buffer-name "*dashboard*")
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  )
+
+(map! :map doom-leader-open-map
+      :desc "Dashboard"     "o" 'dashboard-open
+      )
+#+end_src

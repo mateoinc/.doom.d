@@ -55,3 +55,6 @@
            :repo "DamienCassou/desktop-environment"))
 
 (package! elcord)
+
+(package! page-break-lines)
+(package! dashboard)
