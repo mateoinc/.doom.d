@@ -180,7 +180,7 @@ We use several of the doom ui modules. These all work great to make Emacs fell m
 #+begin_src elisp :tangle init.el
        :ui
        doom              ; what makes DOOM look the way it does
-       doom-dashboard    ; a nifty splash screen for Emacs
+       ;; doom-dashboard    ; a nifty splash screen for Emacs
        modeline          ; snazzy, Atom-inspired modeline, plus API
        workspaces        ; tab emulation, persistence & separate workspaces
 #+end_src
@@ -542,8 +542,8 @@ I've seen two ways of setting the splash image and I'm not sure of the differenc
 
 #+begin_src elisp :tangle config.el
 (setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
-(setq +doom-dashboard-banner-dir doom-user-dir )
-(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
+;; (setq +doom-dashboard-banner-dir doom-user-dir )
+;; (setq +doom-dashboard-banner-file "CyberpunkGirl.png")
 #+end_src
 *** Snipe
 I like setting evil-snipe to visible.
