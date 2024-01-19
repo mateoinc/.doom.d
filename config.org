@@ -590,14 +590,139 @@ I keep my org files in my Dropbox folder, which I always keep or link to in my h
 In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on top of sorts by name)
 #+begin_src elisp :tangle config.el
 (setq org-directory "~/org/")
-(setq +org-capture-todo-file (doom-path org-directory "!nbox.org"))
-(setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
+(setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
+(setq +org-capture-log-file (doom-path org-directory "work-log.org"))
+;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 (map! :map doom-leader-notes-map
-      :desc "Inbox" "i" (cmd! (find-file (doom-path org-directory "!nbox.org"))))
+      :desc "Inbox" "i" (cmd! (find-file (doom-path org-directory "!nbox.org")))
+      :desc "Work Log" "w" (cmd! (find-file (doom-path org-directory "work-log.org")))
+      )
 ;; timestamp DONEs
 (setq org-log-done 'time)
 #+end_src
 
+**** Templates
+
+#+begin_src elisp :tangle config.el
+(setq org-capture-templates
+      '(
+        ("l" "Work Log Entry"
+         entry (file+datetree +org-capture-log-file)
+         "* %?"
+         :empty-lines 0
+         :tree-type week)
+        ("n" "Personal Note"
+         entry (file+headline +org-capture-inbox-file "Notes")
+           "* %u %?\n%i\n%a"
+           :prepend t
+         :empty-lines 0)
+        ("t" "General To-Do"
+         entry (file+headline +org-capture-inbox-file "Tasks")
+         "* TODO [#B] %?\n:Created: %T\n%i\n%a"
+         :prepend t
+         :empty-lines 0)
+        ("m" "Meeting"
+         entry (file+datetree "~/org/meetings.org")
+         "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
+         :tree-type week
+         :empty-lines 0)
+        ))
+#+end_src
+
+**** Priorities
+#+begin_src elisp :tangle config.el
+(setq org-fancy-priorities-list '((?A . "🔴")
+                                  (?B . "🟠")
+                                  (?C . "🟢")
+                                  ))
+#+end_src
+**** Tags
+
+#+begin_src elisp :tangle config.el
+(setq org-tag-alist '(
+                      ;; Ticket types
+                      (:startgroup . nil)
+                      ("@bug" . ?b)
+                      ("@feature" . ?u)
+                      (:endgroup . nil)
+
+                      ;; Ticket flags
+                      ("@emergency" . ?e)
+                      ("@research" . ?r)
+
+                      ;; Special tags
+                      ("CRITICAL" . ?x)
+                      ("obstacle" . ?o)
+
+                      ;; Meeting tags
+                      ("meeting" . ?m)
+                      ("misc" . ?z)
+                      ("planning" . ?p)
+                      ("progress" . ?s)
+
+                      ;; Work Log Tags
+                      ("accomplishment" . ?a)
+                      ))
+;; Tag colors
+(setq org-tag-faces
+      '(
+        ("obstacle"  . (:foreground "mediumPurple1" :weight bold))
+        ("planning"   . (:foreground "royalblue1"    :weight bold))
+        ("progress"  . (:foreground "forest green"  :weight bold))
+        ("misc"        . (:foreground "sienna"        :weight bold))
+        ("meeting"   . (:foreground "yellow1"       :weight bold))
+        ("CRITICAL"  . (:foreground "red1"          :weight bold))
+        )
+      )
+#+end_src
+
+**** Agenda
+
+#+begin_src elisp :tangle config.el
+;; Agenda View "d"
+(defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+  PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(setq org-agenda-skip-deadline-if-done t)
+
+(setq org-agenda-custom-commands
+      '(
+        ;; Daily Agenda & TODOs
+        ("d" "Daily agenda and all TODOs"
+
+         ;; Display items with priority A
+         ((tags "PRIORITY=\"A\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+          ;; View 7 days in the calendar view
+          (agenda "" ((org-agenda-span 7)))
+
+          ;; Display items with priority B (really it is view all items minus A & C)
+          (alltodo ""
+                   ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                   (air-org-skip-subtree-if-priority ?C)
+                                                   (org-agenda-skip-if nil '(scheduled deadline))))
+                    (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+          ;; Display items with pirority C
+          (tags "PRIORITY=\"C\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+          )
+
+         ;; Don't compress things (change to suite your tastes)
+         ((org-agenda-compact-blocks nil)))
+        ))
+#+end_src
 
 *** Org-roam
 I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes.

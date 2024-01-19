@@ -10,6 +10,9 @@
       doom-big-font (font-spec :family "CommitMono" :size 24)) ; for big font mode ('SPC t b')
 
 (setq catppuccin-flavor 'frappe) ;; 'frappe or 'latte, 'macchiato, or 'mocha
+(setq catppuccin-highlight-matches t)
+(setq catppuccin-italic-comments t)
+(setq catppuccin-italic-blockquotes t)
 (setq doom-theme 'catppuccin)
 
 (setq doom-themes-treemacs-theme "doom-colors")
@@ -23,14 +26,130 @@
 (setq display-line-numbers-type t)
 
 (setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
-(setq +doom-dashboard-banner-dir doom-user-dir )
-(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
+;; (setq +doom-dashboard-banner-dir doom-user-dir )
+;; (setq +doom-dashboard-banner-file "CyberpunkGirl.png")
 
 (setq evil-snipe-scope 'visible)
 
-(setq org-directory "~/Dropbox/org/")
-(setq +org-capture-todo-file (doom-path org-directory "!nbox.org"))
-(setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
+(setq org-directory "~/org/")
+(setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
+(setq +org-capture-log-file (doom-path org-directory "work-log.org"))
+;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
+(map! :map doom-leader-notes-map
+      :desc "Inbox" "i" (cmd! (find-file (doom-path org-directory "!nbox.org")))
+      :desc "Work Log" "w" (cmd! (find-file (doom-path org-directory "work-log.org")))
+      )
+;; timestamp DONEs
+(setq org-log-done 'time)
+
+(setq org-capture-templates
+      '(
+        ("l" "Work Log Entry"
+         entry (file+datetree +org-capture-log-file)
+         "* %?"
+         :empty-lines 0
+         :tree-type week)
+        ("n" "Personal Note"
+         entry (file+headline +org-capture-inbox-file "Notes")
+           "* %u %?\n%i\n%a"
+           :prepend t
+         :empty-lines 0)
+        ("t" "General To-Do"
+         entry (file+headline +org-capture-inbox-file "Tasks")
+         "* TODO [#B] %?\n:Created: %T\n%i\n%a"
+         :prepend t
+         :empty-lines 0)
+        ("m" "Meeting"
+         entry (file+datetree "~/org/meetings.org")
+         "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
+         :tree-type week
+         :empty-lines 0)
+        ))
+
+(setq org-fancy-priorities-list '((?A . "🔴")
+                                  (?B . "🟠")
+                                  (?C . "🟢")
+                                  ))
+
+(setq org-tag-alist '(
+                      ;; Ticket types
+                      (:startgroup . nil)
+                      ("@bug" . ?b)
+                      ("@feature" . ?u)
+                      (:endgroup . nil)
+
+                      ;; Ticket flags
+                      ("@emergency" . ?e)
+                      ("@research" . ?r)
+
+                      ;; Special tags
+                      ("CRITICAL" . ?x)
+                      ("obstacle" . ?o)
+
+                      ;; Meeting tags
+                      ("meeting" . ?m)
+                      ("misc" . ?z)
+                      ("planning" . ?p)
+                      ("progress" . ?s)
+
+                      ;; Work Log Tags
+                      ("accomplishment" . ?a)
+                      ))
+;; Tag colors
+(setq org-tag-faces
+      '(
+        ("obstacle"  . (:foreground "mediumPurple1" :weight bold))
+        ("planning"   . (:foreground "royalblue1"    :weight bold))
+        ("progress"  . (:foreground "forest green"  :weight bold))
+        ("misc"        . (:foreground "sienna"        :weight bold))
+        ("meeting"   . (:foreground "yellow1"       :weight bold))
+        ("CRITICAL"  . (:foreground "red1"          :weight bold))
+        )
+      )
+
+;; Agenda View "d"
+(defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+  PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(setq org-agenda-skip-deadline-if-done t)
+
+(setq org-agenda-custom-commands
+      '(
+        ;; Daily Agenda & TODOs
+        ("d" "Daily agenda and all TODOs"
+
+         ;; Display items with priority A
+         ((tags "PRIORITY=\"A\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+          ;; View 7 days in the calendar view
+          (agenda "" ((org-agenda-span 7)))
+
+          ;; Display items with priority B (really it is view all items minus A & C)
+          (alltodo ""
+                   ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                   (air-org-skip-subtree-if-priority ?C)
+                                                   (org-agenda-skip-if nil '(scheduled deadline))))
+                    (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+          ;; Display items with pirority C
+          (tags "PRIORITY=\"C\""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                 (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+          )
+
+         ;; Don't compress things (change to suite your tastes)
+         ((org-agenda-compact-blocks nil)))
+        ))
 
 (setq org-roam-capture-templates
       '(("m" "main" plain
@@ -52,23 +171,6 @@
          :immediate-finish t
          :unnarrowed t)))
 
-;; Add property "type" to notes
-;; (cl-defmethod org-roam-node-type ((node org-roam-node))
-;;   "Return the TYPE of NODE."
-;;   (condition-case nil
-;;       (file-name-nondirectory
-;;        (directory-file-name
-;;         (file-name-directory
-;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
-;;     (error "")))
-;; ;; Add this property to displays
-;; (setq org-roam-node-display-template
-;;       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;; ;; auto tag new notes as drafts
-;; (defun jethro/tag-new-node-as-draft ()
-;;   (org-roam-tag-add '("draft")))
-;; (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
-
 (require 'org-roam-protocol)
 
 (use-package! websocket
@@ -89,21 +191,21 @@
 (require 'oc-bibtex)
 (after! citar
   (setq! citar-bibliography '(
-                              "/home/mbarria/Dropbox/org/Bib/biochem.bib"
-                              "/home/mbarria/Dropbox/org/Bib/biology.bib"
-                              "/home/mbarria/Dropbox/org/Bib/forcefields.bib"
-                              "/home/mbarria/Dropbox/org/Bib/free_energy.bib"
-                              "/home/mbarria/Dropbox/org/Bib/graphene.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_software.bib"
-                              "/home/mbarria/Dropbox/org/Bib/md_theory.bib"
-                              "/home/mbarria/Dropbox/org/Bib/nano_other.bib"
-                              "/home/mbarria/Dropbox/org/Bib/nanotubes.bib"
-                              "/home/mbarria/Dropbox/org/Bib/orgchem.bib"
-                              "/home/mbarria/Dropbox/org/Bib/physics.bib"
-                              ))
+                              "/home/mbarria/org/Bib/biochem.bib"
+                              "/home/mbarria/org/Bib/biology.bib"
+                              "/home/mbarria/org/Bib/forcefields.bib"
+                              "/home/mbarria/org/Bib/free_energy.bib"
+                              "/home/mbarria/org/Bib/graphene.bib"
+                              "/home/mbarria/org/Bib/md_software.bib"
+                              "/home/mbarria/org/Bib/md_theory.bib"
+                              "/home/mbarria/org/Bib/nano_other.bib"
+                              "/home/mbarria/org/Bib/nanotubes.bib"
+                              "/home/mbarria/org/Bib/orgchem.bib"
+                              "/home/mbarria/org/Bib/physics.bib"
+                            ))
   (setq org-cite-global-bibliography citar-bibliography)
-  (setq! citar-library-paths '("/home/mbarria/Dropbox/org/roam/pdfs/"))
-  (setq! citar-notes-paths '("/home/mbarria/Dropbox/org/roam/reference/"))
+  (setq! citar-library-paths '("/home/mbarria/org/roam/pdfs/"))
+  (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
   (map! :map doom-leader-notes-map
         :desc "Insert Citation" "p" 'citar-insert-citation
@@ -111,7 +213,7 @@
   )
 
 (after! reftex
-  (setq! reftex-default-bibliography '("/home/mbarria/Dropbox/org/Bib/Bibliography.bib"))
+  (setq! reftex-default-bibliography '("/home/mbarria/org/Bib/Bibliography.bib"))
   )
 
 (defun get-bibtex-from-doi (doi)
@@ -325,3 +427,30 @@
   (setq elcord-editor-icon "emacs_material_icon")
   ;; (elcord-mode)
   )
+
+(use-package! dashboard
+  :init
+  (setq dashboard-icon-type 'nerd-icons)
+  (setq dashboard-display-icons-p t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-startup-banner fancy-splash-image)
+  ;; (setq dashboard-center-content t)
+  (setq dashboard-set-navigator t)
+  (setq dashboard-items '(
+                          (agenda . 5)
+                          (recents . 5)
+                          (projects . 5)
+                          (bookmarks . 5)
+                          ))
+  (setq dashboard-set-init-info t)
+  :config
+  (dashboard-setup-startup-hook)
+  (setq initial-buffer-choice #'doom-fallback-buffer
+      doom-fallback-buffer-name "*dashboard*")
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+  )
+
+(map! :map doom-leader-open-map
+      :desc "Dashboard"     "o" 'dashboard-open
+      )
