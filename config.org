@@ -551,6 +551,37 @@ I like setting evil-snipe to visible.
 (setq evil-snipe-scope 'visible)
 #+end_src
 ** Org-mode
+*** Teco's branch
+[[https://git.tecosaur.net/tec][Tecosaur]] has made a lot of improvements to latex preview, and [[https://abode.karthinks.com/org-latex-preview/][Karthink]] set up a tutorial for how to switch to that branch.
+
+#+begin_src elisp :tangle packages.el
+(package! org :recipe
+  (:host nil :repo "https://git.tecosaur.net/mirrors/org-mode.git" :remote "mirror" :fork
+         (:host nil :repo "https://git.tecosaur.net/tec/org-mode.git" :branch "dev" :remote "tecosaur")
+         :files
+         (:defaults "etc")
+         :build t :pre-build
+         (with-temp-file "org-version.el"
+           (require 'lisp-mnt)
+           (let
+               ((version
+                 (with-temp-buffer
+                   (insert-file-contents "lisp/org.el")
+                   (lm-header "version")))
+                (git-version
+                 (string-trim
+                  (with-temp-buffer
+                    (call-process "git" nil t nil "rev-parse" "--short" "HEAD")
+                    (buffer-string)))))
+             (insert
+              (format "(defun org-release () \"The release version of Org.\" %S)\n" version)
+              (format "(defun org-git-version () \"The truncate git commit hash of Org mode.\" %S)\n" git-version)
+              "(provide 'org-version)\n"))))
+  :pin nil)
+
+(unpin! org)
+#+end_src
+
 *** Org Config
 I keep my org files in my Dropbox folder, which I always keep or link to in my home directory.
 In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on top of sorts by name)
