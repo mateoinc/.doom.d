@@ -35,10 +35,6 @@
 (setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
 (setq +org-capture-log-file (doom-path org-directory "work-log.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
-(map! :map doom-leader-notes-map
-      :desc "Inbox" "i" (cmd! (find-file (doom-path org-directory "!nbox.org")))
-      :desc "Work Log" "w" (cmd! (find-file (doom-path org-directory "work-log.org")))
-      )
 ;; timestamp DONEs
 (setq org-log-done 'time)
 
