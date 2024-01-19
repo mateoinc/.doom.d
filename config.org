@@ -504,6 +504,9 @@ I use the frappe "flavor" of catppuccin.
 
 #+begin_src elisp :tangle config.el
 (setq catppuccin-flavor 'frappe) ;; 'frappe or 'latte, 'macchiato, or 'mocha
+(setq catppuccin-highlight-matches t)
+(setq catppuccin-italic-comments t)
+(setq catppuccin-italic-blockquotes t)
 (setq doom-theme 'catppuccin)
 #+end_src
 **** Treemacs Colors
