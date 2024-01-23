@@ -887,6 +887,18 @@ ob-sync allows for running babel code blocks asynchronously.
 #+end_src
 
 To use, just include ~:async~ in the header-args.
+
+*** Auto git mode
+Technically not org-mode related, but I enable it in my org directory.
+#+begin_src elisp :tangle packages.el
+(package! git-auto-commit-mode)
+#+end_src
+
+Enable it in a directory with a ~dir-locals.el~ file.
+
+#+begin_src elisp :tangle ~/org/.dir-locals.el
+((nil . ((eval git-auto-commit-mode 1))))
+#+end_src
 ** Ligatures
 *** Julia
 Last I checked, the ligatures module doesn't include julia.

@@ -36,6 +36,8 @@
   :recipe (:host github
            :repo "astahlman/ob-async"))
 
+(package! git-auto-commit-mode)
+
 (package! spotify
   :recipe (:host github
            :repo "SnootierMoon/emacs-spotify"))
