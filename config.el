@@ -34,6 +34,7 @@
 (setq org-directory "~/org/")
 (setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
 (setq +org-capture-log-file (doom-path org-directory "work-log.org"))
+(setq +org-capture-projects-file (doom-path org-directory "projects.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
@@ -55,6 +56,16 @@
          "* TODO [#B] %?\n:Created: %T\n%i\n%a"
          :prepend t
          :empty-lines 0)
+        ("e" "Email"
+         entry (file+headline +org-capture-inbox-file "Emails")
+         "* TODO [#B] %?\n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
+         :prepend t
+         :empty-lines 0)
+        ("p" "Project"
+         entry (file +org-capture-projects-file)
+         "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
+         :prepend t
+         :empty-lines 0)
         ("m" "Meeting"
          entry (file+datetree "~/org/meetings.org")
          "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
@@ -71,7 +82,7 @@
                       ;; Ticket types
                       (:startgroup . nil)
                       ("@bug" . ?b)
-                      ("@feature" . ?u)
+                      ("@feature" . ?f)
                       (:endgroup . nil)
 
                       ;; Ticket flags
@@ -88,16 +99,22 @@
                       ("planning" . ?p)
                       ("progress" . ?s)
 
+                      ;; Context Tags
+                      (:startgroup . nil)
+                      ("personal" . ?g)
+                      ("work" . ?t)
+                      (:endgroup . nil)
+
                       ;; Work Log Tags
                       ("accomplishment" . ?a)
                       ))
 ;; Tag colors
 (setq org-tag-faces
       '(
-        ("obstacle"  . (:foreground "mediumPurple1" :weight bold))
+        ("work"  . (:foreground "mediumPurple1" :weight bold))
         ("planning"   . (:foreground "royalblue1"    :weight bold))
         ("progress"  . (:foreground "forest green"  :weight bold))
-        ("misc"        . (:foreground "sienna"        :weight bold))
+        ("personal"        . (:foreground "sienna"        :weight bold))
         ("meeting"   . (:foreground "yellow1"       :weight bold))
         ("CRITICAL"  . (:foreground "red1"          :weight bold))
         )
