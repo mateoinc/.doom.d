@@ -128,7 +128,7 @@
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;kotlin            ; a better, slicker Java(Script)
        ;;lean              ; for folks with too much to prove
-       ;;lua               ; one-based indices? one-based indices
+       lua                 ; one-based indices? one-based indices
        ;;nim               ; python + lisp at the speed of c
        ;;ocaml             ; an objective camel
        ;;php               ; perl's insecure younger brother
