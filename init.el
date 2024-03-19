@@ -8,7 +8,7 @@
 
        :ui
        doom              ; what makes DOOM look the way it does
-       ;; doom-dashboard    ; a nifty splash screen for Emacs
+       doom-dashboard    ; a nifty splash screen for Emacs
        modeline          ; snazzy, Atom-inspired modeline, plus API
        workspaces        ; tab emulation, persistence & separate workspaces
 

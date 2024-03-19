@@ -26,8 +26,8 @@
 (setq display-line-numbers-type t)
 
 (setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
-;; (setq +doom-dashboard-banner-dir doom-user-dir )
-;; (setq +doom-dashboard-banner-file "CyberpunkGirl.png")
+(setq +doom-dashboard-banner-dir doom-user-dir )
+(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
 
 (setq evil-snipe-scope 'visible)
 
@@ -457,30 +457,3 @@
   (setq elcord-editor-icon "emacs_material_icon")
   ;; (elcord-mode)
   )
-
-(use-package! dashboard
-  :init
-  (setq dashboard-icon-type 'nerd-icons)
-  (setq dashboard-display-icons-p t)
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-startup-banner fancy-splash-image)
-  ;; (setq dashboard-center-content t)
-  (setq dashboard-set-navigator t)
-  (setq dashboard-items '(
-                          (agenda . 5)
-                          (recents . 5)
-                          (projects . 5)
-                          (bookmarks . 5)
-                          ))
-  (setq dashboard-set-init-info t)
-  :config
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice #'doom-fallback-buffer
-      doom-fallback-buffer-name "*dashboard*")
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
-  )
-
-(map! :map doom-leader-open-map
-      :desc "Dashboard"     "o" 'dashboard-open
-      )
