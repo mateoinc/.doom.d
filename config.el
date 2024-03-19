@@ -164,6 +164,15 @@
          ((org-agenda-compact-blocks nil)))
         ))
 
+(defun org-refile--insert-link ( &rest _ )
+  (unless (string-suffix-p "!nbox.org" buffer-file-name)
+    (org-back-to-heading)
+    (let* ((refile-region-marker (point-marker))
+           (source-link (org-store-link nil)))
+      (org-insert-heading)
+      (insert source-link)
+      (goto-char refile-region-marker))))
+
 (setq org-roam-capture-templates
       '(("m" "main" plain
          "%?"

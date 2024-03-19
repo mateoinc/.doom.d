@@ -737,6 +737,20 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
         ))
 #+end_src
 
+**** Refiling
+Let's make it so that refiling leaves some mark.
+Useful for refilign from meetings to projects.
+But with an exception for the inbox.
+#+begin_src elisp :tangle config.el
+(defun org-refile--insert-link ( &rest _ )
+  (unless (string-suffix-p "!nbox.org" buffer-file-name)
+    (org-back-to-heading)
+    (let* ((refile-region-marker (point-marker))
+           (source-link (org-store-link nil)))
+      (org-insert-heading)
+      (insert source-link)
+      (goto-char refile-region-marker))))
+#+end_src
 *** Org-roam
 I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes.
 #+begin_src elisp :tangle packages.el
