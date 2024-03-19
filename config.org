@@ -1012,7 +1012,7 @@ Tell ~lsp-julia~ where ~LanguageServer~ is explicitly
 #+RESULTS:
 : ~/.julia/environments/v1.10
 
-*** projectile
+** projectile
 #+begin_src elisp :tangle config.el
 
 (after! projectile
