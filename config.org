@@ -995,6 +995,30 @@ My config is nothing special.
       mu4e-index-lazy-check t)
 (setq mu4e-update-interval 60)
 #+end_src
+** Julia
+While I'm most proficient with Python, I'm trying to switch to Julia whenever possible.
+
+*** LSP Configuration
+
+Tell ~lsp-julia~ where ~LanguageServer~ is explicitly
+
+#+begin_src elisp :tangle config.el
+
+(after! lsp-julia
+  (setq lsp-julia-package-dir nil)
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
+#+end_src
+
+#+RESULTS:
+: ~/.julia/environments/v1.10
+
+*** projectile
+#+begin_src elisp :tangle config.el
+
+(after! projectile
+ (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
+#+end_src
+
 * Packages
 
 ** Spotify

@@ -335,6 +335,13 @@
       mu4e-index-lazy-check t)
 (setq mu4e-update-interval 60)
 
+(after! lsp-julia
+  (setq lsp-julia-package-dir nil)
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
+
+(after! projectile
+ (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
+
 (map! :leader
       (:prefix-map ("S" . "Spotify")
        :desc "START"    "s" 'spotify-start
