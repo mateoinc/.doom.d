@@ -425,10 +425,10 @@ And rss adds an rss feed, of course.
 #+end_src
 There's also a module for music plaing (emms) and one for IRC.
 ** :config
-Some meta modules that affect the config itself. Obviously this is a literate config, so it benefits from ~literate~ (Though I still tangle manually, since I tangle to [[file:init.el]]). ~default~ adds a lot of really nice keybinds (inspired by [[https://www.spacemacs.org/][Spacemacs]])
+Some meta modules that affect the config itself. Obviously this is a literate config, so it benefits from ~literate~, but I still tangle manually (for some reason when Doom tangles the format is different). ~default~ adds a lot of really nice keybinds (inspired by [[https://www.spacemacs.org/][Spacemacs]])
 #+begin_src elisp :tangle init.el
        :config
-       literate
+       ;; literate
        (default +bindings +smartparens)
 #+end_src
 ** End
