@@ -80,7 +80,7 @@
        emacs-lisp        ; drown in parentheses
        (julia +lsp +tree-sitter)             ; a better, faster MATLAB
        (latex +latexmk +cdlatex +lsp +fold)             ; writing papers in Emacs has never been so fun
-       (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
+       (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
        (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
 
