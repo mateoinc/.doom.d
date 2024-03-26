@@ -165,7 +165,8 @@ For completion at point I use [[https://company-mode.github.io/][company-mode]],
 
 #+begin_src elisp :tangle init.el
        :completion
-       (company +childframe)           ; the ultimate code completion backend
+       ;; (company +childframe)           ; the ultimate code completion backend
+       (corfu +icons +orderless +dabbrev)           ; the ultimate code completion backend
        (vertico +icons +childframe)    ; the search engine of the future
 
 #+end_src

@@ -3,7 +3,8 @@
 (doom!
 
        :completion
-       (company +childframe)           ; the ultimate code completion backend
+       ;; (company +childframe)           ; the ultimate code completion backend
+       (corfu +icons +orderless +dabbrev)           ; the ultimate code completion backend
        (vertico +icons +childframe)    ; the search engine of the future
 
        :ui
