@@ -84,6 +84,7 @@
        (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
        (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
+       lua                 ; one-based indices? one-based indices
 
        data              ; config/data formats
        ledger            ; be audit you can be
@@ -129,7 +130,6 @@
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;kotlin            ; a better, slicker Java(Script)
        ;;lean              ; for folks with too much to prove
-       lua                 ; one-based indices? one-based indices
        ;;nim               ; python + lisp at the speed of c
        ;;ocaml             ; an objective camel
        ;;php               ; perl's insecure younger brother

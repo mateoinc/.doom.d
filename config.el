@@ -325,6 +325,10 @@
 (after! projectile
  (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
 
+(setq nu--path  "/etc/profiles/per-user/mbarria/bin/nu")
+(if (file-exists-p nu--path)
+    (setq vterm-shell nu--path))
+
 (map! :leader
       (:prefix-map ("S" . "Spotify")
        :desc "START"    "s" 'spotify-start

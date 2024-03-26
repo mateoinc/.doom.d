@@ -326,6 +326,7 @@ Here are the ones I have enabled; the ~+lsp~ and ~+tree-sitter~ options are comm
        (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
        (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
+       lua                 ; one-based indices? one-based indices
 #+end_src
 
 There's also support for simple text formats (not exactly programming languages, but quite powerfull in their own right).
@@ -380,7 +381,6 @@ Finally, a (commented) list of languages I don't use, as it might be useful in t
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;kotlin            ; a better, slicker Java(Script)
        ;;lean              ; for folks with too much to prove
-       lua                 ; one-based indices? one-based indices
        ;;nim               ; python + lisp at the speed of c
        ;;ocaml             ; an objective camel
        ;;php               ; perl's insecure younger brother
@@ -1014,11 +1014,20 @@ Tell ~lsp-julia~ where ~LanguageServer~ is explicitly
 : ~/.julia/environments/v1.10
 
 ** projectile
+
 #+begin_src elisp :tangle config.el
 
 (after! projectile
  (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
 #+end_src
+** Shell
+Set vterm to nushell
+#+begin_src elisp :tangle config.el
+(setq nu--path  "/etc/profiles/per-user/mbarria/bin/nu")
+(if (file-exists-p nu--path)
+    (setq vterm-shell nu--path))
+#+end_src
+
 
 * Packages
 
