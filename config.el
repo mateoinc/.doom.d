@@ -39,6 +39,7 @@
 ;; timestamp DONEs
 (setq org-log-done 'time)
 
+(after! org
 (setq org-capture-templates
       '(
         ("l" "Work Log Entry"
@@ -71,12 +72,12 @@
          "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
          :tree-type week
          :empty-lines 0)
-        ))
+        )))
 
-(setq org-fancy-priorities-list '((?A . "🔴")
+(after! org-fancy-priorities
+  (setq org-fancy-priorities-list '((?A . "🔴")
                                   (?B . "🟠")
-                                  (?C . "🟢")
-                                  ))
+                                  (?C . "🟢"))))
 
 (setq org-tag-alist '(
                       ;; Ticket types
@@ -134,6 +135,7 @@
 
 (setq org-agenda-skip-deadline-if-done t)
 
+(after! org-agenda
 (setq org-agenda-custom-commands
       '(
         ;; Daily Agenda & TODOs
@@ -162,7 +164,7 @@
 
          ;; Don't compress things (change to suite your tastes)
          ((org-agenda-compact-blocks nil)))
-        ))
+        )))
 
 (defun org-refile--insert-link ( &rest _ )
   (unless (string-suffix-p "!nbox.org" buffer-file-name)
@@ -173,25 +175,26 @@
       (insert source-link)
       (goto-char refile-region-marker))))
 
+(after! org-roam-capture
 (setq org-roam-capture-templates
       '(("m" "main" plain
          "%?"
          :if-new (file+head "main/${slug}.org"
-                            "#+title:${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)
         ("r" "reference" plain
          "%?"
          :if-new (file+head "reference/${title}.org"
-                            "#+title:${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)
         ("v" "video" plain
          "%?"
          :if-new (file+head "videos/${title}.org"
-                            "#+title:${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+                            "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
-         :unnarrowed t)))
+         :unnarrowed t))))
 
 (require 'org-roam-protocol)
 
@@ -229,10 +232,11 @@
   (setq! citar-library-paths '("/home/mbarria/org/roam/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
+  )
+
   (map! :map doom-leader-notes-map
         :desc "Insert Citation" "p" 'citar-insert-citation
         :desc "Open Reference" "P" 'citar-open)
-  )
 
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/org/Bib/Bibliography.bib"))
@@ -268,7 +272,7 @@
     :map           "Dict"
     ;; Types
     :null          "Nothing"
-    :true          "True"
+    :true          "true"
     :false         "False"
     :int           "Int"
     :float         "Float64"
@@ -328,6 +332,9 @@
 (setq nu--path  "/etc/profiles/per-user/mbarria/bin/nu")
 (if (file-exists-p nu--path)
     (setq vterm-shell nu--path))
+
+(use-package! org-pandoc-import :after org)
+(use-package! ox-pandoc :after org)
 
 (map! :leader
       (:prefix-map ("S" . "Spotify")
@@ -454,9 +461,3 @@
             (start-process-shell-command
              "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
 (exwm-randr-enable)
-
-(use-package! elcord
-  :config
-  (setq elcord-editor-icon "emacs_material_icon")
-  ;; (elcord-mode)
-  )

@@ -38,6 +38,12 @@
 
 (package! git-auto-commit-mode)
 
+(package! org-pandoc-import
+  :recipe (:host github
+           :repo "tecosaur/org-pandoc-import"
+           :files ("*.el" "filters" "preprocessors")))
+(package! ox-pandoc)
+
 (package! spotify
   :recipe (:host github
            :repo "SnootierMoon/emacs-spotify"))
@@ -55,5 +61,3 @@
 (package! desktop-environment
   :recipe (:host github
            :repo "DamienCassou/desktop-environment"))
-
-(package! elcord)
