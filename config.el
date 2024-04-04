@@ -189,6 +189,12 @@
                             "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t)
+        ("b" "bibliography" plain
+         "%?"
+         :if-new (file+head "bibliography/${citar-citekey}.org"
+                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- tags ::\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: ${citar-doi}\n")
+         :immediate-finish t
+         :unnarrowed t)
         ("v" "video" plain
          "%?"
          :if-new (file+head "videos/${title}.org"
@@ -237,6 +243,20 @@
   (map! :map doom-leader-notes-map
         :desc "Insert Citation" "p" 'citar-insert-citation
         :desc "Open Reference" "P" 'citar-open)
+
+;; org-roam + citar config
+(after! citar-org-roam
+        (setq citar-org-roam-subdir "bibliography")
+        (setq citar-org-roam-note-title-template "${title}")
+        (setq citar-org-roam-capture-template-key "b")
+        (setq citar-org-roam-template-fields
+        '((:citar-title . ("title"))
+        (:citar-author . ("author" "editor"))
+        (:citar-date . ("date" "year" "issued"))
+        (:citar-doi . ("doi"))
+        (:citar-pages . ("pages"))
+        (:citar-type . ("=type="))))
+              )
 
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/org/Bib/Bibliography.bib"))
