@@ -229,6 +229,7 @@
                               "/home/mbarria/org/Bib/graphene.bib"
                               "/home/mbarria/org/Bib/md_software.bib"
                               "/home/mbarria/org/Bib/md_theory.bib"
+                              "/home/mbarria/org/Bib/membranes.bib"
                               "/home/mbarria/org/Bib/nano_other.bib"
                               "/home/mbarria/org/Bib/nanotubes.bib"
                               "/home/mbarria/org/Bib/orgchem.bib"
