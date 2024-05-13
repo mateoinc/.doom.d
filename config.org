@@ -199,7 +199,7 @@ It also provides some other small tweaks to ui that I really like.
        ophints           ; highlight the region an operation acts on
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       (popup +defaults +all)   ; tame sudden yet inevitable temporary windows
        nav-flash         ; blink cursor line after big motions
 #+end_src
 

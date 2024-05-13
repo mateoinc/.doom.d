@@ -20,7 +20,7 @@
        ophints           ; highlight the region an operation acts on
        vc-gutter         ; vcs diff in the fringe
        vi-tilde-fringe   ; fringe tildes to mark beyond EOB
-       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       (popup +defaults +all)   ; tame sudden yet inevitable temporary windows
        nav-flash         ; blink cursor line after big motions
 
        (ligatures +extra)         ; ligatures and symbols to make your code pretty again
