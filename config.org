@@ -1365,3 +1365,12 @@ To use multiple screens with EXWM you need to do some config.
 #   ;; (elcord-mode)
 #   )
 # #+end_src
+** Slurm
+#+begin_src elisp :tangle packages.el
+(package! slurm-mode)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! slurm-mode)
+
+#+end_src

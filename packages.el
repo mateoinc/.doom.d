@@ -61,3 +61,5 @@
 (package! desktop-environment
   :recipe (:host github
            :repo "DamienCassou/desktop-environment"))
+
+(package! slurm-mode)

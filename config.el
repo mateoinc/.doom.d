@@ -537,3 +537,5 @@ it can be passed in POS."
             (start-process-shell-command
              "xrandr" nil "xrandr --output HDMI-1 --right-of eDP-1 --auto")))
 (exwm-randr-enable)
+
+(use-package! slurm-mode)
