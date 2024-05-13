@@ -81,7 +81,7 @@
        :lang
        (cc +lsp +tree-stitter)         ; C > C++ == 1
        emacs-lisp        ; drown in parentheses
-       (julia +lsp +tree-sitter)             ; a better, faster MATLAB
+       (julia +lsp +tree-sitter +snail)             ; a better, faster MATLAB
        (latex +latexmk +cdlatex +lsp +fold)             ; writing papers in Emacs has never been so fun
        (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
