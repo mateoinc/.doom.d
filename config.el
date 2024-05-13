@@ -25,9 +25,9 @@
 
 (setq display-line-numbers-type t)
 
-(setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
+(setq fancy-splash-image (concat doom-user-dir "TransparentGNU_catpuccin.png"))
 (setq +doom-dashboard-banner-dir doom-user-dir )
-(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
+(setq +doom-dashboard-banner-file "TransparentGNU_catpuccin.png")
 
 (setq evil-snipe-scope 'visible)
 

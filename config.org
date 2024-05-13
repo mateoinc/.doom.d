@@ -550,10 +550,11 @@ Now I'm using a drawing by [[https://www.instagram.com/gharliera/][gharliera/gha
 I've seen two ways of setting the splash image and I'm not sure of the difference so for now here's both.
 
 #+begin_src elisp :tangle config.el
-(setq fancy-splash-image (concat doom-user-dir "CyberpunkGirl.png"))
+(setq fancy-splash-image (concat doom-user-dir "TransparentGNU_catpuccin.png"))
 (setq +doom-dashboard-banner-dir doom-user-dir )
-(setq +doom-dashboard-banner-file "CyberpunkGirl.png")
+(setq +doom-dashboard-banner-file "TransparentGNU_catpuccin.png")
 #+end_src
+
 *** Snipe
 I like setting evil-snipe to visible.
 #+begin_src elisp :tangle config.el
