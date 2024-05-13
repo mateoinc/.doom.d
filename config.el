@@ -44,7 +44,7 @@
       '(
         ("l" "Work Log Entry"
          entry (file+datetree +org-capture-log-file)
-         "* %?"
+         "* %<%R> %?"
          :empty-lines 0
          :tree-type week)
         ("n" "Personal Note"
@@ -192,7 +192,7 @@
         ("b" "bibliography" plain
          "%?"
          :if-new (file+head "bibliography/${citar-citekey}.org"
-                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- tags ::\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: ${citar-doi}\n")
+                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n")
          :immediate-finish t
          :unnarrowed t)
         ("v" "video" plain
