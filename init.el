@@ -27,6 +27,8 @@
 
        (treemacs +lsp)          ; a project drawer, like neotree but cooler
 
+       (emoji +ascii  +github +unicode)
+
        :editor
        (evil +everywhere); come to the dark side, we have cookies
 

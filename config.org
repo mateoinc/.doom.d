@@ -217,6 +217,11 @@ And it provides a module for [[https://github.com/Alexander-Miller/treemacs][tre
 
 It should be noted that Doom also provides modules for [[https://jblevins.org/projects/deft/][deft]], emoji support, better unicode support, a quit-message prompt, a minimap, tabs, and a zen mode.
 
+#+begin_src elisp :tangle init.el
+       (emoji +ascii  +github +unicode)
+
+#+end_src
+
 ** :editor
 Of course, we use evil-mode in Doom.
 #+begin_src elisp :tangle init.el
