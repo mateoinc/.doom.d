@@ -192,7 +192,7 @@
         ("b" "bibliography" plain
          "%?"
          :if-new (file+head "bibliography/${citar-citekey}.org"
-                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n")
+                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../pdfs/${citar-citekey}.pdf\n:END:")
          :immediate-finish t
          :unnarrowed t)
         ("v" "video" plain
