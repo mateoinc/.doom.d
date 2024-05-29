@@ -192,7 +192,7 @@
         ("b" "bibliography" plain
          "%?"
          :if-new (file+head "bibliography/${citar-citekey}.org"
-                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../pdfs/${citar-citekey}.pdf\n:END:")
+                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../../Bib/pdfs/${citar-citekey}.pdf\n:END:")
          :immediate-finish t
          :unnarrowed t)
         ("v" "video" plain
@@ -201,6 +201,10 @@
                             "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
          :immediate-finish t
          :unnarrowed t))))
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
 (require 'org-roam-protocol)
 
