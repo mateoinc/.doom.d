@@ -258,7 +258,7 @@
                               "/home/mbarria/org/Bib/physics.bib"
                             ))
   (setq org-cite-global-bibliography citar-bibliography)
-  (setq! citar-library-paths '("/home/mbarria/org/roam/pdfs/"))
+  (setq! citar-library-paths '("/home/mbarria/org/Bib/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
   )
