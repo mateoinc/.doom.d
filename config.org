@@ -514,6 +514,7 @@ I use the frappe "flavor" of catppuccin.
 (setq catppuccin-italic-comments t)
 (setq catppuccin-italic-blockquotes t)
 (setq doom-theme 'catppuccin)
+(add-hook 'server-after-make-frame-hook #'catppuccin-reload)
 #+end_src
 **** Treemacs Colors
 Set treemacs to use doom colors.

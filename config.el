@@ -14,6 +14,7 @@
 (setq catppuccin-italic-comments t)
 (setq catppuccin-italic-blockquotes t)
 (setq doom-theme 'catppuccin)
+(add-hook 'server-after-make-frame-hook #'catppuccin-reload)
 
 (setq doom-themes-treemacs-theme "doom-colors")
 
