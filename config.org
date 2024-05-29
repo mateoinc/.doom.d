@@ -899,14 +899,6 @@ The "reference" folder is mostly set up as a fallback. I try to keep my notes in
               )
 #+end_src
 
-#+RESULTS:
-| :citar-title  | title  |        |        |
-| :citar-author | author | editor |        |
-| :citar-date   | date   | year   | issued |
-| :citar-doi    | doi    |        |        |
-| :citar-pages  | pages  |        |        |
-| :citar-type   | =type= |        |        |
-
 I also keep a longer Bibliography file which I want to access in my LaTeX projects, so I make sure reftex knows about it.
 
 #+begin_src elisp :tangle config.el
