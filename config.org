@@ -806,25 +806,25 @@ Set dailies capture template to mark the time
 
 
 I stole [[https://jethrokuan.github.io/org-roam-guide/][jethrokuan's]] code for prettier note searching.
-It stopped working for some reason. So I'm temporarily untangling this.
-#+begin_src elisp
-;; Add property "type" to notes
-;; (cl-defmethod org-roam-node-type ((node org-roam-node))
-;;   "Return the TYPE of NODE."
-;;   (condition-case nil
-;;       (file-name-nondirectory
-;;        (directory-file-name
-;;         (file-name-directory
-;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
-;;     (error "")))
-;; ;; Add this property to displays
-;; (setq org-roam-node-display-template
-;;       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;; ;; auto tag new notes as drafts
-;; (defun jethro/tag-new-node-as-draft ()
-;;   (org-roam-tag-add '("draft")))
-;; (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+#+begin_src elisp :tangle config.el
+;;Add property "type" to notes
+(cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
+;; Add this property to displays
+(setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+;; auto tag new notes as drafts
+(defun jethro/tag-new-node-as-draft ()
+  (org-roam-tag-add '("draft")))
+(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
 #+end_src
+
 
 I use ~org-roam-protocol~ which requires some [[https://www.orgroam.com/manual.html#org_002droam_002dprotocol][setup.]]
 #+begin_src elisp :tangle config.el
