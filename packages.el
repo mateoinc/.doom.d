@@ -38,6 +38,8 @@
 
 (package! git-auto-commit-mode)
 
+(package! multi-vterm)
+
 (package! org-pandoc-import
   :recipe (:host github
            :repo "tecosaur/org-pandoc-import"

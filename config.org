@@ -1336,6 +1336,16 @@ Set vterm to nushell
 (if (file-exists-p nu--path)
     (setq vterm-shell nu--path))
 #+end_src
+
+*** Multi Vterm
+Multiple Vterms
+#+begin_src elisp :tangle packages.el
+(package! multi-vterm)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! multi-vterm)
+#+end_src
 ** pandoc
 Take advantage of [[https://pandoc.org/][Pandoc]] to never leave org-mode!
 

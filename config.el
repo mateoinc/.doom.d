@@ -423,6 +423,8 @@ it can be passed in POS."
 (if (file-exists-p nu--path)
     (setq vterm-shell nu--path))
 
+(use-package! multi-vterm)
+
 (use-package! org-pandoc-import :after org)
 (use-package! ox-pandoc :after org)
 
