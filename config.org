@@ -1361,6 +1361,26 @@ Take advantage of [[https://pandoc.org/][Pandoc]] to never leave org-mode!
 (use-package! org-pandoc-import :after org)
 (use-package! ox-pandoc :after org)
 #+end_src
+** elfeed
+The RSS module already installs elfeed and sets it up to configure with an ~elfeed.org~ file in your ~org~ folder. But I want some more features and syncing the database with syncthing.
+
+#+begin_src elisp :tangle packages.el
+(package! elfeed-dashboard)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(after! elfeed
+  (setq elfeed-db-directory "~/.elfeed-data")
+  (add-hook 'elfeed-search-mode-hook #'elfeed-update))
+
+(use-package! elfeed-dashboard
+  :after elfeed
+  :config
+  (setq elfeed-dashboard-file (doom-path org-directory "elfeed-dashboard.org"))
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+#+end_src
+
 * Packages
 
 ** Spotify

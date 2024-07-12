@@ -428,6 +428,17 @@ it can be passed in POS."
 (use-package! org-pandoc-import :after org)
 (use-package! ox-pandoc :after org)
 
+(after! elfeed
+  (setq elfeed-db-directory "~/.elfeed-data")
+  (add-hook 'elfeed-search-mode-hook #'elfeed-update))
+
+(use-package! elfeed-dashboard
+  :after elfeed
+  :config
+  (setq elfeed-dashboard-file (doom-path org-directory "elfeed-dashboard.org"))
+  ;; update feed counts on elfeed-quit
+  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+
 (map! :leader
       (:prefix-map ("S" . "Spotify")
        :desc "START"    "s" 'spotify-start

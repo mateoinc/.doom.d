@@ -46,6 +46,8 @@
            :files ("*.el" "filters" "preprocessors")))
 (package! ox-pandoc)
 
+(package! elfeed-dashboard)
+
 (package! spotify
   :recipe (:host github
            :repo "SnootierMoon/emacs-spotify"))
