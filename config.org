@@ -621,39 +621,42 @@ Capture templates:
 
 #+begin_src elisp :tangle config.el
 (after! org
-(setq org-capture-templates
-      '(
-        ("l" "Work Log Entry"
-         entry (file+datetree +org-capture-log-file)
-         "* %<%R> %?"
-         :empty-lines 0
-         :tree-type week)
-        ("n" "Personal Note"
-         entry (file+headline +org-capture-inbox-file "Notes")
-           "* %u %?\n%i\n%a"
+  (setq org-capture-templates
+        '(("i" "Inbox"
+           entry (file+headline +org-capture-inbox-file "Inbox")
+           "* TODO %?\n:Created: %T\n%i\n%a"
            :prepend t
-         :empty-lines 0)
-        ("t" "General To-Do"
-         entry (file+headline +org-capture-inbox-file "Tasks")
-         "* TODO [#B] %?\n:Created: %T\n%i\n%a"
-         :prepend t
-         :empty-lines 0)
-        ("e" "Email"
-         entry (file+headline +org-capture-inbox-file "Emails")
-         "* TODO [#B] %?\n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
-         :prepend t
-         :empty-lines 0)
-        ("p" "Project"
-         entry (file +org-capture-projects-file)
-         "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
-         :prepend t
-         :empty-lines 0)
-        ("m" "Meeting"
-         entry (file+datetree "~/org/meetings.org")
-         "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
-         :tree-type week
-         :empty-lines 0)
-        )))
+           :empty-lines 0)
+          ("t" "General To-Do"
+           entry (file+headline +org-capture-todo-file "Actions")
+           "* TODO [#B] %?\n:Created: %T\n%i\n%a"
+           :prepend t
+           :empty-lines 0)
+          ("e" "Email"
+           entry (file+headline +org-capture-todo-file "Actions")
+           "* TODO [#B] %? :email: \n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
+           :prepend t
+           :empty-lines 0)
+          ("p" "Project"
+           entry (file +org-capture-projects-file)
+           "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
+           :prepend t
+           :empty-lines 0)
+          ("m" "Meeting"
+           entry (file+datetree "~/org/agenda/meetings.org")
+           "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
+           :tree-type week
+           :empty-lines 0))))
+
+;; Define a function for capturing to Inbox
+(defun org-capture-inbox ()
+  (interactive)
+  (call-interactively 'org-store-link)
+  (org-capture nil "i"))
+;; Specific Capture for Inbox + Shortcut to inbox file
+(map! :map doom-leader-notes-map
+      :desc "Capture to Inbox" "i" #'org-capture-inbox
+      :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file)))
 #+end_src
 
 
@@ -669,6 +672,7 @@ Capture templates:
 
 **** Tags
 
+From a headline or body, use ~SPC m q~ to set tags from this list.
 #+begin_src elisp :tangle config.el
 (setq org-tag-alist '(
                       ;; Ticket types

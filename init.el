@@ -70,7 +70,6 @@
        make                  ; run make tasks from Emacs
        (pass +pass)          ; password manager for nerds
        pdf                   ; pdf enhancements
-       rgb                   ; creating color strings
        tmux                  ; an API for interacting with tmux
        tree-sitter
        upload                ; map local to remote projects via ssh/ftp
