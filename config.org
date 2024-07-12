@@ -1239,7 +1239,7 @@ So I set those up.
     ;; Types
     :null          "Nothing"
     :true          "true"
-    :false         "False"
+    :false         "false"
     :int           "Int"
     :float         "Float64"
     :str           "String"
@@ -1248,15 +1248,15 @@ So I set those up.
     :not           "!"
     :in            "in"
     :not-in        "!in"
-    :and           "and"
-    :or            "or"
+    :and           "&&"
+    :or            "||"
     :for           "for"
-    :some          "some keyword"
+    ;; :some          "some keyword"
     :return        "return"
     ;; Other
     :union         "union"
     :intersect     "intersect"
-    :pipe          "|>" 
+    :pipe          "|>"
     )
   )
 #+end_src

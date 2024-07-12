@@ -363,7 +363,7 @@ it can be passed in POS."
     ;; Types
     :null          "Nothing"
     :true          "true"
-    :false         "False"
+    :false         "false"
     :int           "Int"
     :float         "Float64"
     :str           "String"
@@ -372,15 +372,15 @@ it can be passed in POS."
     :not           "!"
     :in            "in"
     :not-in        "!in"
-    :and           "and"
-    :or            "or"
+    :and           "&&"
+    :or            "||"
     :for           "for"
-    :some          "some keyword"
+    ;; :some          "some keyword"
     :return        "return"
     ;; Other
     :union         "union"
     :intersect     "intersect"
-    :pipe          "|>" 
+    :pipe          "|>"
     )
   )
 
