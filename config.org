@@ -302,7 +302,6 @@ Biblio allows for better bibliography management.
        make                  ; run make tasks from Emacs
        (pass +pass)          ; password manager for nerds
        pdf                   ; pdf enhancements
-       rgb                   ; creating color strings
        tmux                  ; an API for interacting with tmux
        tree-sitter
        upload                ; map local to remote projects via ssh/ftp
@@ -598,15 +597,27 @@ I keep my org files in my Dropbox folder, which I always keep or link to in my h
 In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on top of sorts by name)
 #+begin_src elisp :tangle config.el
 (setq org-directory "~/org/")
-(setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
-(setq +org-capture-log-file (doom-path org-directory "work-log.org"))
-(setq +org-capture-projects-file (doom-path org-directory "projects.org"))
+(setq +org-capture-inbox-file (doom-path org-directory "agenda/!nbox.org"))
+(setq +org-capture-projects-file (doom-path org-directory "agenda/projects.org"))
+(setq +org-capture-todo-file (doom-path org-directory "agenda/todo.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
+(after! org (setq org-agenda-files (list "~/org/agenda/!nbox.org"
+                                     "~/org/agenda/todo.org"
+                                     "~/org/agenda/done.org"
+                                     "~/org/agenda/projects.org"
+                                     "~/org/agenda/meetings.org")))
 #+end_src
 
 **** Templates
+
+Capture templates:
++ i: Inbox. Everything that comes from outside the inbox should go here first.
++ t: General todo. For tasks from the inbox that take more than two minutes.
++ e: Email. For when an email requires some task before replying.
++ p: Creating new projects.
++ m: Taking notes of Meetings.
 
 #+begin_src elisp :tangle config.el
 (after! org
@@ -645,6 +656,8 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
         )))
 #+end_src
 
+
+
 **** Priorities
 #+begin_src elisp :tangle config.el
 (after! org-fancy-priorities
@@ -652,6 +665,8 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
                                   (?B . "🟠")
                                   (?C . "🟢"))))
 #+end_src
+
+
 **** Tags
 
 #+begin_src elisp :tangle config.el
@@ -698,7 +713,10 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
       )
 #+end_src
 
-**** Agenda
+
+**** Agenda View
+
+Agenda view
 
 #+begin_src elisp :tangle config.el
 ;; Agenda View "d"
@@ -747,6 +765,7 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
         )))
 #+end_src
 
+
 **** Refiling
 Let's make it so that refiling leaves some mark.
 Useful for refilign from meetings to projects.
@@ -761,6 +780,192 @@ But with an exception for the inbox.
       (insert source-link)
       (goto-char refile-region-marker))))
 #+end_src
+**** Clocking in
+This is taken wholesale from [[http://doc.norang.ca/org-mode.html#Clocking]]
+#+begin_src elisp :tangle config.el
+;;
+;; Resume clocking task when emacs is restarted
+(org-clock-persistence-insinuate)
+;;
+;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+(setq org-clock-history-length 23)
+;; Resume clocking task on clock-in if the clock is open
+(setq org-clock-in-resume t)
+;; Change tasks to NEXT when clocking in
+(setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
+;; Separate drawers for clocking and logs
+(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
+;; Save clock data and state changes and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+;; Clock out when moving task to a done state
+(setq org-clock-out-when-done t)
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persist t)
+;; Do not prompt to resume an active clock
+(setq org-clock-persist-query-resume nil)
+;; Enable auto clock resolution for finding open clocks
+(setq org-clock-auto-clock-resolution (quote when-no-clock-is-running))
+;; Include current clocking task in clock reports
+(setq org-clock-report-include-clocking-task t)
+
+(setq bh/keep-clock-running nil)
+
+(defun bh/is-task-p ()
+  "Any task with a todo keyword and no subtask"
+  (save-restriction
+    (widen)
+    (let ((has-subtask)
+          (subtree-end (save-excursion (org-end-of-subtree t)))
+          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-subtask)
+                    (< (point) subtree-end)
+                    (re-search-forward "^\*+ " subtree-end t))
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (setq has-subtask t))))
+      (and is-a-task (not has-subtask)))))
+
+(defun bh/is-project-p ()
+  "Any task with a todo keyword subtask"
+  (save-restriction
+    (widen)
+    (let ((has-subtask)
+          (subtree-end (save-excursion (org-end-of-subtree t)))
+          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+      (save-excursion
+        (forward-line 1)
+        (while (and (not has-subtask)
+                    (< (point) subtree-end)
+                    (re-search-forward "^\*+ " subtree-end t))
+          (when (member (org-get-todo-state) org-todo-keywords-1)
+            (setq has-subtask t))))
+      (and is-a-task has-subtask))))
+
+(defun bh/clock-in-to-next (kw)
+  "Switch a task from TODO to STRT when clocking in.
+Skips capture tasks, projects, and subprojects.
+Switch projects and subprojects from STRT back to TODO"
+  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+    (cond
+     ((and (member (org-get-todo-state) (list "TODO"))
+           (bh/is-task-p))
+      "STRT")
+     ((and (member (org-get-todo-state) (list "STRT"))
+           (bh/is-project-p))
+      "TODO"))))
+
+(defun bh/find-project-task ()
+  "Move point to the parent (project) task if any"
+  (save-restriction
+    (widen)
+    (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
+      (while (org-up-heading-safe)
+        (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+          (setq parent-task (point))))
+      (goto-char parent-task)
+      parent-task)))
+
+(defun bh/punch-in (arg)
+  "Start continuous clocking and set the default task to the
+selected task.  If no task is selected set the Organization task
+as the default task."
+  (interactive "p")
+  (setq bh/keep-clock-running t)
+  (if (equal major-mode 'org-agenda-mode)
+      ;;
+      ;; We're in the agenda
+      ;;
+      (let* ((marker (org-get-at-bol 'org-hd-marker))
+             (tags (org-with-point-at marker (org-get-tags-at))))
+        (if (and (eq arg 4) tags)
+            (org-agenda-clock-in '(16))
+          (bh/clock-in-organization-task-as-default)))
+    ;;
+    ;; We are not in the agenda
+    ;;
+    (save-restriction
+      (widen)
+      ; Find the tags on the current task
+      (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
+          (org-clock-in '(16))
+        (bh/clock-in-organization-task-as-default)))))
+
+(defun bh/punch-out ()
+  (interactive)
+  (setq bh/keep-clock-running nil)
+  (when (org-clock-is-active)
+    (org-clock-out))
+  (org-agenda-remove-restriction-lock))
+
+(defun bh/clock-in-default-task ()
+  (save-excursion
+    (org-with-point-at org-clock-default-task
+      (org-clock-in))))
+
+(defun bh/clock-in-parent-task ()
+  "Move point to the parent (project) task if any and clock in"
+  (let ((parent-task))
+    (save-excursion
+      (save-restriction
+        (widen)
+        (while (and (not parent-task) (org-up-heading-safe))
+          (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+            (setq parent-task (point))))
+        (if parent-task
+            (org-with-point-at parent-task
+              (org-clock-in))
+          (when bh/keep-clock-running
+            (bh/clock-in-default-task)))))))
+
+(defvar bh/organization-task-id "80310231-6f03-4608-bcfe-8c4d04d24b83")
+
+(defun bh/clock-in-organization-task-as-default ()
+  (interactive)
+  (org-with-point-at (org-id-find bh/organization-task-id 'marker)
+    (org-clock-in '(16))))
+
+(defun bh/clock-out-maybe ()
+  (when (and bh/keep-clock-running
+             (not org-clock-clocking-in)
+             (marker-buffer org-clock-default-task)
+             (not org-clock-resolving-clocks-due-to-idleness))
+    (bh/clock-in-parent-task)))
+
+(add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append)
+
+(require 'org-id)
+(defun bh/clock-in-task-by-id (id)
+  "Clock in a task by id"
+  (org-with-point-at (org-id-find id 'marker)
+    (org-clock-in nil)))
+
+(defun bh/clock-in-last-task (arg)
+  "Clock in the interrupted task if there is one
+Skip the default task and get the next one.
+A prefix arg forces clock in of the default task."
+  (interactive "p")
+  (let ((clock-in-to-task
+         (cond
+          ((eq arg 4) org-clock-default-task)
+          ((and (org-clock-is-active)
+                (equal org-clock-default-task (cadr org-clock-history)))
+           (caddr org-clock-history))
+          ((org-clock-is-active) (cadr org-clock-history))
+          ((equal org-clock-default-task (car org-clock-history)) (cadr org-clock-history))
+          (t (car org-clock-history)))))
+    (widen)
+    (org-with-point-at clock-in-to-task
+      (org-clock-in nil))))
+
+#+end_src
+
+#+RESULTS:
+: bh/clock-in-last-task
+
+
 *** Org-roam
 I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes.
 #+begin_src elisp :tangle packages.el
@@ -806,25 +1011,25 @@ Set dailies capture template to mark the time
 #+end_src
 
 
-I stole [[https://jethrokuan.github.io/org-roam-guide/][jethrokuan's]] code for prettier note searching.
-#+begin_src elisp :tangle config.el
-;;Add property "type" to notes
-(cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
-;; Add this property to displays
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;; auto tag new notes as drafts
-(defun jethro/tag-new-node-as-draft ()
-  (org-roam-tag-add '("draft")))
-(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
-#+end_src
+# I stole [[https://jethrokuan.github.io/org-roam-guide/][jethrokuan's]] code for prettier note searching.
+# #+begin_src elisp :tangle config.el
+# ;;Add property "type" to notes
+# (cl-defmethod org-roam-node-type ((node org-roam-node))
+#   "Return the TYPE of NODE."
+#   (condition-case nil
+#       (file-name-nondirectory
+#        (directory-file-name
+#         (file-name-directory
+#          (file-relative-name (org-roam-node-file node) org-roam-directory))))
+#     (error "")))
+# ;; Add this property to displays
+# (setq org-roam-node-display-template
+#       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+# ;; auto tag new notes as drafts
+# (defun jethro/tag-new-node-as-draft ()
+#   (org-roam-tag-add '("draft")))
+# (add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
+# #+end_src
 
 
 I use ~org-roam-protocol~ which requires some [[https://www.orgroam.com/manual.html#org_002droam_002dprotocol][setup.]]

@@ -33,47 +33,56 @@
 (setq evil-snipe-scope 'visible)
 
 (setq org-directory "~/org/")
-(setq +org-capture-inbox-file (doom-path org-directory "!nbox.org"))
-(setq +org-capture-log-file (doom-path org-directory "work-log.org"))
-(setq +org-capture-projects-file (doom-path org-directory "projects.org"))
+(setq +org-capture-inbox-file (doom-path org-directory "agenda/!nbox.org"))
+;; (setq +org-capture-log-file (doom-path org-directory "agenda/work-log.org"))
+(setq +org-capture-projects-file (doom-path org-directory "agenda/projects.org"))
+(setq +org-capture-todo-file (doom-path org-directory "agenda/todo.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
+(after! org (setq org-agenda-files (list "~/org/agenda/!nbox.org"
+                                     "~/org/agenda/todo.org"
+                                     "~/org/agenda/done.org"
+                                     "~/org/agenda/projects.org"
+                                     "~/org/agenda/meetings.org")))
 
 (after! org
-(setq org-capture-templates
-      '(
-        ("l" "Work Log Entry"
-         entry (file+datetree +org-capture-log-file)
-         "* %<%R> %?"
-         :empty-lines 0
-         :tree-type week)
-        ("n" "Personal Note"
-         entry (file+headline +org-capture-inbox-file "Notes")
-           "* %u %?\n%i\n%a"
+  (setq org-capture-templates
+        '(("i" "Inbox"
+           entry (file+headline +org-capture-inbox-file "Inbox")
+           "* TODO %?\n:Created: %T\n%i\n%a"
            :prepend t
-         :empty-lines 0)
-        ("t" "General To-Do"
-         entry (file+headline +org-capture-inbox-file "Tasks")
-         "* TODO [#B] %?\n:Created: %T\n%i\n%a"
-         :prepend t
-         :empty-lines 0)
-        ("e" "Email"
-         entry (file+headline +org-capture-inbox-file "Emails")
-         "* TODO [#B] %?\n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
-         :prepend t
-         :empty-lines 0)
-        ("p" "Project"
-         entry (file +org-capture-projects-file)
-         "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
-         :prepend t
-         :empty-lines 0)
-        ("m" "Meeting"
-         entry (file+datetree "~/org/meetings.org")
-         "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
-         :tree-type week
-         :empty-lines 0)
-        )))
+           :empty-lines 0)
+          ("t" "General To-Do"
+           entry (file+headline +org-capture-todo-file "Actions")
+           "* TODO [#B] %?\n:Created: %T\n%i\n%a"
+           :prepend t
+           :empty-lines 0)
+          ("e" "Email"
+           entry (file+headline +org-capture-todo-file "Actions")
+           "* TODO [#B] %? :email: \n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
+           :prepend t
+           :empty-lines 0)
+          ("p" "Project"
+           entry (file +org-capture-projects-file)
+           "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
+           :prepend t
+           :empty-lines 0)
+          ("m" "Meeting"
+           entry (file+datetree "~/org/agenda/meetings.org")
+           "* %? :meeting:%^g \n:Created: %T\n** Attendees\n*** \n** Notes\n** Action Items\n*** TODO [#A] "
+           :tree-type week
+           :empty-lines 0))))
+
+;; Define a function for capturing to Inbox
+(defun org-capture-inbox ()
+  (interactive)
+  (call-interactively 'org-store-link)
+  (org-capture nil "i"))
+;; Specific Capture for Inbox + Shortcut to inbox file
+(map! :map doom-leader-notes-map
+      :desc "Capture to Inbox" "i" #'org-capture-inbox
+      :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file)))
 
 (after! org-fancy-priorities
   (setq org-fancy-priorities-list '((?A . "🔴")
@@ -206,23 +215,6 @@
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
          :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-
-;;Add property "type" to notes
-(cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
-;; Add this property to displays
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-;; auto tag new notes as drafts
-(defun jethro/tag-new-node-as-draft ()
-  (org-roam-tag-add '("draft")))
-(add-hook 'org-roam-capture-new-node-hook #'jethro/tag-new-node-as-draft)
 
 (require 'org-roam-protocol)
 
