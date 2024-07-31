@@ -43,6 +43,7 @@
                                      "~/org/agenda/todo.org"
                                      "~/org/agenda/done.org"
                                      "~/org/agenda/projects.org"
+                                     "~/org/agenda/someday.org"
                                      "~/org/agenda/meetings.org")))
 
 (after! org
