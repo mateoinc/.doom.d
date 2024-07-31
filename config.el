@@ -743,3 +743,36 @@ it can be passed in POS."
 (exwm-randr-enable)
 
 (use-package! slurm-mode)
+
+(use-package! gptel
+  :config
+  ;; (gptel-make-ollama "Ollama"             ;Any name of your choosing
+  ;;   :host "localhost:11434"               ;Where it's running
+  ;;   :stream t                             ;Stream responses
+  ;;   :models '("llama3.1:latest"))          ;List of models
+  ;; Set default
+  ;; OPTIONAL configuration
+  (setq
+   gptel-model "mistral-nemo:latest"
+   gptel-default-mode #'org-mode
+   gptel-backend (gptel-make-ollama "Ollama"
+                   :host "localhost:11434"
+                   :stream t
+                   :models '("llama3.1:latest"
+                             "deepseek-coder-v2:latest"
+                             "mistral:latest"
+                             "mistral-nemo:latest"
+                             "gemma2:latest"
+                             "gemma2:27b"))))
+
+(map! :leader
+      (:prefix-map ("l" . "gptel")
+       :desc "Dedicated Buffer" "l" 'gptel
+       :desc "Menu"  "m"  'gptel-menu
+       :desc "Send text"  "s"  'gptel-send
+       :desc "Send text (Menu)"  "S"  (cmd! (gptel-send 1))
+       :desc "Add/remove region"  "a"  'gptel-add
+       :desc "Add file"  "A"  'gptel-add-file
+       (:mode (org-mode)
+        :desc "Limit to Heading" "h" 'gptel-org-set-topic
+        :desc "Set properties" "p" 'gptel-org-set-properties)))

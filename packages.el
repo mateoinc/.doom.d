@@ -67,3 +67,6 @@
            :repo "DamienCassou/desktop-environment"))
 
 (package! slurm-mode)
+
+(package! gtpel
+  :recipe (:host github :repo "karthink/gptel"))
