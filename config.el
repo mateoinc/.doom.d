@@ -36,6 +36,7 @@
 (setq +org-capture-inbox-file (doom-path org-directory "agenda/!nbox.org"))
 (setq +org-capture-projects-file (doom-path org-directory "agenda/projects.org"))
 (setq +org-capture-todo-file (doom-path org-directory "agenda/todo.org"))
+(setq +org-capture-toread-file (doom-path org-directory "agenda/toread.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
@@ -44,12 +45,13 @@
                                      "~/org/agenda/done.org"
                                      "~/org/agenda/projects.org"
                                      "~/org/agenda/someday.org"
+                                     "~/org/agenda/toread.org"
                                      "~/org/agenda/meetings.org")))
 
 (after! org
   (setq org-capture-templates
         '(("i" "Inbox"
-           entry (file+headline +org-capture-inbox-file "Inbox")
+           entry (file +org-capture-inbox-file)
            "* TODO %?\n:Created: %T\n%i\n%a"
            :prepend t
            :empty-lines 0)
@@ -59,13 +61,19 @@
            :prepend t
            :empty-lines 0)
           ("e" "Email"
-           entry (file+headline +org-capture-todo-file "Actions")
+           entry (file+headline +org-capture-todo-file "Emails")
            "* TODO [#B] %? :email: \n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
            :prepend t
            :empty-lines 0)
           ("p" "Project"
            entry (file +org-capture-projects-file)
            "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
+           :prepend t
+           :empty-lines 0)
+          ;; Reading List
+          ("r" "Paper"
+           entry (file+headline +org-capture-toread-file "Scientific Articles")
+           "* TODO [#B] %?\n:Created: %T\n** Author(s)\n***\n** Notes\n** Metadata \n*** URL: \n*** DOI: \n*** Magazine: \n***Discussion: \n%a"
            :prepend t
            :empty-lines 0)
           ("m" "Meeting"
@@ -146,35 +154,70 @@
 (setq org-agenda-skip-deadline-if-done t)
 
 (after! org-agenda
-(setq org-agenda-custom-commands
-      '(
-        ;; Daily Agenda & TODOs
-        ("d" "Daily agenda and all TODOs"
+  (setq org-agenda-custom-commands
+        '(
+          ;; Daily Agenda & TODOs
+          ("d" "Daily agenda and Next Actions"
 
-         ;; Display items with priority A
-         ((tags "PRIORITY=\"A\""
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Actions-Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
-          ;; View 7 days in the calendar view
-          (agenda "" ((org-agenda-span 7)))
+            ;; View 7 days in the calendar view
+            (agenda "" ((org-agenda-span 7)))
 
-          ;; Display items with priority B (really it is view all items minus A & C)
-          (alltodo ""
-                   ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                   (air-org-skip-subtree-if-priority ?C)
-                                                   (org-agenda-skip-if nil '(scheduled deadline))))
-                    (org-agenda-overriding-header "ALL normal priority tasks:")))
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Actions-Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
 
-          ;; Display items with pirority C
-          (tags "PRIORITY=\"C\""
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-          )
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Actions-Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
 
-         ;; Don't compress things (change to suite your tastes)
-         ((org-agenda-compact-blocks nil)))
-        )))
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
+
+          ;; GTD Inbox Tray
+          ("i" "Inbox"
+
+           ;; Display TODO items tagged as inbox_tray
+           ((tags-todo "+inbox_tray"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Inbox")))
+
+            ))
+
+          ("j" "Someday"
+
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
+
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
+
+
+          )))
 
 (defun org-refile--insert-link ( &rest _ )
   (unless (string-suffix-p "!nbox.org" buffer-file-name)
@@ -600,7 +643,20 @@ it can be passed in POS."
 (if (file-exists-p nu--path)
     (setq vterm-shell nu--path))
 
-(use-package! multi-vterm)
+(use-package! multi-vterm
+  :config
+  (setq multi-vterm-dedicated-window-height-percent 33))
+
+(after! multi-vterm
+  (map! :leader
+        (:prefix-map ("v" . "vterm")
+         :desc "Dedicated Terminal"  "o" 'multi-vterm-dedicated-toggle
+         :desc "New terminal" "v" 'multi-vterm
+         :desc "Next" "n" 'multi-vterm-next
+         :desc "Previous" "p" 'multi-vterm-prev
+         :desc "Project" "P" 'multi-vterm-project
+
+         )))
 
 (use-package! org-pandoc-import :after org)
 (use-package! ox-pandoc :after org)

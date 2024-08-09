@@ -157,7 +157,7 @@ We start by calling doom
 ** :input
 
 Doom has input modules to accomodate other languages and keyboards; I don't use any of them.
-For the record, these currently include ~bidi~ (right-to-left), ~chinese~, ~japanese~, and ~layout~ (for accomodating different layouts).  
+For the record, these currently include ~bidi~ (right-to-left), ~chinese~, ~japanese~, and ~layout~ (for accomodating different layouts).
 
 ** :completion
 
@@ -600,6 +600,7 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
 (setq +org-capture-inbox-file (doom-path org-directory "agenda/!nbox.org"))
 (setq +org-capture-projects-file (doom-path org-directory "agenda/projects.org"))
 (setq +org-capture-todo-file (doom-path org-directory "agenda/todo.org"))
+(setq +org-capture-toread-file (doom-path org-directory "agenda/toread.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
@@ -608,6 +609,7 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
                                      "~/org/agenda/done.org"
                                      "~/org/agenda/projects.org"
                                      "~/org/agenda/someday.org"
+                                     "~/org/agenda/toread.org"
                                      "~/org/agenda/meetings.org")))
 #+end_src
 
@@ -624,7 +626,7 @@ Capture templates:
 (after! org
   (setq org-capture-templates
         '(("i" "Inbox"
-           entry (file+headline +org-capture-inbox-file "Inbox")
+           entry (file +org-capture-inbox-file)
            "* TODO %?\n:Created: %T\n%i\n%a"
            :prepend t
            :empty-lines 0)
@@ -634,13 +636,19 @@ Capture templates:
            :prepend t
            :empty-lines 0)
           ("e" "Email"
-           entry (file+headline +org-capture-todo-file "Actions")
+           entry (file+headline +org-capture-todo-file "Emails")
            "* TODO [#B] %? :email: \n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
            :prepend t
            :empty-lines 0)
           ("p" "Project"
            entry (file +org-capture-projects-file)
            "* PROJ [#B] %?\n:Created: %T\n** Collaborators(s)\n***\n** Notes\n** [0%]Actions \n*** TODO\n%a"
+           :prepend t
+           :empty-lines 0)
+          ;; Reading List
+          ("r" "Paper"
+           entry (file+headline +org-capture-toread-file "Scientific Articles")
+           "* TODO [#B] %?\n:Created: %T\n** Author(s)\n***\n** Notes\n** Metadata \n*** URL: \n*** DOI: \n*** Magazine: \n***Discussion: \n%a"
            :prepend t
            :empty-lines 0)
           ("m" "Meeting"
@@ -659,6 +667,8 @@ Capture templates:
       :desc "Capture to Inbox" "i" #'org-capture-inbox
       :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file)))
 #+end_src
+
+#+RESULTS:
 
 
 
@@ -739,36 +749,76 @@ Agenda view
 (setq org-agenda-skip-deadline-if-done t)
 
 (after! org-agenda
-(setq org-agenda-custom-commands
-      '(
-        ;; Daily Agenda & TODOs
-        ("d" "Daily agenda and all TODOs"
+  (setq org-agenda-custom-commands
+        '(
+          ;; Daily Agenda & TODOs
+          ("d" "Daily agenda and Next Actions"
 
-         ;; Display items with priority A
-         ((tags "PRIORITY=\"A\""
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "High-priority unfinished tasks:")))
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Actions-Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
-          ;; View 7 days in the calendar view
-          (agenda "" ((org-agenda-span 7)))
+            ;; View 7 days in the calendar view
+            (agenda "" ((org-agenda-span 7)))
 
-          ;; Display items with priority B (really it is view all items minus A & C)
-          (alltodo ""
-                   ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                   (air-org-skip-subtree-if-priority ?C)
-                                                   (org-agenda-skip-if nil '(scheduled deadline))))
-                    (org-agenda-overriding-header "ALL normal priority tasks:")))
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Actions-Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
 
-          ;; Display items with pirority C
-          (tags "PRIORITY=\"C\""
-                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                 (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-          )
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Actions-Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
 
-         ;; Don't compress things (change to suite your tastes)
-         ((org-agenda-compact-blocks nil)))
-        )))
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
+
+          ;; GTD Inbox Tray
+          ("i" "Inbox"
+
+           ;; Display TODO items tagged as inbox_tray
+           ((tags-todo "+inbox_tray"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Inbox")))
+
+            ))
+
+          ("j" "Someday"
+
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
+
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
+
+
+          )))
 #+end_src
+
+#+RESULTS:
+| d | Daily agenda and Next Actions | ((tags-todo PRIORITY="A"+Actions-Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header High-priority unfinished tasks:))) (agenda  ((org-agenda-span 7))) (tags-todo +Actions-Someday ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority 65) (air-org-skip-subtree-if-priority 67) (org-agenda-skip-if nil '(scheduled deadline)))) (org-agenda-overriding-header ALL normal priority tasks:))) (tags-todo PRIORITY="C"+Actions-Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Low-priority Unfinished tasks:)))) | ((org-agenda-compact-blocks nil)) |
+| i | Inbox                         | ((tags-todo +inbox_tray ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Inbox))))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                   |
+| j | Someday                       | ((tags-todo PRIORITY="A"+Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header High-priority unfinished tasks:))) (tags-todo +Someday ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority 65) (air-org-skip-subtree-if-priority 67) (org-agenda-skip-if nil '(scheduled deadline)))) (org-agenda-overriding-header ALL normal priority tasks:))) (tags-todo PRIORITY="C"+Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Low-priority Unfinished tasks:))))                                                         | ((org-agenda-compact-blocks nil)) |
 
 
 **** Refiling
@@ -978,7 +1028,7 @@ I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes
 (package! org-roam-ui)
 #+end_src
 
-My capture templates are for my personal notes (main), notes on specific sources (reference) and on videos (video). 
+My capture templates are for my personal notes (main), notes on specific sources (reference) and on videos (video).
 #+begin_src elisp :tangle config.el
 (after! org-roam-capture
 (setq org-roam-capture-templates
@@ -1117,7 +1167,7 @@ I also keep a longer Bibliography file which I want to access in my LaTeX projec
   )
 #+end_src
 
-This is kinda redundant though, since I've switched to just running ~citar-export-local-bib-file~ in my latex projects. 
+This is kinda redundant though, since I've switched to just running ~citar-export-local-bib-file~ in my latex projects.
 
 To manage my bibliography files I run this function (which I don't remember where I copied it from) to get a bibtex entry from a DOI.
 #+begin_src elisp :tangle config.el
@@ -1286,7 +1336,7 @@ I like how tex-fold looks, but I find it weird that it only recognizes the base 
 ** mu4e
 mu4e requires some external config. The docs for the Doom module are really helpful and without them I couldn't have set it up for myself.
 
-My config is nothing special. 
+My config is nothing special.
 
 #+begin_src elisp :tangle config.el
 ;; Each path is relative to the path of the maildir you passed to mu
@@ -1343,14 +1393,31 @@ Set vterm to nushell
 #+end_src
 
 *** Multi Vterm
-Multiple Vterms
+Multiple Vterms. I've decided to map multi-vterm to ~SPC v~.
 #+begin_src elisp :tangle packages.el
 (package! multi-vterm)
 #+end_src
 
 #+begin_src elisp :tangle config.el
-(use-package! multi-vterm)
+(use-package! multi-vterm
+  :config
+  (setq multi-vterm-dedicated-window-height-percent 33))
+
+(after! multi-vterm
+  (map! :leader
+        (:prefix-map ("v" . "vterm")
+         :desc "Dedicated Terminal"  "o" 'multi-vterm-dedicated-toggle
+         :desc "New terminal" "v" 'multi-vterm
+         :desc "Next" "n" 'multi-vterm-next
+         :desc "Previous" "p" 'multi-vterm-prev
+         :desc "Project" "P" 'multi-vterm-project
+
+         )))
 #+end_src
+
+#+RESULTS:
+: multi-vterm-project
+
 ** pandoc
 Take advantage of [[https://pandoc.org/][Pandoc]] to never leave org-mode!
 
@@ -1547,7 +1614,7 @@ My bindings are pretty close to the examples too.
         ([?\C-s] . [?\C-f])))
 #+end_src
 
-Normally you'd enable exwm but on my nix system's where I use it I have my Nix config set to handle that, so it doesn't raise issues in computers where I haven't done the rest of the canfiguring. 
+Normally you'd enable exwm but on my nix system's where I use it I have my Nix config set to handle that, so it doesn't raise issues in computers where I haven't done the rest of the canfiguring.
 
 Finally some config to work with evil and the doom leader.
 
@@ -1573,7 +1640,7 @@ Finally some config to work with evil and the doom leader.
   (setq desktop-environment-screenshot-command "flameshot gui")
   (desktop-environment-mode))
 #+end_src
- 
+
 *** randr
 
 To use multiple screens with EXWM you need to do some config.
