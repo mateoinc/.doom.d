@@ -263,7 +263,7 @@ And there's some modules for programming (Lisp in particular), that I haven't pl
 Doom provides some modules that enhance the vanila emacs experience. I'm all for them.
 #+begin_src elisp :tangle init.el
        :emacs
-       (dired +icons)             ; making dired pretty [functional]
+       (dired +icons +dirvish)             ; making dired pretty [functional]
        electric          ; smarter, keyword-based electric-indent
        (ibuffer +icons)         ; interactive buffer management
        undo              ; persistent, smarter undo for your inevitable mistakes
