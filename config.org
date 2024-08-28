@@ -525,6 +525,11 @@ I like to highlight TODOs regardless of mode, so I can see comments that say TOD
 #+begin_src elisp :tangle config.el
 (global-hl-todo-mode)
 #+end_src
+**** Sync theme in ~pdf-mode~
+#+begin_src elisp :tangle config.el
+(add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
+#+end_src
+
 
 *** Modeline config
 Doom's modeline exposes some configuration.

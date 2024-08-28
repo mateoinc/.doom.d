@@ -20,6 +20,8 @@
 
 (global-hl-todo-mode)
 
+(add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
+
 (display-battery-mode)
 (display-time-mode)
 (timeclock-mode-line-display)
