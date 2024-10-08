@@ -567,7 +567,7 @@ I like setting evil-snipe to visible.
 #+end_src
 ** Org-mode
 *** Teco's branch
-[[https://git.tecosaur.net/tec][Tecosaur]] has made a lot of improvements to latex preview, and [[https://abode.karthinks.com/org-latex-preview/][Karthink]] set up a tutorial for how to switch to that branch.
+[[https://git.tecosaur.net/tec][Tecosaur]] and [[https://abode.karthinks.com/org-latex-preview/][Karthink]] have made a bunch of improvements to LaTeX preview in org-mode.
 
 #+begin_src elisp :tangle packages.el
 (package! org :recipe
