@@ -697,6 +697,8 @@ it can be passed in POS."
 
          )))
 
+(setq vterm-tramp-shells '(("ssh" "/bin/bash") ("docker" "/bin/sh")))
+
 (use-package! org-pandoc-import :after org)
 (use-package! ox-pandoc :after org)
 

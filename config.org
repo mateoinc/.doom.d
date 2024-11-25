@@ -1467,6 +1467,13 @@ Multiple Vterms. I've decided to map multi-vterm to ~SPC v~.
 #+RESULTS:
 : multi-vterm-project
 
+*** TRAMP Shell
+By default, only a default shell for docker is specified.
+I specify one for ssh (bash).
+#+begin_src elisp :tangle config.el
+(setq vterm-tramp-shells '(("ssh" "/bin/bash") ("docker" "/bin/sh")))
+#+end_src
+
 ** pandoc
 Take advantage of [[https://pandoc.org/][Pandoc]] to never leave org-mode!
 
