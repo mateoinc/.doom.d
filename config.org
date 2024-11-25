@@ -1630,3 +1630,30 @@ Karthink's [[https://github.com/karthink/gptel?tab=readme-ov-file#ollama][LLM cl
 
 #+RESULTS:
 : gptel-rg-set-properties
+
+** Typst
+A [[https://typst.app/docs]["markup-based pysetting language"]].
+
+To get it working we use [[https://codeberg.org/meow_king/typst-ts-mode/wiki/Installation.md][typst-ts-mode]],
+
+#+begin_src elisp :tangle packages.el
+(package! typst-ts-mode
+  :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
+
+(package! outline-indent-mode
+  :recipe (:host sourcehut :repo "meow_king/outline-indent-mode"))
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! typst-ts-mode
+  :custom
+  (typst-ts-watch-options "--open")
+  (typst-ts-mode-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  :config
+  (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu))
+
+(use-package! outline-indent-mode
+  :config
+  (add-hook 'typst-ts-mode-hook #'outline-indent-mode))
+#+end_src

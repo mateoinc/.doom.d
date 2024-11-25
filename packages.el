@@ -64,3 +64,9 @@
 
 (package! gtpel
   :recipe (:host github :repo "karthink/gptel"))
+
+(package! typst-ts-mode
+  :recipe (:host codeberg :repo "meow_king/typst-ts-mode"))
+
+(package! outline-indent-mode
+  :recipe (:host sourcehut :repo "meow_king/outline-indent-mode"))

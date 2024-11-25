@@ -775,3 +775,15 @@ it can be passed in POS."
        (:mode (org-mode)
         :desc "Limit to Heading" "h" 'gptel-org-set-topic
         :desc "Set properties" "p" 'gptel-org-set-properties)))
+
+(use-package! typst-ts-mode
+  :custom
+  (typst-ts-watch-options "--open")
+  (typst-ts-mode-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  :config
+  (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu))
+
+(use-package! outline-indent-mode
+  :config
+  (add-hook 'typst-ts-mode-hook #'outline-indent-mode))
