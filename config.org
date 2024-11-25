@@ -771,15 +771,6 @@ From a headline or body, use ~SPC m q~ to set tags from this list.
       )
 #+end_src
 
-#+RESULTS:
-| work     | :foreground | mediumPurple1 | :weight | bold |
-| planning | :foreground | royalblue1    | :weight | bold |
-| progress | :foreground | forest green  | :weight | bold |
-| personal | :foreground | sienna        | :weight | bold |
-| meeting  | :foreground | yellow1       | :weight | bold |
-| CRITICAL | :foreground | red1          | :weight | bold |
-
-
 
 **** Agenda View
 
