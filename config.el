@@ -154,6 +154,7 @@
                       (:startgroup . nil)
                       ("personal" . ?g)
                       ("work" . ?t)
+                      ("phone" . ?c)
                       (:endgroup . nil)
 
                       ;; Work Log Tags
@@ -505,6 +506,7 @@ A prefix arg forces clock in of the default task."
   (setq! citar-library-paths '("/home/mbarria/org/Bib/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
+  (setq! citar-file-additional-files-separator "-")
   )
 
   (map! :map doom-leader-notes-map
@@ -663,6 +665,11 @@ it can be passed in POS."
       ;; messages don't really "move"
       mu4e-index-lazy-check t)
 (setq mu4e-update-interval 60)
+;; Set default search to my inbox; as that is what I prioritize keeping clean
+(after! mu4e
+    (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
+    (mu4e-modeline-mode))
+;; Show it in modeline
 
 (after! lsp-julia
   (setq lsp-julia-package-dir nil)

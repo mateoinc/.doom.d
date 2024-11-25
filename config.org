@@ -752,6 +752,7 @@ From a headline or body, use ~SPC m q~ to set tags from this list.
                       (:startgroup . nil)
                       ("personal" . ?g)
                       ("work" . ?t)
+                      ("phone" . ?c)
                       (:endgroup . nil)
 
                       ;; Work Log Tags
@@ -1180,6 +1181,7 @@ The "reference" folder is mostly set up as a fallback. I try to keep my notes in
   (setq! citar-library-paths '("/home/mbarria/org/Bib/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
   (setq! citar-library-file-extensions  (list "pdf"))
+  (setq! citar-file-additional-files-separator "-")
   )
 
   (map! :map doom-leader-notes-map
@@ -1401,6 +1403,11 @@ My config is nothing special.
       ;; messages don't really "move"
       mu4e-index-lazy-check t)
 (setq mu4e-update-interval 60)
+;; Set default search to my inbox; as that is what I prioritize keeping clean
+(after! mu4e
+    (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
+    (mu4e-modeline-mode))
+;; Show it in modeline
 #+end_src
 ** Julia
 While I'm most proficient with Python, I'm trying to switch to Julia whenever possible.
