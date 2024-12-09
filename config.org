@@ -1460,7 +1460,7 @@ Multiple Vterms. I've decided to map multi-vterm to ~SPC v~.
          :desc "Next" "n" 'multi-vterm-next
          :desc "Previous" "p" 'multi-vterm-prev
          :desc "Project" "P" 'multi-vterm-project
-
+         :desc "Rename" "r" 'multi-vterm-rename-buffer
          )))
 #+end_src
 

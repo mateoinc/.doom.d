@@ -38,7 +38,7 @@
   :config
   ;; Increase preview width
   (plist-put org-latex-preview-appearance-options
-             :page-width 0.8)
+             :page-width 1.0)
 
   ;; Use dvisvgm to generate previews
   ;; You don't need this, it's the default:
@@ -694,7 +694,7 @@ it can be passed in POS."
          :desc "Next" "n" 'multi-vterm-next
          :desc "Previous" "p" 'multi-vterm-prev
          :desc "Project" "P" 'multi-vterm-project
-
+         :desc "Rename" "r" 'multi-vterm-rename-buffer
          )))
 
 (setq vterm-tramp-shells '(("ssh" "/bin/bash") ("docker" "/bin/sh")))
