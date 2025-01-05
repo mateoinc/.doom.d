@@ -4,6 +4,7 @@
 #+title: My (Doom) Emacs Config
 #+author: Mateo Barria-Urenda
 #+PROPERTY: header-args :comments
+#+PROPERTY: header-args :results silent
 
 * About
 This is my Doom Emacs configuration.
