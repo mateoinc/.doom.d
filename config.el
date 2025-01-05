@@ -838,3 +838,12 @@ it can be passed in POS."
        :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
        :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
         )))
+
+(defun my/handle-denote-dired ()
+  "Handle diredfl in denote directories."
+  (when (member default-directory denote-dired-directories)
+    (diredfl-mode -1)
+    (dired-hide-details-mode 1)
+    (denote-dired-mode 1)))
+
+(add-hook 'dired-mode-hook #'my/handle-denote-dired 90)

@@ -1727,3 +1727,19 @@ And we add some bindings
         )))
 #+end_src
 
+
+*** denote dired
+Denote has a mode for highlighting denote sections in dired. But it doesn't play well with diredfl-mode.
+I add a hook here to enable it properly (disabling diredfl) and in the process hide details since creation time and permissions is redundant information for my denote folder.
+
+#+begin_src elisp :tangle config.el
+(defun my/handle-denote-dired ()
+  "Handle diredfl in denote directories."
+  (when (member default-directory denote-dired-directories)
+    (diredfl-mode -1)
+    (dired-hide-details-mode 1)
+    (denote-dired-mode 1)))
+
+(add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
+
+#+end_src
