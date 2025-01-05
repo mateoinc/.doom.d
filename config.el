@@ -626,9 +626,9 @@ it can be passed in POS."
      (list
       ;; Take care of inbox using the variable
       (el-secretario-org-make-source nil (list +org-capture-inbox-file))
+      ))))
 
-      ;; Go through TODOs
-      (el-secretario-org-make-source '(todo "TODO") '(list +org-capture-todo-file))))))
+(run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
 
 (define-key el-secretario-org-keymap
       "a" '("Archive" . org-archive-subtree))

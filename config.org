@@ -1357,9 +1357,13 @@ First for review functions:
      (list
       ;; Take care of inbox using the variable
       (el-secretario-org-make-source nil (list +org-capture-inbox-file))
+      ))))
+#+end_src
 
-      ;; Go through TODOs
-      (el-secretario-org-make-source '(todo "TODO") '(list +org-capture-todo-file))))))
+Also I'll run my reviews on a timer
+
+#+begin_src elisp :tangle config.el
+(run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
 #+end_src
 
 For mapping keybindings in el-secretario reviews, it's recommended to use define-key.
@@ -1376,6 +1380,8 @@ But for mapping reviews it should not be a problem.
         :desc "Inbox Review" "I" 'el-secretario-inbox-review
         )
 #+end_src
+
+
 
 ** Ligatures
 *** Julia
