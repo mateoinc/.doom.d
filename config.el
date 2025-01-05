@@ -787,3 +787,54 @@ it can be passed in POS."
 (use-package! outline-indent-mode
   :config
   (add-hook 'typst-ts-mode-hook #'outline-indent-mode))
+
+(use-package! denote
+  :custom
+  (denote-directory (expand-file-name "~/Documents/denotes/"))
+  ;; Set medium as known keywords. Let topics be discovered.
+  (denote-known-keywords '("Book" "Article" "Meeting" "Metanote"))
+  (denote-date-prompt-use-org-read-date t)
+  :config
+  ;; Automatically rename Denote buffers when opening them so that
+  ;; instead of their long file name they have, for example, a literal
+  ;; "[D]" followed by the file's title.  Read the doc string of
+  ;; `denote-rename-buffer-format' for how to modify this.
+  (denote-rename-buffer-mode 1))
+
+(use-package! consult-denote
+  :after denote
+  :config
+  (consult-denote-mode))
+
+(map! :leader
+      (:prefix-map ("d" . "Denotes")
+       :desc "Backlinks"             "b"  'denote-backlinks
+       :desc "Child   Note"          "c"  'denote-sequence-new-child
+       :desc "Sort Dired"            "d"  'denote-sort-dired
+       :desc "Sequence Dired"        "D"  'denote-sequence-dired
+       :desc "Open Note"             "f"  'denote-open-or-create
+       :desc "Search Note"           "F"  'consult-denote-grep
+       ;; :desc "Open Note"             "f"  'consult-denote-find
+       :desc "Link"                  "l"  'denote-link
+       :desc "Multiple Links"        "L"  'denote-add-links
+       :desc "Denote"                "n"  'denote
+       :desc "Parent  Note"          "p"  'denote-sequence-new-parent
+       :desc "Sibling Note"          "s"  'denote-sequence-new-sibling
+       :desc "Rename"                "r"  'denote-rename-file
+       :desc "Front Matter Rename"   "R"  'denote-rename-file-using-front-matter
+       (:prefix-map ("e" . "Explore")
+       :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
+       :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
+       :desc "Count Notes"           "c"  'denote-explore-count-notes
+       :desc "Count Keywords"        "C"  'denote-explore-count-keywords
+       :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
+       :desc "Isolated notes"        "i"  'denote-explore-isolated-files
+       :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
+       :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
+       :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
+       :desc "Network"               "n"  'denote-explore-network
+       :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
+       :desc "Random note"           "r"  'denote-explore-random-note
+       :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
+       :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
+        )))
