@@ -122,7 +122,8 @@
 ;; Specific Capture for Inbox + Shortcut to inbox file
 (map! :map doom-leader-notes-map
       :desc "Capture to Inbox" "i" #'org-capture-inbox
-      :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file)))
+      ;; :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file))
+      )
 
 (after! org-fancy-priorities
   (setq org-fancy-priorities-list '((?A . "🔴")
@@ -510,8 +511,8 @@ A prefix arg forces clock in of the default task."
   )
 
   (map! :map doom-leader-notes-map
-        :desc "Insert Citation" "p" 'citar-insert-citation
-        :desc "Open Reference" "P" 'citar-open)
+        :desc "Insert Citation" "k" 'citar-insert-citation
+        :desc "Open Reference" "p" 'citar-open)
 
 ;; org-roam + citar config
 (after! citar-org-roam
@@ -605,6 +606,37 @@ it can be passed in POS."
     "Update the LAST_MODIFIED file property in the preamble."
     (when (derived-mode-p 'org-mode)
       (zp/org-set-time-file-property "lastmod")))
+
+;; Create a function to start the review
+(defun el-secretario-daily-review ()
+  (interactive)
+  (el-secretario-start-session
+   (lambda ()
+     (list
+      ;; Take care of inbox using the variable
+      (el-secretario-org-make-source nil (list +org-capture-inbox-file))
+
+      ;; Go through TODOs
+      (el-secretario-org-make-source '(todo "TODO") '(list +org-capture-todo-file))))))
+
+(defun el-secretario-inbox-review ()
+  (interactive)
+  (el-secretario-start-session
+   (lambda ()
+     (list
+      ;; Take care of inbox using the variable
+      (el-secretario-org-make-source nil (list +org-capture-inbox-file))
+
+      ;; Go through TODOs
+      (el-secretario-org-make-source '(todo "TODO") '(list +org-capture-todo-file))))))
+
+(define-key el-secretario-org-keymap
+      "a" '("Archive" . org-archive-subtree))
+
+  (map! :map doom-leader-notes-map
+        :desc "Daily Review" "d" 'el-secretario-daily-review
+        :desc "Inbox Review" "I" 'el-secretario-inbox-review
+        )
 
 ;; Julia
 (after! julia-mode

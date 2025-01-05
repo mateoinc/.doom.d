@@ -38,6 +38,11 @@
 
 (package! git-auto-commit-mode)
 
+(package! el-secretario)
+(package! el-secretario-org)
+(package! el-secretario-mu4e)
+(package! el-secretario-elfeed)
+
 (package! multi-vterm)
 
 (package! org-pandoc-import
