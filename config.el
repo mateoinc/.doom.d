@@ -630,8 +630,11 @@ it can be passed in POS."
 
 (run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
 
-(define-key el-secretario-org-keymap
-      "a" '("Archive" . org-archive-subtree))
+(use-package! el-secretario-org
+  :after el-secretario
+  :config
+  (define-key el-secretario-org-keymap
+      "a" '("Archive" . org-archive-subtree)))
 
   (map! :map doom-leader-notes-map
         :desc "Daily Review" "d" 'el-secretario-daily-review

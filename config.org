@@ -1344,6 +1344,8 @@ First for review functions:
   (el-secretario-start-session
    (lambda ()
      (list
+      ;; Clean up folders
+      (el-secretario-files)
       ;; Take care of inbox using the variable
       (el-secretario-org-make-source nil (list +org-capture-inbox-file))
 
@@ -1369,8 +1371,14 @@ Also I'll run my reviews on a timer
 For mapping keybindings in el-secretario reviews, it's recommended to use define-key.
 
 #+begin_src elisp :tangle config.el
-(define-key el-secretario-org-keymap
+(use-package! el-secretario-org
+  :after el-secretario
+  :config
+  (define-key el-secretario-org-keymap
       "a" '("Archive" . org-archive-subtree))
+  (define-key el-secretario-org-keymap
+      "t" '("State" . org-todo))
+  )
 #+end_src
 
 But for mapping reviews it should not be a problem.
