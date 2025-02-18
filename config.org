@@ -1382,7 +1382,7 @@ First for review functions:
 Also I'll run my reviews on a timer
 
 #+begin_src elisp :tangle config.el
-(run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
+;; (run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
 #+end_src
 
 For mapping keybindings in el-secretario reviews, it's recommended to use define-key.

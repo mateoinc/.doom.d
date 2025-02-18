@@ -624,6 +624,8 @@ it can be passed in POS."
   (el-secretario-start-session
    (lambda ()
      (list
+      ;; Clean up folders
+      (el-secretario-files)
       ;; Take care of inbox using the variable
       (el-secretario-org-make-source nil (list +org-capture-inbox-file))
 
@@ -639,13 +641,16 @@ it can be passed in POS."
       (el-secretario-org-make-source nil (list +org-capture-inbox-file))
       ))))
 
-(run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
+;; (run-with-idle-timer 300 t (lambda () (unless (org-clocking-p) (el-secretario-daily-review))))
 
 (use-package! el-secretario-org
   :after el-secretario
   :config
   (define-key el-secretario-org-keymap
-      "a" '("Archive" . org-archive-subtree)))
+      "a" '("Archive" . org-archive-subtree))
+  (define-key el-secretario-org-keymap
+      "t" '("State" . org-todo))
+  )
 
   (map! :map doom-leader-notes-map
         :desc "Daily Review" "d" 'el-secretario-daily-review
