@@ -568,6 +568,23 @@ I like setting evil-snipe to visible.
 #+end_src
 
 
+*** Dirvish
+An extension of dired. My main configuration change is setting quick access locations.
+#+begin_src elisp :tangle config.el
+(after! dirvish
+  (setq dirvish-quick-access-entries '(
+        ("h" "~/" "Home")
+        ("d" "~/Documents" "Documents")
+        ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
+        ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
+        ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
+        ("u" "/ssh:chupete:/home/mbarria" "chupete")
+        ("n" "~/org" "Org-mode")
+        )))
+#+end_src
+
+*** Tramp server
+
 ** Org-mode
 *** Latex Preview Branch
 [[https://git.tecosaur.net/tec][Tecosaur]] and [[https://abode.karthinks.com/org-latex-preview/][Karthink]] have made a bunch of improvements to LaTeX preview in org-mode.

@@ -34,6 +34,17 @@
 
 (setq evil-snipe-scope 'visible)
 
+(after! dirvish
+  (setq dirvish-quick-access-entries '(
+        ("h" "~/" "Home")
+        ("d" "~/Documents" "Documents")
+        ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
+        ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
+        ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
+        ("u" "/ssh:chupete:/home/mbarria" "chupete")
+        ("n" "~/org" "Org-mode")
+        )))
+
 (use-package! org-latex-preview
   :config
   ;; Increase preview width
