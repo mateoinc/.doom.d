@@ -51,7 +51,8 @@
            :files ("*.el" "filters" "preprocessors")))
 (package! ox-pandoc)
 
-(package! elfeed-dashboard)
+(package! elfeed-protocol)
+(package! elfeed-score)
 
 (package! spotify
   :recipe (:host github

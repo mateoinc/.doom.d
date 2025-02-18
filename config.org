@@ -427,7 +427,7 @@ And rss adds an rss feed, of course.
        :app
        calendar
        everywhere        ; *leave* Emacs!? You must be joking
-       (rss +org)        ; emacs as an RSS reader
+       (rss +org +youtube)        ; emacs as an RSS reader
 #+end_src
 There's also a module for music plaing (emms) and one for IRC.
 ** :config
@@ -1562,7 +1562,8 @@ Take advantage of [[https://pandoc.org/][Pandoc]] to never leave org-mode!
 The RSS module already installs elfeed and sets it up to configure with an ~elfeed.org~ file in your ~org~ folder. But I want some more features and syncing the database with syncthing.
 
 #+begin_src elisp :tangle packages.el
-(package! elfeed-dashboard)
+(package! elfeed-protocol)
+(package! elfeed-score)
 #+end_src
 
 #+begin_src elisp :tangle config.el
@@ -1570,12 +1571,22 @@ The RSS module already installs elfeed and sets it up to configure with an ~elfe
   (setq elfeed-db-directory "~/.elfeed-data")
   (add-hook 'elfeed-search-mode-hook #'elfeed-update))
 
-(use-package! elfeed-dashboard
+
+(use-package! elfeed-protocol
   :after elfeed
   :config
-  (setq elfeed-dashboard-file (doom-path org-directory "elfeed-dashboard.org"))
-  ;; update feed counts on elfeed-quit
-  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+  (setq elfeed-curl-extra-arguments '("--insecure"))
+  ;; setup feeds
+  (setq elfeed-protocol-feeds '(("owncloud+https://admin@nc.mbarria.cl"
+                        :use-authinfo t )))
+
+  ;; enable elfeed-protocol
+  (setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
+  (setq elfeed-protocol-owncloud-maxsize 1000)
+  (setq elfeed-protocol-owncloud-update-with-modified-time t)
+  (setq elfeed-protocol-owncloud-fetch-category-as-tag t)
+  (elfeed-protocol-enable)
+  )
 #+end_src
 
 * Packages

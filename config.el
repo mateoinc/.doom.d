@@ -741,12 +741,22 @@ it can be passed in POS."
   (setq elfeed-db-directory "~/.elfeed-data")
   (add-hook 'elfeed-search-mode-hook #'elfeed-update))
 
-(use-package! elfeed-dashboard
+
+(use-package! elfeed-protocol
   :after elfeed
   :config
-  (setq elfeed-dashboard-file (doom-path org-directory "elfeed-dashboard.org"))
-  ;; update feed counts on elfeed-quit
-  (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
+  (setq elfeed-curl-extra-arguments '("--insecure"))
+  ;; setup feeds
+  (setq elfeed-protocol-feeds '(("owncloud+https://admin@nc.mbarria.cl"
+                        :use-authinfo t )))
+
+  ;; enable elfeed-protocol
+  (setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
+  (setq elfeed-protocol-owncloud-maxsize 1000)
+  (setq elfeed-protocol-owncloud-update-with-modified-time t)
+  (setq elfeed-protocol-owncloud-fetch-category-as-tag t)
+  (elfeed-protocol-enable)
+  )
 
 (map! :leader
       (:prefix-map ("S" . "Spotify")

@@ -159,7 +159,7 @@
        :app
        calendar
        everywhere        ; *leave* Emacs!? You must be joking
-       (rss +org)        ; emacs as an RSS reader
+       (rss +org +youtube)        ; emacs as an RSS reader
 
        :config
        ;; literate
