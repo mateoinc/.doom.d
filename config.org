@@ -1700,12 +1700,14 @@ Karthink's [[https://github.com/karthink/gptel?tab=readme-ov-file#ollama][LLM cl
   ;; Set default
   ;; OPTIONAL configuration
   (setq
-   gptel-model "mistral-nemo:latest"
+   gptel-model 'deepseek-r1
    gptel-default-mode #'org-mode
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '("llama3.1:latest"
+                   :models '(
+                             "deepseek-r1"
+                             "llama3.1:latest"
                              "deepseek-coder-v2:latest"
                              "mistral:latest"
                              "mistral-nemo:latest"
@@ -1728,6 +1730,37 @@ Karthink's [[https://github.com/karthink/gptel?tab=readme-ov-file#ollama][LLM cl
 #+RESULTS:
 : gptel-rg-set-properties
 
+** whisper
+Voice to Text using OpenAI's whisper, locally.
+
+#+begin_src elisp :tangle packages.el
+(package! whisper
+  :recipe (:host github :repo "natrys/whisper.el"))
+#+end_src
+
+#+begin_src elisp :tangle config.el
+
+(use-package! whisper
+  :config
+  (map! :desc "Voice to Text" :g "C-c i" #'whisper-run)
+
+(defun whisper--break-sentences (n)
+  "Put a line break every N sentences."
+  (catch 'return
+    (while t
+      (dotimes (_ n)
+        (forward-sentence 1)
+        (when (eobp) (throw 'return nil)))
+      (insert "\n")
+      (when (= (char-after) ?\ )
+        (delete-horizontal-space)))))
+
+(add-hook 'whisper-post-process-hook
+          (lambda ()
+            (whisper--break-sentences 1)))
+
+  )
+#+end_src
 ** Typst
 A [[https://typst.app/docs]["markup-based pysetting language"]].
 

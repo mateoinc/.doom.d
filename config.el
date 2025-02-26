@@ -36,14 +36,14 @@
 
 (after! dirvish
   (setq dirvish-quick-access-entries '(
-        ("h" "~/" "Home")
-        ("d" "~/Documents" "Documents")
-        ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
-        ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
-        ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
-        ("u" "/ssh:chupete:/home/mbarria" "chupete")
-        ("n" "~/org" "Org-mode")
-        )))
+                                       ("h" "~/" "Home")
+                                       ("d" "~/Documents" "Documents")
+                                       ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
+                                       ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
+                                       ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
+                                       ("u" "/ssh:chupete:/home/mbarria" "chupete")
+                                       ("n" "~/org" "Org-mode")
+                                       )))
 
 (use-package! org-latex-preview
   :config
@@ -84,12 +84,12 @@
 ;; timestamp DONEs
 (setq org-log-done 'time)
 (after! org (setq org-agenda-files (list "~/org/agenda/!nbox.org"
-                                     "~/org/agenda/todo.org"
-                                     "~/org/agenda/done.org"
-                                     "~/org/agenda/projects.org"
-                                     "~/org/agenda/someday.org"
-                                     "~/org/agenda/toread.org"
-                                     "~/org/agenda/meetings.org")))
+                                         "~/org/agenda/todo.org"
+                                         "~/org/agenda/done.org"
+                                         "~/org/agenda/projects.org"
+                                         "~/org/agenda/someday.org"
+                                         "~/org/agenda/toread.org"
+                                         "~/org/agenda/meetings.org")))
 
 (after! org
   (setq org-capture-templates
@@ -138,8 +138,8 @@
 
 (after! org-fancy-priorities
   (setq org-fancy-priorities-list '((?A . "🔴")
-                                  (?B . "🟠")
-                                  (?C . "🟢"))))
+                                    (?B . "🟠")
+                                    (?C . "🟢"))))
 
 (setq org-tag-alist '(
                       ;; Ticket types
@@ -378,7 +378,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+                                        ; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -451,31 +451,31 @@ A prefix arg forces clock in of the default task."
       (org-clock-in nil))))
 
 (after! org-roam-capture
-(setq org-roam-capture-templates
-      '(("m" "main" plain
-         "%?"
-         :if-new (file+head "main/${slug}.org"
-                            "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("r" "reference" plain
-         "%?"
-         :if-new (file+head "reference/${title}.org"
-                            "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("b" "bibliography" plain
-         "%?"
-         :if-new (file+head "bibliography/${citar-citekey}.org"
-                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../../Bib/pdfs/${citar-citekey}.pdf\n:END:")
-         :immediate-finish t
-         :unnarrowed t)
-        ("v" "video" plain
-         "%?"
-         :if-new (file+head "videos/${title}.org"
-                            "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t))))
+  (setq org-roam-capture-templates
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                              "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("r" "reference" plain
+           "%?"
+           :if-new (file+head "reference/${title}.org"
+                              "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("b" "bibliography" plain
+           "%?"
+           :if-new (file+head "bibliography/${citar-citekey}.org"
+                              "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../../Bib/pdfs/${citar-citekey}.pdf\n:END:")
+           :immediate-finish t
+           :unnarrowed t)
+          ("v" "video" plain
+           "%?"
+           :if-new (file+head "videos/${title}.org"
+                              "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t))))
 
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
@@ -513,7 +513,7 @@ A prefix arg forces clock in of the default task."
                               "/home/mbarria/org/Bib/nanotubes.bib"
                               "/home/mbarria/org/Bib/orgchem.bib"
                               "/home/mbarria/org/Bib/physics.bib"
-                            ))
+                              ))
   (setq org-cite-global-bibliography citar-bibliography)
   (setq! citar-library-paths '("/home/mbarria/org/Bib/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
@@ -521,23 +521,23 @@ A prefix arg forces clock in of the default task."
   (setq! citar-file-additional-files-separator "-")
   )
 
-  (map! :map doom-leader-notes-map
-        :desc "Insert Citation" "k" 'citar-insert-citation
-        :desc "Open Reference" "p" 'citar-open)
+(map! :map doom-leader-notes-map
+      :desc "Insert Citation" "k" 'citar-insert-citation
+      :desc "Open Reference" "p" 'citar-open)
 
 ;; org-roam + citar config
 (after! citar-org-roam
-        (setq citar-org-roam-subdir "bibliography")
-        (setq citar-org-roam-note-title-template "${title}")
-        (setq citar-org-roam-capture-template-key "b")
-        (setq citar-org-roam-template-fields
+  (setq citar-org-roam-subdir "bibliography")
+  (setq citar-org-roam-note-title-template "${title}")
+  (setq citar-org-roam-capture-template-key "b")
+  (setq citar-org-roam-template-fields
         '((:citar-title . ("title"))
-        (:citar-author . ("author" "editor"))
-        (:citar-date . ("date" "year" "issued"))
-        (:citar-doi . ("doi"))
-        (:citar-pages . ("pages"))
-        (:citar-type . ("=type="))))
-              )
+          (:citar-author . ("author" "editor"))
+          (:citar-date . ("date" "year" "issued"))
+          (:citar-doi . ("doi"))
+          (:citar-pages . ("pages"))
+          (:citar-type . ("=type="))))
+  )
 
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/org/Bib/Bibliography.bib"))
@@ -563,60 +563,60 @@ A prefix arg forces clock in of the default task."
 
 (use-package! ob-async)
 
-  ;;--------------------------
-  ;; Handling file properties for ‘CREATED’ & ‘LAST_MODIFIED’
-  ;;--------------------------
+;;--------------------------
+;; Handling file properties for ‘CREATED’ & ‘LAST_MODIFIED’
+;;--------------------------
 
-  (defun zp/org-find-time-file-property (property &optional anywhere)
-    "Return the position of the time file PROPERTY if it exists.
+(defun zp/org-find-time-file-property (property &optional anywhere)
+  "Return the position of the time file PROPERTY if it exists.
 
 When ANYWHERE is non-nil, search beyond the preamble."
-    (save-excursion
-      (goto-char (point-min))
-      (let ((first-heading
-             (save-excursion
-               (re-search-forward org-outline-regexp-bol nil t))))
-        (when (re-search-forward (format "^#\\+%s:" property)
-                                 (if anywhere nil first-heading)
-                                 t)
-          (point)))))
+  (save-excursion
+    (goto-char (point-min))
+    (let ((first-heading
+           (save-excursion
+             (re-search-forward org-outline-regexp-bol nil t))))
+      (when (re-search-forward (format "^#\\+%s:" property)
+                               (if anywhere nil first-heading)
+                               t)
+        (point)))))
 
-  (defun zp/org-has-time-file-property-p (property &optional anywhere)
-    "Return the position of time file PROPERTY if it is defined.
+(defun zp/org-has-time-file-property-p (property &optional anywhere)
+  "Return the position of time file PROPERTY if it is defined.
 
 As a special case, return -1 if the time file PROPERTY exists but
 is not defined."
-    (when-let ((pos (zp/org-find-time-file-property property anywhere)))
-      (save-excursion
-        (goto-char pos)
-        (if (and (looking-at-p " ")
-                 (progn (forward-char)
-                        (org-at-timestamp-p 'lax)))
-            pos
-          -1))))
+  (when-let ((pos (zp/org-find-time-file-property property anywhere)))
+    (save-excursion
+      (goto-char pos)
+      (if (and (looking-at-p " ")
+               (progn (forward-char)
+                      (org-at-timestamp-p 'lax)))
+          pos
+        -1))))
 
-  (defun zp/org-set-time-file-property (property &optional anywhere pos)
-    "Set the time file PROPERTY in the preamble.
+(defun zp/org-set-time-file-property (property &optional anywhere pos)
+  "Set the time file PROPERTY in the preamble.
 
 When ANYWHERE is non-nil, search beyond the preamble.
 
 If the position of the file PROPERTY has already been computed,
 it can be passed in POS."
-    (when-let ((pos (or pos
-                        (zp/org-find-time-file-property property))))
-      (save-excursion
-        (goto-char pos)
-        (if (looking-at-p " ")
-            (forward-char)
-          (insert " "))
-        (delete-region (point) (line-end-position))
-        (let* ((now (format-time-string "[%Y-%m-%d %a %H:%M]")))
-          (insert now)))))
+  (when-let ((pos (or pos
+                      (zp/org-find-time-file-property property))))
+    (save-excursion
+      (goto-char pos)
+      (if (looking-at-p " ")
+          (forward-char)
+        (insert " "))
+      (delete-region (point) (line-end-position))
+      (let* ((now (format-time-string "[%Y-%m-%d %a %H:%M]")))
+        (insert now)))))
 
-  (defun zp/org-set-last-modified ()
-    "Update the LAST_MODIFIED file property in the preamble."
-    (when (derived-mode-p 'org-mode)
-      (zp/org-set-time-file-property "lastmod")))
+(defun zp/org-set-last-modified ()
+  "Update the LAST_MODIFIED file property in the preamble."
+  (when (derived-mode-p 'org-mode)
+    (zp/org-set-time-file-property "lastmod")))
 
 ;; Create a function to start the review
 (defun el-secretario-daily-review ()
@@ -647,15 +647,15 @@ it can be passed in POS."
   :after el-secretario
   :config
   (define-key el-secretario-org-keymap
-      "a" '("Archive" . org-archive-subtree))
+              "a" '("Archive" . org-archive-subtree))
   (define-key el-secretario-org-keymap
-      "t" '("State" . org-todo))
+              "t" '("State" . org-todo))
   )
 
-  (map! :map doom-leader-notes-map
-        :desc "Daily Review" "d" 'el-secretario-daily-review
-        :desc "Inbox Review" "I" 'el-secretario-inbox-review
-        )
+(map! :map doom-leader-notes-map
+      :desc "Daily Review" "d" 'el-secretario-daily-review
+      :desc "Inbox Review" "I" 'el-secretario-inbox-review
+      )
 
 ;; Julia
 (after! julia-mode
@@ -718,8 +718,8 @@ it can be passed in POS."
 (setq mu4e-update-interval 60)
 ;; Set default search to my inbox; as that is what I prioritize keeping clean
 (after! mu4e
-    (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
-    (mu4e-modeline-mode))
+  (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
+  (mu4e-modeline-mode))
 ;; Show it in modeline
 
 (after! lsp-julia
@@ -727,7 +727,7 @@ it can be passed in POS."
   (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
 
 (after! projectile
- (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
+  (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
 
 (setq nu--path  "/etc/profiles/per-user/mbarria/bin/nu")
 (if (file-exists-p nu--path)
@@ -764,7 +764,7 @@ it can be passed in POS."
   (setq elfeed-curl-extra-arguments '("--insecure"))
   ;; setup feeds
   (setq elfeed-protocol-feeds '(("owncloud+https://admin@nc.mbarria.cl"
-                        :use-authinfo t )))
+                                 :use-authinfo t )))
 
   ;; enable elfeed-protocol
   (setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
@@ -813,12 +813,14 @@ it can be passed in POS."
   ;; Set default
   ;; OPTIONAL configuration
   (setq
-   gptel-model "mistral-nemo:latest"
+   gptel-model 'deepseek-r1
    gptel-default-mode #'org-mode
    gptel-backend (gptel-make-ollama "Ollama"
                    :host "localhost:11434"
                    :stream t
-                   :models '("llama3.1:latest"
+                   :models '(
+                             "deepseek-r1"
+                             "llama3.1:latest"
                              "deepseek-coder-v2:latest"
                              "mistral:latest"
                              "mistral-nemo:latest"
@@ -836,6 +838,27 @@ it can be passed in POS."
        (:mode (org-mode)
         :desc "Limit to Heading" "h" 'gptel-org-set-topic
         :desc "Set properties" "p" 'gptel-org-set-properties)))
+
+(use-package! whisper
+  :config
+  (map! :desc "Voice to Text" :g "C-c i" #'whisper-run)
+
+  (defun whisper--break-sentences (n)
+    "Put a line break every N sentences."
+    (catch 'return
+      (while t
+        (dotimes (_ n)
+          (forward-sentence 1)
+          (when (eobp) (throw 'return nil)))
+        (insert "\n")
+        (when (= (char-after) ?\ )
+          (delete-horizontal-space)))))
+
+  (add-hook 'whisper-post-process-hook
+            (lambda ()
+              (whisper--break-sentences 1)))
+
+  )
 
 (use-package! typst-ts-mode
   :custom
@@ -884,20 +907,20 @@ it can be passed in POS."
        :desc "Rename"                "r"  'denote-rename-file
        :desc "Front Matter Rename"   "R"  'denote-rename-file-using-front-matter
        (:prefix-map ("e" . "Explore")
-       :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
-       :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
-       :desc "Count Notes"           "c"  'denote-explore-count-notes
-       :desc "Count Keywords"        "C"  'denote-explore-count-keywords
-       :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
-       :desc "Isolated notes"        "i"  'denote-explore-isolated-files
-       :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
-       :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
-       :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
-       :desc "Network"               "n"  'denote-explore-network
-       :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
-       :desc "Random note"           "r"  'denote-explore-random-note
-       :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
-       :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
+        :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
+        :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
+        :desc "Count Notes"           "c"  'denote-explore-count-notes
+        :desc "Count Keywords"        "C"  'denote-explore-count-keywords
+        :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
+        :desc "Isolated notes"        "i"  'denote-explore-isolated-files
+        :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
+        :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
+        :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
+        :desc "Network"               "n"  'denote-explore-network
+        :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
+        :desc "Random note"           "r"  'denote-explore-random-note
+        :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
+        :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
         )))
 
 (defun my/handle-denote-dired ()
@@ -908,3 +931,5 @@ it can be passed in POS."
     (denote-dired-mode 1)))
 
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
+
+
