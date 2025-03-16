@@ -9,7 +9,7 @@
 * About
 This is my Doom Emacs configuration.
 
-I've separat        ed this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
+I've separated this file in three main sections, to correspond to Doom's three config files: [[file:init.el]] ([[Modules]]), [[file:config.el]] ([[Config]]), and [[file:packages.el]] ([[Packages]]).
 However, these don't correspond one-to-one. [[Config]] consists mostly of changes to stuff included in Doom Emacs (such as configuration of the enabled modules), while [[Packages]] corresponds to installation and configuration of packages not included in Doom modules.
 
 ** Why Emacs?
@@ -138,6 +138,9 @@ etc).
 You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 they are implemented.
 #+end_quote
+
+
+
 
 * Modules
 
@@ -284,7 +287,7 @@ The doom spell/syntax checkers all work really well. Writegood mode (installed b
 #+begin_src elisp :tangle init.el
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       (spell +flyspell) ; tasing you for misspelling mispelling
+       (spell +flyspell +hunspell) ; tasing you for misspelling mispelling
        grammar           ; tasing grammar mistake every you make
 
 #+end_src
@@ -447,6 +450,8 @@ We finish by closing the doom! list.
 
 Could've done so in the last module, but didn't want to keep track of that if it happens to change.
 
+
+
 * Config
 
 ** On package reconfiguration...
@@ -588,6 +593,7 @@ An extension of dired. My main configuration change is setting quick access loca
 #+end_src
 
 *** Tramp server
+
 
 ** Org-mode
 *** Latex Preview Branch
@@ -1900,4 +1906,15 @@ I add a hook here to enable it properly (disabling diredfl) and in the process h
 
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
 
+#+end_src
+** page break lines
+#+begin_src elist :tangle packages.el
+(package! page-break-lines)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! page-break-lines
+    :ensure
+    :config
+  (global-page-break-lines-mode))
 #+end_src

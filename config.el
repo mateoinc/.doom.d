@@ -869,20 +869,20 @@ it can be passed in POS."
   :config
   (map! :desc "Voice to Text" :g "C-c i" #'whisper-run)
 
-  (defun whisper--break-sentences (n)
-    "Put a line break every N sentences."
-    (catch 'return
-      (while t
-        (dotimes (_ n)
-          (forward-sentence 1)
-          (when (eobp) (throw 'return nil)))
-        (insert "\n")
-        (when (= (char-after) ?\ )
-          (delete-horizontal-space)))))
+(defun whisper--break-sentences (n)
+  "Put a line break every N sentences."
+  (catch 'return
+    (while t
+      (dotimes (_ n)
+        (forward-sentence 1)
+        (when (eobp) (throw 'return nil)))
+      (insert "\n")
+      (when (= (char-after) ?\ )
+        (delete-horizontal-space)))))
 
-  (add-hook 'whisper-post-process-hook
-            (lambda ()
-              (whisper--break-sentences 1)))
+(add-hook 'whisper-post-process-hook
+          (lambda ()
+            (whisper--break-sentences 1)))
 
   )
 
@@ -933,20 +933,20 @@ it can be passed in POS."
        :desc "Rename"                "r"  'denote-rename-file
        :desc "Front Matter Rename"   "R"  'denote-rename-file-using-front-matter
        (:prefix-map ("e" . "Explore")
-        :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
-        :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
-        :desc "Count Notes"           "c"  'denote-explore-count-notes
-        :desc "Count Keywords"        "C"  'denote-explore-count-keywords
-        :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
-        :desc "Isolated notes"        "i"  'denote-explore-isolated-files
-        :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
-        :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
-        :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
-        :desc "Network"               "n"  'denote-explore-network
-        :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
-        :desc "Random note"           "r"  'denote-explore-random-note
-        :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
-        :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
+       :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
+       :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
+       :desc "Count Notes"           "c"  'denote-explore-count-notes
+       :desc "Count Keywords"        "C"  'denote-explore-count-keywords
+       :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
+       :desc "Isolated notes"        "i"  'denote-explore-isolated-files
+       :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
+       :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
+       :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
+       :desc "Network"               "n"  'denote-explore-network
+       :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
+       :desc "Random note"           "r"  'denote-explore-random-note
+       :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
+       :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
         )))
 
 (defun my/handle-denote-dired ()
@@ -958,4 +958,7 @@ it can be passed in POS."
 
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
 
-
+(use-package! page-break-lines
+    :ensure
+    :config
+  (global-page-break-lines-mode))

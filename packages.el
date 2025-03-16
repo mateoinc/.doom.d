@@ -83,3 +83,5 @@
 (package! denote)
 (package! consult-denote) ; consult integration for denote
 (package! denote-explore) ; more options for exploring denote files
+
+(package! page-break-lines)
