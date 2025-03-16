@@ -22,6 +22,8 @@
 
 (add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
 
+(map! :map general-override-mode-map :nvm [backspace] 'doom/leader)
+
 (display-battery-mode)
 (display-time-mode)
 (timeclock-mode-line-display)

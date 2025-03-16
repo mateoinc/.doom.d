@@ -531,7 +531,11 @@ I like to highlight TODOs regardless of mode, so I can see comments that say TOD
 (add-hook 'pdf-view-mode-hook #'pdf-view-themed-minor-mode)
 #+end_src
 
-
+*** More leader keys
+Since I have a split kb, it makes sense to have both halves have a thumb-located leader key.
+#+begin_src elisp :tangle config.el
+(map! :map general-override-mode-map :nvm [backspace] 'doom/leader)
+#+end_src
 *** Modeline config
 Doom's modeline exposes some configuration.
 I change some defaults mostly because sometimes I use [[EXWM]] as my window manager and desktop environment.
