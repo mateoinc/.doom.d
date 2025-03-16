@@ -665,8 +665,10 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
 (setq org-directory "~/org/")
 (setq +org-capture-inbox-file (doom-path org-directory "agenda/!nbox.org"))
 (setq +org-capture-projects-file (doom-path org-directory "agenda/projects.org"))
+(setq +org-capture-journal-file (doom-path org-directory "agenda/journal.org"))
 (setq +org-capture-todo-file (doom-path org-directory "agenda/todo.org"))
 (setq +org-capture-toread-file (doom-path org-directory "agenda/toread.org"))
+(setq +org-capture-work-log-file (doom-path org-directory "agenda/work-log.org"))
 ;; (setq +org-capture-notes-file (doom-path org-directory "!nbox.org"))
 ;; timestamp DONEs
 (setq org-log-done 'time)
@@ -676,6 +678,7 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
                                      "~/org/agenda/projects.org"
                                      "~/org/agenda/someday.org"
                                      "~/org/agenda/toread.org"
+                                     "~/org/agenda/work-log.org"
                                      "~/org/agenda/meetings.org")))
 #+end_src
 
@@ -683,6 +686,7 @@ In it, in keep most transient notes in an ~!nbox~ file. (The ! helps keep it on 
 
 Capture templates:
 + i: Inbox. Everything that comes from outside the inbox should go here first.
++ s: Work-log/Lab Notebook: Record results so that they are easy to report later.
 + t: General todo. For tasks from the inbox that take more than two minutes.
 + e: Email. For when an email requires some task before replying.
 + p: Creating new projects.
@@ -705,6 +709,12 @@ Capture templates:
            entry (file+headline +org-capture-todo-file "Emails")
            "* TODO [#B] %? :email: \n:Created: %T\n** Correspondent(s)\n***\n** Notes\n** Sub-actions \n%a"
            :prepend t
+           :empty-lines 0)
+          ("s" "Lab Work-Log"
+           entry (file+datetree +org-capture-work-log-file)
+           "* %? \n %a"
+           :prepend nil
+           :tree-type week
            :empty-lines 0)
           ("p" "Project"
            entry (file +org-capture-projects-file)
@@ -753,19 +763,19 @@ Capture templates:
 From a headline or body, use ~SPC m q~ to set tags from this list.
 #+begin_src elisp :tangle config.el
 (setq org-tag-alist '(
-                      ;; Ticket types
-                      (:startgroup . nil)
-                      ("@bug" . ?b)
-                      ("@feature" . ?f)
-                      (:endgroup . nil)
+                      ;; ;; Ticket types
+                      ;; (:startgroup . nil)
+                      ;; ("@bug" . ?b)
+                      ;; ("@feature" . ?f)
+                      ;; (:endgroup . nil)
 
-                      ;; Ticket flags
-                      ("@emergency" . ?e)
-                      ("@research" . ?r)
+                      ;; ;; Ticket flags
+                      ;; ("@emergency" . ?e)
+                      ;; ("@research" . ?r)
 
-                      ;; Special tags
-                      ("CRITICAL" . ?x)
-                      ("obstacle" . ?o)
+                      ;; ;; Special tags
+                      ;; ("CRITICAL" . ?x)
+                      ;; ("obstacle" . ?o)
 
                       ;; Meeting tags
                       ("meeting" . ?m)
@@ -780,8 +790,8 @@ From a headline or body, use ~SPC m q~ to set tags from this list.
                       ("phone" . ?c)
                       (:endgroup . nil)
 
-                      ;; Work Log Tags
-                      ("accomplishment" . ?a)
+                      ;; ;; Work Log Tags
+                      ;; ("accomplishment" . ?a)
                       ))
 ;; Tag colors
 (setq org-tag-faces
@@ -791,7 +801,6 @@ From a headline or body, use ~SPC m q~ to set tags from this list.
         ("progress"  . (:foreground "forest green"  :weight bold))
         ("personal"        . (:foreground "sienna"        :weight bold))
         ("meeting"   . (:foreground "yellow1"       :weight bold))
-        ("CRITICAL"  . (:foreground "red1"          :weight bold))
         )
       )
 #+end_src
@@ -823,7 +832,7 @@ Agenda view
           ("d" "Daily agenda and Next Actions"
 
            ;; Display items with priority A
-           ((tags-todo "PRIORITY=\"A\"+Actions-Someday"
+           ((tags-todo "PRIORITY=\"A\"+Actions-Someday+work"
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
@@ -831,14 +840,14 @@ Agenda view
             (agenda "" ((org-agenda-span 7)))
 
             ;; Display items with priority B (really it is view all items minus A & C)
-            (tags-todo "+Actions-Someday"
+            (tags-todo "+Actions-Someday+work"
                        ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
                                                        (air-org-skip-subtree-if-priority ?C)
                                                        (org-agenda-skip-if nil '(scheduled deadline))))
                         (org-agenda-overriding-header "ALL normal priority tasks:")))
 
             ;; Display items with pirority C
-            (tags-todo "PRIORITY=\"C\"+Actions-Someday"
+            (tags-todo "PRIORITY=\"C\"+Actions-Someday+work"
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
             )
@@ -856,31 +865,41 @@ Agenda view
 
             ))
 
-          ("j" "Someday"
+          ;; Personal TODOs
+          ("p" "Personal"
 
-           ;; Display items with priority A
-           ((tags-todo "PRIORITY=\"A\"+Someday"
-                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+           ;; Display TODO items tagged as inbox_tray
+           ((tags-todo "+personal"
+                       ((org-agenda-overriding-header "Personal")))
 
-            ;; Display items with priority B (really it is view all items minus A & C)
-            (tags-todo "+Someday"
-                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                       (air-org-skip-subtree-if-priority ?C)
-                                                       (org-agenda-skip-if nil '(scheduled deadline))))
-                        (org-agenda-overriding-header "ALL normal priority tasks:")))
-
-            ;; Display items with pirority C
-            (tags-todo "PRIORITY=\"C\"+Someday"
-                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-            )
-
-           ;; Don't compress things (change to suite your tastes)
-           ((org-agenda-compact-blocks nil)))
+           ))
 
 
-          )))
+        ("j" "Someday"
+
+         ;; Display items with priority A
+         ((tags-todo "PRIORITY=\"A\"+Someday"
+                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+          ;; Display items with priority B (really it is view all items minus A & C)
+          (tags-todo "+Someday"
+                     ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                     (air-org-skip-subtree-if-priority ?C)
+                                                     (org-agenda-skip-if nil '(scheduled deadline))))
+                      (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+          ;; Display items with pirority C
+          (tags-todo "PRIORITY=\"C\"+Someday"
+                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                      (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+          )
+
+         ;; Don't compress things (change to suite your tastes)
+         ((org-agenda-compact-blocks nil)))
+
+
+        )))
 #+end_src
 
 #+RESULTS:
@@ -1398,7 +1417,13 @@ For mapping keybindings in el-secretario reviews, it's recommended to use define
   (define-key el-secretario-org-keymap
       "a" '("Archive" . org-archive-subtree))
   (define-key el-secretario-org-keymap
-      "t" '("State" . org-todo))
+      "t" '("Tags" . org-set-tags-command))
+  (define-key el-secretario-org-keymap
+      "T" '("State" . org-todo))
+  (define-key el-secretario-org-keymap
+      "u" '("Priority Up" . org-priority-up))
+  (define-key el-secretario-org-keymap
+      "d" '("Priority Down" . org-priority-down))
   )
 #+end_src
 
@@ -1454,7 +1479,7 @@ So I set those up.
 The ledger module configures pretty much everything I need. I just add a binding to access my ledger.
 #+begin_src elisp :tangle config.el
 (map! :map doom-leader-notes-map
-      :desc "Ledger" "e" (cmd! (find-file (doom-path org-directory "ledger.org"))))
+      :desc "Ledger" "e" (cmd! (find-file (doom-path org-directory "agenda/ledger.org"))))
 #+end_src
 
 ** \LaTeX
