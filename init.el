@@ -85,7 +85,7 @@
        (nix +tree-sitter +lsp)               ; I hereby declare "nix geht mehr!"
        (python +lsp +tree-sitter +pyenv)           ; beautiful is better than ugly
        (sh +lsp)               ; she sells {ba,z,fi}sh shells on the C xor
-       lua                 ; one-based indices? one-based indices
+       (lua +lsp +tree-sitter)                 ; one-based indices? one-based indices
 
        data              ; config/data formats
        ledger            ; be audit you can be
