@@ -1452,9 +1452,13 @@ But for mapping reviews it should not be a problem.
         :desc "Inbox Review" "I" 'el-secretario-inbox-review
         )
 #+end_src
-
-
-
+*** org-modern
+The +fancy flag in init.el enables [[https://github.com/minad/org-modern][org-modern]].
+There's some defaults I don't quite like so...
+#+begin_src elisp :tangle config.el
+(after! org-modern
+  (setq org-modern-star 'replace))
+#+end_src
 ** Ligatures
 *** Julia
 Last I checked, the ligatures module doesn't include julia.
@@ -1659,7 +1663,7 @@ The RSS module already installs elfeed and sets it up to configure with an ~elfe
 
 Possibly peak "I don't want to leave Emacs" for me is controlling Spotify.
 These's multiple packages that do this, but I use SnootierMoon's [[https://github.com/SnootierMoon/emacs-spotify][emacs-spotify]].
-#+begin_src elisp :tangle packages.el
++begin_src elisp :tangle packages.el
 (package! spotify
   :recipe (:host github
            :repo "SnootierMoon/emacs-spotify"))
@@ -1919,14 +1923,17 @@ I add a hook here to enable it properly (disabling diredfl) and in the process h
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
 
 #+end_src
-** page break lines
-#+begin_src elist :tangle packages.el
-(package! page-break-lines)
+
+** MPDel
+An MPD (Music Player Daemon) client
+#+begin_src elisp :tangle packages.el
+(package! libmpdel)
+(package! mpdel)
 #+end_src
 
 #+begin_src elisp :tangle config.el
-(use-package! page-break-lines
-    :ensure
-    :config
-  (global-page-break-lines-mode))
+(use-package! mpdel
+  :config
+  (setq mpdel-prefix-key (kbd "C-c m")))
+
 #+end_src
