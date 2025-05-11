@@ -313,7 +313,7 @@ Biblio allows for better bibliography management.
 
 (Note: Eval can be called with ~gr~ on a region)
 
-Doom also provides modules for [[https://www.ansible.com/][Ansible]], debugging, [[https://direnv.net/][direnv]], [[https://www.docker.com/][Docker]], [[https://github.com/rejeep/prodigy.el][prodigy]], [[https://www.terraform.io/][Terraform]]
+Doom also provides modules for [[https://www.ansible.com/][Ansible]], debugging, [[https://direnv.net/][direnv]], [[https://www.docker.com/][Docker]], [[https://www.terraform.io/][Terraform]]
 ** :os
 Here we just activate ~tty~ module for better terminal experience. There's also a module to improve the MacOS experience; but I don't use Apple products.
 #+begin_src elisp :tangle init.el
