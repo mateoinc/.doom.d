@@ -717,7 +717,7 @@ Capture templates:
            :empty-lines 0)
           ("s" "Lab Work-Log"
            entry (file+datetree +org-capture-work-log-file)
-           "* %? \n %a"
+           "* %? \n SCHEDULED: %T \n %a"
            :prepend nil
            :tree-type week
            :empty-lines 0)
@@ -862,49 +862,62 @@ Agenda view
 
           ;; GTD Inbox Tray
           ("i" "Inbox"
-
            ;; Display TODO items tagged as inbox_tray
-           ((tags-todo "+inbox_tray"
+           ((agenda ""
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                       (org-agenda-files +org-capture-inbox-file)
                         (org-agenda-overriding-header "Inbox")))
-
             ))
 
           ;; Personal TODOs
           ("p" "Personal"
-
-           ;; Display TODO items tagged as inbox_tray
+           ;; Display TODO items tagged as personal
            ((tags-todo "+personal"
                        ((org-agenda-overriding-header "Personal")))
+            ))
 
-           ))
+          ;; Weekly look at my work-log file
+          ("r" "Weekly report"
+           ((agenda ""
+                    (
+                     (org-agenda-span 7)  ;; Set the agenda to cover the last 7 days
+                     (org-agenda-start-day "-7d")  ;; Start from 7 days ago
+                     (org-agenda-shew-all-dates nil) ;; ignore empty days
+                     ;; (org-agenda-files +org-capture-work-log-file)  ;; Specify the file
+                     (org-agenda-files '("/home/mbarria/org/agenda/work-log.org"))  ;; Specify the file
+                     ;; (org-agenda-skip-function
+                     ;;  '(lambda ()
+                     ;;     (let ((level (org-outline-level)))
+                     ;;       (if (<= level 1)  ;; Adjust the level number to match your desired depth
+                     ;;           nil  ;; Do not skip
+                     ;;         (org-end-of-subtree t))))))
+                    ))))
+
+          ("j" "Someday"
+
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
+
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
 
 
-        ("j" "Someday"
-
-         ;; Display items with priority A
-         ((tags-todo "PRIORITY=\"A\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
-
-          ;; Display items with priority B (really it is view all items minus A & C)
-          (tags-todo "+Someday"
-                     ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                     (air-org-skip-subtree-if-priority ?C)
-                                                     (org-agenda-skip-if nil '(scheduled deadline))))
-                      (org-agenda-overriding-header "ALL normal priority tasks:")))
-
-          ;; Display items with pirority C
-          (tags-todo "PRIORITY=\"C\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-          )
-
-         ;; Don't compress things (change to suite your tastes)
-         ((org-agenda-compact-blocks nil)))
-
-
-        )))
+          )))
 #+end_src
 
 #+RESULTS:
