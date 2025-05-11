@@ -38,14 +38,14 @@
 
 (after! dirvish
   (setq dirvish-quick-access-entries '(
-        ("h" "~/" "Home")
-        ("d" "~/Documents" "Documents")
-        ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
-        ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
-        ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
-        ("u" "/ssh:chupete:/home/mbarria" "chupete")
-        ("n" "~/org" "Org-mode")
-        )))
+                                       ("h" "~/" "Home")
+                                       ("d" "~/Documents" "Documents")
+                                       ("o" "/ssh:don-elias:/home/mbarria" "don-elias")
+                                       ("i" "/ssh:diego-armando:/home/mbarria" "diego-armando")
+                                       ("a" "/ssh:chamaco:/home/mbarria" "chamaco")
+                                       ("u" "/ssh:chupete:/home/mbarria" "chupete")
+                                       ("n" "~/org" "Org-mode")
+                                       )))
 
 (use-package! org-latex-preview
   :config
@@ -88,13 +88,13 @@
 ;; timestamp DONEs
 (setq org-log-done 'time)
 (after! org (setq org-agenda-files (list "~/org/agenda/!nbox.org"
-                                     "~/org/agenda/todo.org"
-                                     "~/org/agenda/done.org"
-                                     "~/org/agenda/projects.org"
-                                     "~/org/agenda/someday.org"
-                                     "~/org/agenda/toread.org"
-                                     "~/org/agenda/work-log.org"
-                                     "~/org/agenda/meetings.org")))
+                                         "~/org/agenda/todo.org"
+                                         "~/org/agenda/done.org"
+                                         "~/org/agenda/projects.org"
+                                         "~/org/agenda/someday.org"
+                                         "~/org/agenda/toread.org"
+                                         "~/org/agenda/work-log.org"
+                                         "~/org/agenda/meetings.org")))
 
 (after! org
   (setq org-capture-templates
@@ -115,7 +115,7 @@
            :empty-lines 0)
           ("s" "Lab Work-Log"
            entry (file+datetree +org-capture-work-log-file)
-           "* %? \n %a"
+           "* %? \n SCHEDULED: %T \n %a"
            :prepend nil
            :tree-type week
            :empty-lines 0)
@@ -149,8 +149,8 @@
 
 (after! org-fancy-priorities
   (setq org-fancy-priorities-list '((?A . "🔴")
-                                  (?B . "🟠")
-                                  (?C . "🟢"))))
+                                    (?B . "🟠")
+                                    (?C . "🟢"))))
 
 (setq org-tag-alist '(
                       ;; ;; Ticket types
@@ -240,49 +240,61 @@
 
           ;; GTD Inbox Tray
           ("i" "Inbox"
-
            ;; Display TODO items tagged as inbox_tray
            ((tags-todo "+inbox_tray"
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Inbox")))
-
             ))
 
           ;; Personal TODOs
           ("p" "Personal"
-
-           ;; Display TODO items tagged as inbox_tray
+           ;; Display TODO items tagged as personal
            ((tags-todo "+personal"
                        ((org-agenda-overriding-header "Personal")))
+            ))
 
-           ))
+          ;; Weekly look at my work-log file
+          ("r" "Weekly report"
+           ((agenda ""
+                    (
+                     (org-agenda-span 7)  ;; Set the agenda to cover the last 7 days
+                     (org-agenda-start-day "-7d")  ;; Start from 7 days ago
+                     (org-agenda-shew-all-dates nil) ;; ignore empty days
+                     ;; (org-agenda-files +org-capture-work-log-file)  ;; Specify the file
+                     (org-agenda-files '("/home/mbarria/org/agenda/work-log.org"))  ;; Specify the file
+                     ;; (org-agenda-skip-function
+                     ;;  '(lambda ()
+                     ;;     (let ((level (org-outline-level)))
+                     ;;       (if (<= level 1)  ;; Adjust the level number to match your desired depth
+                     ;;           nil  ;; Do not skip
+                     ;;         (org-end-of-subtree t))))))
+                     ))))
+
+          ("j" "Someday"
+
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
+
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
 
 
-        ("j" "Someday"
-
-         ;; Display items with priority A
-         ((tags-todo "PRIORITY=\"A\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
-
-          ;; Display items with priority B (really it is view all items minus A & C)
-          (tags-todo "+Someday"
-                     ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                     (air-org-skip-subtree-if-priority ?C)
-                                                     (org-agenda-skip-if nil '(scheduled deadline))))
-                      (org-agenda-overriding-header "ALL normal priority tasks:")))
-
-          ;; Display items with pirority C
-          (tags-todo "PRIORITY=\"C\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-          )
-
-         ;; Don't compress things (change to suite your tastes)
-         ((org-agenda-compact-blocks nil)))
-
-
-        )))
+          )))
 
 (defun org-refile--insert-link ( &rest _ )
   (unless (string-suffix-p "!nbox.org" buffer-file-name)
@@ -398,7 +410,7 @@ as the default task."
     ;;
     (save-restriction
       (widen)
-      ; Find the tags on the current task
+                                        ; Find the tags on the current task
       (if (and (equal major-mode 'org-mode) (not (org-before-first-heading-p)) (eq arg 4))
           (org-clock-in '(16))
         (bh/clock-in-organization-task-as-default)))))
@@ -471,31 +483,31 @@ A prefix arg forces clock in of the default task."
       (org-clock-in nil))))
 
 (after! org-roam-capture
-(setq org-roam-capture-templates
-      '(("m" "main" plain
-         "%?"
-         :if-new (file+head "main/${slug}.org"
-                            "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("r" "reference" plain
-         "%?"
-         :if-new (file+head "reference/${title}.org"
-                            "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t)
-        ("b" "bibliography" plain
-         "%?"
-         :if-new (file+head "bibliography/${citar-citekey}.org"
-                            "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../../Bib/pdfs/${citar-citekey}.pdf\n:END:")
-         :immediate-finish t
-         :unnarrowed t)
-        ("v" "video" plain
-         "%?"
-         :if-new (file+head "videos/${title}.org"
-                            "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
-         :immediate-finish t
-         :unnarrowed t))))
+  (setq org-roam-capture-templates
+        '(("m" "main" plain
+           "%?"
+           :if-new (file+head "main/${slug}.org"
+                              "#+title: ${title}\n#+filetags:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("r" "reference" plain
+           "%?"
+           :if-new (file+head "reference/${title}.org"
+                              "#+title: ${title}\n#+filetags: :Reference:\n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("b" "bibliography" plain
+           "%?"
+           :if-new (file+head "bibliography/${citar-citekey}.org"
+                              "#+title: ${title}\n#+filetags: :Bibliography:\n#+date: %u\n#+lastmod: %u\n\n- authors :: ${citar-author}\n- date :: ${citar-date}\n- DOI :: [[https://dx.doi.org/${citar-doi}][${citar-doi}]]\n- tags ::\n\n%i\n\n* PDF Notes\n:PROPERTIES:\n:NOTER_DOCUMENT: ../../Bib/pdfs/${citar-citekey}.pdf\n:END:")
+           :immediate-finish t
+           :unnarrowed t)
+          ("v" "video" plain
+           "%?"
+           :if-new (file+head "videos/${title}.org"
+                              "#+title: ${title}\n#+filetags: :Video: \n#+date: %u\n#+lastmod: %u\n\n")
+           :immediate-finish t
+           :unnarrowed t))))
 
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
@@ -533,7 +545,7 @@ A prefix arg forces clock in of the default task."
                               "/home/mbarria/org/Bib/nanotubes.bib"
                               "/home/mbarria/org/Bib/orgchem.bib"
                               "/home/mbarria/org/Bib/physics.bib"
-                            ))
+                              ))
   (setq org-cite-global-bibliography citar-bibliography)
   (setq! citar-library-paths '("/home/mbarria/org/Bib/pdfs/"))
   (setq! citar-notes-paths '("/home/mbarria/org/roam/reference/"))
@@ -541,23 +553,23 @@ A prefix arg forces clock in of the default task."
   (setq! citar-file-additional-files-separator "-")
   )
 
-  (map! :map doom-leader-notes-map
-        :desc "Insert Citation" "k" 'citar-insert-citation
-        :desc "Open Reference" "p" 'citar-open)
+(map! :map doom-leader-notes-map
+      :desc "Insert Citation" "k" 'citar-insert-citation
+      :desc "Open Reference" "p" 'citar-open)
 
 ;; org-roam + citar config
 (after! citar-org-roam
-        (setq citar-org-roam-subdir "bibliography")
-        (setq citar-org-roam-note-title-template "${title}")
-        (setq citar-org-roam-capture-template-key "b")
-        (setq citar-org-roam-template-fields
+  (setq citar-org-roam-subdir "bibliography")
+  (setq citar-org-roam-note-title-template "${title}")
+  (setq citar-org-roam-capture-template-key "b")
+  (setq citar-org-roam-template-fields
         '((:citar-title . ("title"))
-        (:citar-author . ("author" "editor"))
-        (:citar-date . ("date" "year" "issued"))
-        (:citar-doi . ("doi"))
-        (:citar-pages . ("pages"))
-        (:citar-type . ("=type="))))
-              )
+          (:citar-author . ("author" "editor"))
+          (:citar-date . ("date" "year" "issued"))
+          (:citar-doi . ("doi"))
+          (:citar-pages . ("pages"))
+          (:citar-type . ("=type="))))
+  )
 
 (after! reftex
   (setq! reftex-default-bibliography '("/home/mbarria/org/Bib/Bibliography.bib"))
@@ -583,60 +595,60 @@ A prefix arg forces clock in of the default task."
 
 (use-package! ob-async)
 
-  ;;--------------------------
-  ;; Handling file properties for ‘CREATED’ & ‘LAST_MODIFIED’
-  ;;--------------------------
+;;--------------------------
+;; Handling file properties for ‘CREATED’ & ‘LAST_MODIFIED’
+;;--------------------------
 
-  (defun zp/org-find-time-file-property (property &optional anywhere)
-    "Return the position of the time file PROPERTY if it exists.
+(defun zp/org-find-time-file-property (property &optional anywhere)
+  "Return the position of the time file PROPERTY if it exists.
 
 When ANYWHERE is non-nil, search beyond the preamble."
-    (save-excursion
-      (goto-char (point-min))
-      (let ((first-heading
-             (save-excursion
-               (re-search-forward org-outline-regexp-bol nil t))))
-        (when (re-search-forward (format "^#\\+%s:" property)
-                                 (if anywhere nil first-heading)
-                                 t)
-          (point)))))
+  (save-excursion
+    (goto-char (point-min))
+    (let ((first-heading
+           (save-excursion
+             (re-search-forward org-outline-regexp-bol nil t))))
+      (when (re-search-forward (format "^#\\+%s:" property)
+                               (if anywhere nil first-heading)
+                               t)
+        (point)))))
 
-  (defun zp/org-has-time-file-property-p (property &optional anywhere)
-    "Return the position of time file PROPERTY if it is defined.
+(defun zp/org-has-time-file-property-p (property &optional anywhere)
+  "Return the position of time file PROPERTY if it is defined.
 
 As a special case, return -1 if the time file PROPERTY exists but
 is not defined."
-    (when-let ((pos (zp/org-find-time-file-property property anywhere)))
-      (save-excursion
-        (goto-char pos)
-        (if (and (looking-at-p " ")
-                 (progn (forward-char)
-                        (org-at-timestamp-p 'lax)))
-            pos
-          -1))))
+  (when-let ((pos (zp/org-find-time-file-property property anywhere)))
+    (save-excursion
+      (goto-char pos)
+      (if (and (looking-at-p " ")
+               (progn (forward-char)
+                      (org-at-timestamp-p 'lax)))
+          pos
+        -1))))
 
-  (defun zp/org-set-time-file-property (property &optional anywhere pos)
-    "Set the time file PROPERTY in the preamble.
+(defun zp/org-set-time-file-property (property &optional anywhere pos)
+  "Set the time file PROPERTY in the preamble.
 
 When ANYWHERE is non-nil, search beyond the preamble.
 
 If the position of the file PROPERTY has already been computed,
 it can be passed in POS."
-    (when-let ((pos (or pos
-                        (zp/org-find-time-file-property property))))
-      (save-excursion
-        (goto-char pos)
-        (if (looking-at-p " ")
-            (forward-char)
-          (insert " "))
-        (delete-region (point) (line-end-position))
-        (let* ((now (format-time-string "[%Y-%m-%d %a %H:%M]")))
-          (insert now)))))
+  (when-let ((pos (or pos
+                      (zp/org-find-time-file-property property))))
+    (save-excursion
+      (goto-char pos)
+      (if (looking-at-p " ")
+          (forward-char)
+        (insert " "))
+      (delete-region (point) (line-end-position))
+      (let* ((now (format-time-string "[%Y-%m-%d %a %H:%M]")))
+        (insert now)))))
 
-  (defun zp/org-set-last-modified ()
-    "Update the LAST_MODIFIED file property in the preamble."
-    (when (derived-mode-p 'org-mode)
-      (zp/org-set-time-file-property "lastmod")))
+(defun zp/org-set-last-modified ()
+  "Update the LAST_MODIFIED file property in the preamble."
+  (when (derived-mode-p 'org-mode)
+    (zp/org-set-time-file-property "lastmod")))
 
 ;; Create a function to start the review
 (defun el-secretario-daily-review ()
@@ -667,21 +679,24 @@ it can be passed in POS."
   :after el-secretario
   :config
   (define-key el-secretario-org-keymap
-      "a" '("Archive" . org-archive-subtree))
+              "a" '("Archive" . org-archive-subtree))
   (define-key el-secretario-org-keymap
-      "t" '("Tags" . org-set-tags-command))
+              "t" '("Tags" . org-set-tags-command))
   (define-key el-secretario-org-keymap
-      "T" '("State" . org-todo))
+              "T" '("State" . org-todo))
   (define-key el-secretario-org-keymap
-      "u" '("Priority Up" . org-priority-up))
+              "u" '("Priority Up" . org-priority-up))
   (define-key el-secretario-org-keymap
-      "d" '("Priority Down" . org-priority-down))
+              "d" '("Priority Down" . org-priority-down))
   )
 
-  (map! :map doom-leader-notes-map
-        :desc "Daily Review" "d" 'el-secretario-daily-review
-        :desc "Inbox Review" "I" 'el-secretario-inbox-review
-        )
+(map! :map doom-leader-notes-map
+      :desc "Daily Review" "d" 'el-secretario-daily-review
+      :desc "Inbox Review" "I" 'el-secretario-inbox-review
+      )
+
+(after! org-modern
+  (setq org-modern-star 'replace))
 
 ;; Julia
 (after! julia-mode
@@ -744,8 +759,8 @@ it can be passed in POS."
 (setq mu4e-update-interval 60)
 ;; Set default search to my inbox; as that is what I prioritize keeping clean
 (after! mu4e
-    (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
-    (mu4e-modeline-mode))
+  (add-to-list 'mu4e-bookmarks '(:name "Inbox" :query "maildir:/gmail/INBOX" :key 105 :favorite t))
+  (mu4e-modeline-mode))
 ;; Show it in modeline
 
 (after! lsp-julia
@@ -753,7 +768,7 @@ it can be passed in POS."
   (setq lsp-julia-default-environment "~/.julia/environments/v1.10"))
 
 (after! projectile
- (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
+  (setq projectile-project-search-path '("~/Projects/" "~/Code/" ("~/Lab" . 1))) )
 
 (setq nu--path  "/etc/profiles/per-user/mbarria/bin/nu")
 (if (file-exists-p nu--path)
@@ -790,7 +805,7 @@ it can be passed in POS."
   (setq elfeed-curl-extra-arguments '("--insecure"))
   ;; setup feeds
   (setq elfeed-protocol-feeds '(("owncloud+https://admin@nc.mbarria.cl"
-                        :use-authinfo t )))
+                                 :use-authinfo t )))
 
   ;; enable elfeed-protocol
   (setq elfeed-protocol-enabled-protocols '(fever newsblur owncloud ttrss))
@@ -869,20 +884,20 @@ it can be passed in POS."
   :config
   (map! :desc "Voice to Text" :g "C-c i" #'whisper-run)
 
-(defun whisper--break-sentences (n)
-  "Put a line break every N sentences."
-  (catch 'return
-    (while t
-      (dotimes (_ n)
-        (forward-sentence 1)
-        (when (eobp) (throw 'return nil)))
-      (insert "\n")
-      (when (= (char-after) ?\ )
-        (delete-horizontal-space)))))
+  (defun whisper--break-sentences (n)
+    "Put a line break every N sentences."
+    (catch 'return
+      (while t
+        (dotimes (_ n)
+          (forward-sentence 1)
+          (when (eobp) (throw 'return nil)))
+        (insert "\n")
+        (when (= (char-after) ?\ )
+          (delete-horizontal-space)))))
 
-(add-hook 'whisper-post-process-hook
-          (lambda ()
-            (whisper--break-sentences 1)))
+  (add-hook 'whisper-post-process-hook
+            (lambda ()
+              (whisper--break-sentences 1)))
 
   )
 
@@ -933,20 +948,20 @@ it can be passed in POS."
        :desc "Rename"                "r"  'denote-rename-file
        :desc "Front Matter Rename"   "R"  'denote-rename-file-using-front-matter
        (:prefix-map ("e" . "Explore")
-       :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
-       :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
-       :desc "Count Notes"           "c"  'denote-explore-count-notes
-       :desc "Count Keywords"        "C"  'denote-explore-count-keywords
-       :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
-       :desc "Isolated notes"        "i"  'denote-explore-isolated-files
-       :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
-       :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
-       :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
-       :desc "Network"               "n"  'denote-explore-network
-       :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
-       :desc "Random note"           "r"  'denote-explore-random-note
-       :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
-       :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
+        :desc "Chart Keywords"        "b"  'denote-explore-barchart-keywords
+        :desc "Chart Degrees"         "B"  'denote-explore-barchart-degree
+        :desc "Count Notes"           "c"  'denote-explore-count-notes
+        :desc "Count Keywords"        "C"  'denote-explore-count-keywords
+        :desc "Identify Duplicates"   "d"  'denote-explore-duplicate-notes
+        :desc "Isolated notes"        "i"  'denote-explore-isolated-files
+        :desc "Single-use keywords"   "k"  'denote-explore-single-keywords
+        :desc "Zero keywords"         "K"  'denote-explore-zero-keywords
+        :desc "Sync Metadata"         "m"  'denote-explore-sync-metadata
+        :desc "Network"               "n"  'denote-explore-network
+        :desc "Regenerate Network"    "N"  'denote-explore-network-regenerate
+        :desc "Random note"           "r"  'denote-explore-random-note
+        :desc "Rename keyword"        "R"  'denote-explore-rename-keyword
+        :desc "Chart Timeline"        "t"  'denote-explore-barchart-timeline
         )))
 
 (defun my/handle-denote-dired ()
@@ -958,7 +973,16 @@ it can be passed in POS."
 
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
 
-(use-package! page-break-lines
-    :ensure
-    :config
-  (global-page-break-lines-mode))
+(use-package! mpdel
+  :config
+  (setq mpdel-prefix-key (kbd "C-c m")))
+
+;;; add to $DOOMDIR/config.el
+(defadvice! fixed-good-scroll--point-at-top-fix-a ()
+  "Return non-nil if the point is close to the top of the selected window."
+  :override #'good-scroll--point-at-top-fix-a
+  (save-restriction
+    ;; Widen in case the window start is outside the visible part of the buffer
+    (widen)
+    (<= (line-number-at-pos (max (point) (point-min)) t)
+        (1+ (line-number-at-pos (min (window-start) (point-max)) t)))))

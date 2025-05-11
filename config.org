@@ -140,8 +140,6 @@ they are implemented.
 #+end_quote
 
 
-
-
 * Modules
 
 ** Preface
@@ -188,6 +186,7 @@ We use several of the doom ui modules. These all work great to make Emacs fell m
        doom-dashboard    ; a nifty splash screen for Emacs
        modeline          ; snazzy, Atom-inspired modeline, plus API
        workspaces        ; tab emulation, persistence & separate workspaces
+       (smooth-scroll +interpolate)  ; So smooth you won't believe it's not butter
 #+end_src
 
 Doom by itself has great window navigation (under the ~SPC w~ leader),but the ~window-select~ module makes it even better.
@@ -247,14 +246,14 @@ For the fold module, note that some useful default bindings are:
 
 | binding | action                    |
 |---------+---------------------------|
-| ~z a~   | Open/close fold           |
-| ~z p~   | Close fold                |
-| ~z o~   | Open fold                 |
-| ~z j~   | Previous fold             |
-| ~z k~   | Next fold                 |
-| ~z m~   | Change fold level of area |
-| ~z M~   | Close all folds           |
-| ~z R~   | Open all folds            |
+| ~z a~     | Open/close fold           |
+| ~z p~     | Close fold                |
+| ~z o~     | Open fold                 |
+| ~z j~     | Previous fold             |
+| ~z k~     | Next fold                 |
+| ~z m~     | Change fold level of area |
+| ~z M~     | Close all folds           |
+| ~z R~     | Open all folds            |
 
 And there's some modules for programming (Lisp in particular), that I haven't played around with yet, but I'll keep in my config as "someday" comments.
 #+begin_src elisp :tangle init.el
@@ -314,7 +313,7 @@ Biblio allows for better bibliography management.
 
 (Note: Eval can be called with ~gr~ on a region)
 
-Doom also provides modules for [[https://www.ansible.com/][Ansible]], debugging, [[https://direnv.net/][direnv]], [[https://www.docker.com/][Docker]], [[https://github.com/rejeep/prodigy.el][prodigy]], [[https://www.terraform.io/][Terraform]]
+Doom also provides modules for [[https://www.ansible.com/][Ansible]], debugging, [[https://direnv.net/][direnv]], [[https://www.docker.com/][Docker]], [[https://www.terraform.io/][Terraform]]
 ** :os
 Here we just activate ~tty~ module for better terminal experience. There's also a module to improve the MacOS experience; but I don't use Apple products.
 #+begin_src elisp :tangle init.el
@@ -718,7 +717,7 @@ Capture templates:
            :empty-lines 0)
           ("s" "Lab Work-Log"
            entry (file+datetree +org-capture-work-log-file)
-           "* %? \n %a"
+           "* %? \n SCHEDULED: %T \n %a"
            :prepend nil
            :tree-type week
            :empty-lines 0)
@@ -863,49 +862,62 @@ Agenda view
 
           ;; GTD Inbox Tray
           ("i" "Inbox"
-
            ;; Display TODO items tagged as inbox_tray
-           ((tags-todo "+inbox_tray"
+           ((agenda ""
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                       (org-agenda-files +org-capture-inbox-file)
                         (org-agenda-overriding-header "Inbox")))
-
             ))
 
           ;; Personal TODOs
           ("p" "Personal"
-
-           ;; Display TODO items tagged as inbox_tray
+           ;; Display TODO items tagged as personal
            ((tags-todo "+personal"
                        ((org-agenda-overriding-header "Personal")))
+            ))
 
-           ))
+          ;; Weekly look at my work-log file
+          ("r" "Weekly report"
+           ((agenda ""
+                    (
+                     (org-agenda-span 7)  ;; Set the agenda to cover the last 7 days
+                     (org-agenda-start-day "-7d")  ;; Start from 7 days ago
+                     (org-agenda-shew-all-dates nil) ;; ignore empty days
+                     ;; (org-agenda-files +org-capture-work-log-file)  ;; Specify the file
+                     (org-agenda-files '("/home/mbarria/org/agenda/work-log.org"))  ;; Specify the file
+                     ;; (org-agenda-skip-function
+                     ;;  '(lambda ()
+                     ;;     (let ((level (org-outline-level)))
+                     ;;       (if (<= level 1)  ;; Adjust the level number to match your desired depth
+                     ;;           nil  ;; Do not skip
+                     ;;         (org-end-of-subtree t))))))
+                    ))))
+
+          ("j" "Someday"
+
+           ;; Display items with priority A
+           ((tags-todo "PRIORITY=\"A\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+            ;; Display items with priority B (really it is view all items minus A & C)
+            (tags-todo "+Someday"
+                       ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
+                                                       (air-org-skip-subtree-if-priority ?C)
+                                                       (org-agenda-skip-if nil '(scheduled deadline))))
+                        (org-agenda-overriding-header "ALL normal priority tasks:")))
+
+            ;; Display items with pirority C
+            (tags-todo "PRIORITY=\"C\"+Someday"
+                       ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+                        (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
+            )
+
+           ;; Don't compress things (change to suite your tastes)
+           ((org-agenda-compact-blocks nil)))
 
 
-        ("j" "Someday"
-
-         ;; Display items with priority A
-         ((tags-todo "PRIORITY=\"A\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "High-priority unfinished tasks:")))
-
-          ;; Display items with priority B (really it is view all items minus A & C)
-          (tags-todo "+Someday"
-                     ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority ?A)
-                                                     (air-org-skip-subtree-if-priority ?C)
-                                                     (org-agenda-skip-if nil '(scheduled deadline))))
-                      (org-agenda-overriding-header "ALL normal priority tasks:")))
-
-          ;; Display items with pirority C
-          (tags-todo "PRIORITY=\"C\"+Someday"
-                     ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
-                      (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
-          )
-
-         ;; Don't compress things (change to suite your tastes)
-         ((org-agenda-compact-blocks nil)))
-
-
-        )))
+          )))
 #+end_src
 
 #+RESULTS:
@@ -1440,9 +1452,13 @@ But for mapping reviews it should not be a problem.
         :desc "Inbox Review" "I" 'el-secretario-inbox-review
         )
 #+end_src
-
-
-
+*** org-modern
+The +fancy flag in init.el enables [[https://github.com/minad/org-modern][org-modern]].
+There's some defaults I don't quite like so...
+#+begin_src elisp :tangle config.el
+(after! org-modern
+  (setq org-modern-star 'replace))
+#+end_src
 ** Ligatures
 *** Julia
 Last I checked, the ligatures module doesn't include julia.
@@ -1647,7 +1663,7 @@ The RSS module already installs elfeed and sets it up to configure with an ~elfe
 
 Possibly peak "I don't want to leave Emacs" for me is controlling Spotify.
 These's multiple packages that do this, but I use SnootierMoon's [[https://github.com/SnootierMoon/emacs-spotify][emacs-spotify]].
-#+begin_src elisp :tangle packages.el
++begin_src elisp :tangle packages.el
 (package! spotify
   :recipe (:host github
            :repo "SnootierMoon/emacs-spotify"))
@@ -1907,14 +1923,17 @@ I add a hook here to enable it properly (disabling diredfl) and in the process h
 (add-hook 'dired-mode-hook #'my/handle-denote-dired 90)
 
 #+end_src
-** page break lines
-#+begin_src elist :tangle packages.el
-(package! page-break-lines)
+
+** MPDel
+An MPD (Music Player Daemon) client
+#+begin_src elisp :tangle packages.el
+(package! libmpdel)
+(package! mpdel)
 #+end_src
 
 #+begin_src elisp :tangle config.el
-(use-package! page-break-lines
-    :ensure
-    :config
-  (global-page-break-lines-mode))
+(use-package! mpdel
+  :config
+  (setq mpdel-prefix-key (kbd "C-c m")))
+
 #+end_src

@@ -54,10 +54,6 @@
 (package! elfeed-protocol)
 (package! elfeed-score)
 
-(package! spotify
-  :recipe (:host github
-           :repo "SnootierMoon/emacs-spotify"))
-
 (package! pueue
   :recipe (:host github
            :repo "xFA25E/pueue"))
@@ -84,4 +80,5 @@
 (package! consult-denote) ; consult integration for denote
 (package! denote-explore) ; more options for exploring denote files
 
-(package! page-break-lines)
+(package! libmpdel)
+(package! mpdel)

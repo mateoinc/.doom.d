@@ -12,6 +12,7 @@
        doom-dashboard    ; a nifty splash screen for Emacs
        modeline          ; snazzy, Atom-inspired modeline, plus API
        workspaces        ; tab emulation, persistence & separate workspaces
+       (smooth-scroll +interpolate)  ; So smooth you won't believe it's not butter
 
        (window-select +numbers)     ; visually switch windows
 
