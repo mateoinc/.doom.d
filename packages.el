@@ -76,6 +76,8 @@
 (package! outline-indent-mode
   :recipe (:host sourcehut :repo "meow_king/outline-indent-mode"))
 
+(package! ox-typst)
+
 (package! denote)
 (package! consult-denote) ; consult integration for denote
 (package! denote-explore) ; more options for exploring denote files

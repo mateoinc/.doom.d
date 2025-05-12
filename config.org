@@ -1839,6 +1839,18 @@ To get it working we use [[https://codeberg.org/meow_king/typst-ts-mode/wiki/Ins
   (add-hook 'typst-ts-mode-hook #'outline-indent-mode))
 #+end_src
 
+Of course want to export org-mode to typst. We use [[https://github.com/jmpunkt/ox-typst][ox-typst]]
+
+#+begin_src elisp :tangle packages.el
+(package! ox-typst)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! ox-typst
+  :after org)
+
+#+end_src
+
 ** Denote
 [[https://protesilaos.com/emacs/denote][Denote]] is a note taking (and file naming) package for Emacs.
 
