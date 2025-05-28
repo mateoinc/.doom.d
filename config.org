@@ -699,6 +699,7 @@ Capture templates:
 
 #+begin_src elisp :tangle config.el
 (after! org
+  (add-hook 'org-capture-prepare-finalize-hook 'org-id-get-create) ; make it so all captures add an ID
   (setq org-capture-templates
         '(("i" "Inbox"
            entry (file +org-capture-inbox-file)
@@ -738,7 +739,7 @@ Capture templates:
            :tree-type week
            :empty-lines 0))))
 
-;; Define a function for capturing to Inbox
+;; Define a function for capturing to Inbox, to bind it
 (defun org-capture-inbox ()
   (interactive)
   (call-interactively 'org-store-link)
@@ -749,9 +750,6 @@ Capture templates:
       ;; :desc "Open Inbox" "I"  (cmd! (find-file +org-capture-inbox-file))
       )
 #+end_src
-
-#+RESULTS:
-
 
 
 **** Priorities
