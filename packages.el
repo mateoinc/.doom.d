@@ -82,3 +82,5 @@
 
 (package! libmpdel)
 (package! mpdel)
+
+(package! zoom)
