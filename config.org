@@ -1974,3 +1974,19 @@ An MPD (Music Player Daemon) client
   (setq mpdel-prefix-key (kbd "C-c m")))
 
 #+end_src
+
+** Zoom
+Automatically resize windows, keeping current window as the largest. From [[https://github.com/cyrus-and/zoom][cyrus-and]]
+#+begin_src elisp :tangle packages.el
+(package! zoom)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! zoom
+  :custom
+   (zoom-size '(0.618 . 0.618))
+  :config
+  (map! :map evil-window-map :desc "Toggle Zoom mode" "z" 'zoom-mode)
+  (zoom-mode))
+
+#+end_src
