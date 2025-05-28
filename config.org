@@ -830,14 +830,24 @@ Agenda view
 
 (setq org-agenda-skip-deadline-if-done t)
 
+;; Function to display current clocked task at the top of agenda
+(defun my/insert-current-clock ()
+  "Insert the current clocked task at the top of the agenda."
+  (when (org-clocking-p)
+    (save-excursion
+      (goto-char (point-min))
+      (insert (format "Currently clocked in: %s\n\n" org-clock-current-task)))))
+
 (after! org-agenda
   (setq org-agenda-custom-commands
         '(
           ;; Daily Agenda & TODOs
           ("d" "Daily agenda and Next Actions"
 
+
+           (
            ;; Display items with priority A
-           ((tags-todo "PRIORITY=\"A\"+Actions-Someday+work"
+            (tags-todo "PRIORITY=\"A\"+Actions-Someday+work"
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
@@ -856,9 +866,11 @@ Agenda view
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
             )
-
-           ;; Don't compress things (change to suite your tastes)
-           ((org-agenda-compact-blocks nil)))
+ ;; Extra settings
+;; Don't compress things (change to suite your tastes)
+ ((org-agenda-compact-blocks nil)
+  ;; Add our function to the finalize hook just for this view
+  (org-agenda-finalize-hook '(my/insert-current-clock))))
 
           ;; GTD Inbox Tray
           ("i" "Inbox"
@@ -920,10 +932,6 @@ Agenda view
           )))
 #+end_src
 
-#+RESULTS:
-| d | Daily agenda and Next Actions | ((tags-todo PRIORITY="A"+Actions-Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header High-priority unfinished tasks:))) (agenda  ((org-agenda-span 7))) (tags-todo +Actions-Someday ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority 65) (air-org-skip-subtree-if-priority 67) (org-agenda-skip-if nil '(scheduled deadline)))) (org-agenda-overriding-header ALL normal priority tasks:))) (tags-todo PRIORITY="C"+Actions-Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Low-priority Unfinished tasks:)))) | ((org-agenda-compact-blocks nil)) |
-| i | Inbox                         | ((tags-todo +inbox_tray ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Inbox))))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                   |
-| j | Someday                       | ((tags-todo PRIORITY="A"+Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header High-priority unfinished tasks:))) (tags-todo +Someday ((org-agenda-skip-function '(or (air-org-skip-subtree-if-priority 65) (air-org-skip-subtree-if-priority 67) (org-agenda-skip-if nil '(scheduled deadline)))) (org-agenda-overriding-header ALL normal priority tasks:))) (tags-todo PRIORITY="C"+Someday ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done)) (org-agenda-overriding-header Low-priority Unfinished tasks:))))                                                         | ((org-agenda-compact-blocks nil)) |
 
 
 **** Refiling
@@ -942,7 +950,7 @@ But with an exception for the inbox.
 #+end_src
 **** Clocking in
 This is taken wholesale from [[http://doc.norang.ca/org-mode.html#Clocking]]
-#+begin_src elisp :tangle config.el
+#+begin_src elisp :tangle config.el :results silent
 ;;
 ;; Resume clocking task when emacs is restarted
 (org-clock-persistence-insinuate)
@@ -1080,12 +1088,23 @@ as the default task."
           (when bh/keep-clock-running
             (bh/clock-in-default-task)))))))
 
-(defvar bh/organization-task-id "80310231-6f03-4608-bcfe-8c4d04d24b83")
+(defvar bh/organization-task-id "98031ad5-b008-4476-9d39-79c878a52609")
 
+;; (defun bh/clock-in-organization-task-as-default ()
+;;   (interactive)
+;;   (org-with-point-at (org-id-find bh/organization-task-id 'marker)
+;;     (org-clock-in '(16))))
+
+;; Modified to work from anywhere
 (defun bh/clock-in-organization-task-as-default ()
   (interactive)
-  (org-with-point-at (org-id-find bh/organization-task-id 'marker)
-    (org-clock-in '(16))))
+  (let ((marker (org-id-find bh/organization-task-id 'marker)))
+    (if marker
+        (with-current-buffer (marker-buffer marker)
+          (goto-char (marker-position marker))
+          (org-clock-in '(16)))
+      (message "Organization task not found"))))
+
 
 (defun bh/clock-out-maybe ()
   (when (and bh/keep-clock-running
@@ -1122,9 +1141,27 @@ A prefix arg forces clock in of the default task."
 
 #+end_src
 
-#+RESULTS:
-: bh/clock-in-last-task
+To make it part of my habits it helps to have accessible bindings.
 
+#+begin_src elisp :tangle config.el
+(map! :leader
+      (:prefix-map ("C" . "Clock")
+       ;; For start of work before deciding on a task
+       :desc  "Punch in" "I" 'bh/punch-in
+       ;; When leaving work
+       :desc  "Punch out" "O" 'bh/punch-out
+       ;; Clocking in to a specific task
+       :desc "Clock in" "i" 'org-clock-in
+       :desc "Clock out" "o" 'org-clock-out
+       :desc  "Clock in to last task" "l" 'bh/clock-in-last-task
+       :desc  "Clock in recent" "r" (lambda ()
+                                      (interactive)
+                                      (let ((current-prefix-arg '(4)))
+                                        (call-interactively 'org-clock-in)))
+       ;; Misc
+       :desc "Visit clock" "v" 'org-clock-goto
+       ))
+#+end_src
 
 *** Org-roam
 I keep ~org-roam~ updated, and I make use of ~org-roam-ui~ to visualize my notes.
@@ -1947,5 +1984,21 @@ An MPD (Music Player Daemon) client
 (use-package! mpdel
   :config
   (setq mpdel-prefix-key (kbd "C-c m")))
+
+#+end_src
+
+** Zoom
+Automatically resize windows, keeping current window as the largest. From [[https://github.com/cyrus-and/zoom][cyrus-and]]
+#+begin_src elisp :tangle packages.el
+(package! zoom)
+#+end_src
+
+#+begin_src elisp :tangle config.el
+(use-package! zoom
+  :custom
+   (zoom-size '(0.618 . 0.618))
+  :config
+  (map! :map evil-window-map :desc "Toggle Zoom mode" "z" 'zoom-mode)
+  (zoom-mode))
 
 #+end_src

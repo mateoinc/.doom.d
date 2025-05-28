@@ -208,14 +208,24 @@
 
 (setq org-agenda-skip-deadline-if-done t)
 
+;; Function to display current clocked task at the top of agenda
+(defun my/insert-current-clock ()
+  "Insert the current clocked task at the top of the agenda."
+  (when (org-clocking-p)
+    (save-excursion
+      (goto-char (point-min))
+      (insert (format "Currently clocked in: %s\n\n" org-clock-current-task)))))
+
 (after! org-agenda
   (setq org-agenda-custom-commands
         '(
           ;; Daily Agenda & TODOs
           ("d" "Daily agenda and Next Actions"
 
+
+           (
            ;; Display items with priority A
-           ((tags-todo "PRIORITY=\"A\"+Actions-Someday+work"
+            (tags-todo "PRIORITY=\"A\"+Actions-Someday+work"
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
@@ -234,9 +244,11 @@
                        ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
                         (org-agenda-overriding-header "Low-priority Unfinished tasks:")))
             )
-
-           ;; Don't compress things (change to suite your tastes)
-           ((org-agenda-compact-blocks nil)))
+ ;; Extra settings
+;; Don't compress things (change to suite your tastes)
+ ((org-agenda-compact-blocks nil)
+  ;; Add our function to the finalize hook just for this view
+  (org-agenda-finalize-hook '(my/insert-current-clock))))
 
           ;; GTD Inbox Tray
           ("i" "Inbox"
@@ -443,12 +455,23 @@ as the default task."
           (when bh/keep-clock-running
             (bh/clock-in-default-task)))))))
 
-(defvar bh/organization-task-id "80310231-6f03-4608-bcfe-8c4d04d24b83")
+(defvar bh/organization-task-id "98031ad5-b008-4476-9d39-79c878a52609")
 
+;; (defun bh/clock-in-organization-task-as-default ()
+;;   (interactive)
+;;   (org-with-point-at (org-id-find bh/organization-task-id 'marker)
+;;     (org-clock-in '(16))))
+
+;; Modified to work from anywhere
 (defun bh/clock-in-organization-task-as-default ()
   (interactive)
-  (org-with-point-at (org-id-find bh/organization-task-id 'marker)
-    (org-clock-in '(16))))
+  (let ((marker (org-id-find bh/organization-task-id 'marker)))
+    (if marker
+        (with-current-buffer (marker-buffer marker)
+          (goto-char (marker-position marker))
+          (org-clock-in '(16)))
+      (message "Organization task not found"))))
+
 
 (defun bh/clock-out-maybe ()
   (when (and bh/keep-clock-running
@@ -482,6 +505,24 @@ A prefix arg forces clock in of the default task."
     (widen)
     (org-with-point-at clock-in-to-task
       (org-clock-in nil))))
+
+(map! :leader
+      (:prefix-map ("C" . "Clock")
+       ;; For start of work before deciding on a task
+       :desc  "Punch in" "I" 'bh/punch-in
+       ;; When leaving work
+       :desc  "Punch out" "O" 'bh/punch-out
+       ;; Clocking in to a specific task
+       :desc "Clock in" "i" 'org-clock-in
+       :desc "Clock out" "o" 'org-clock-out
+       :desc  "Clock in to last task" "l" 'bh/clock-in-last-task
+       :desc  "Clock in recent" "r" (lambda ()
+                                      (interactive)
+                                      (let ((current-prefix-arg '(4)))
+                                        (call-interactively 'org-clock-in)))
+       ;; Misc
+       :desc "Visit clock" "v" 'org-clock-goto
+       ))
 
 (after! org-roam-capture
 (setq org-roam-capture-templates
@@ -980,3 +1021,10 @@ it can be passed in POS."
 (use-package! mpdel
   :config
   (setq mpdel-prefix-key (kbd "C-c m")))
+
+(use-package! zoom
+  :custom
+   (zoom-size '(0.618 . 0.618))
+  :config
+  (map! :map evil-window-map :desc "Toggle Zoom mode" "z" 'zoom-mode)
+  (zoom-mode))
