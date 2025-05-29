@@ -2008,5 +2008,5 @@ Automatically resize windows, keeping current window as the largest. From [[http
 
 
 #+begin_src elisp :tangle config.el
-(use-package! kanban)
+(use-package! org-kanban)
 #+end_src
