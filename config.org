@@ -2000,3 +2000,13 @@ Automatically resize windows, keeping current window as the largest. From [[http
   (zoom-mode))
 
 #+end_src
+
+** Kanban
+#+begin_src elisp :tangle packages.el
+(package! kanban)
+#+end_src
+
+
+#+begin_src elisp :tangle config.el
+(use-package! kanban)
+#+end_src

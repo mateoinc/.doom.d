@@ -1029,3 +1029,5 @@ it can be passed in POS."
   :config
   (map! :map evil-window-map :desc "Toggle Zoom mode" "z" 'zoom-mode)
   (zoom-mode))
+
+(use-package! kanban)

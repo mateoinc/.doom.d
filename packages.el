@@ -86,3 +86,5 @@
 (package! mpdel)
 
 (package! zoom)
+
+(package! kanban)
